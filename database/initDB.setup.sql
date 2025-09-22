@@ -24,7 +24,7 @@ CREATE TABLE permissions (
 DROP TABLE IF EXISTS users_permissions;
 CREATE TABLE users_permissions (
     id_user INT NOT NULL,
-    id_permission INT NOT NULL,
+    id_permission INT DEFAULT 1,
     FOREIGN KEY (id_user) REFERENCES users(id),
     FOREIGN KEY (id_permission) REFERENCES permissions(id)
 );

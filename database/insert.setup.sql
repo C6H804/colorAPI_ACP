@@ -1,13 +1,25 @@
+
 DELETE FROM users;
 INSERT INTO users (username, password, description) VALUES
-    ("admin", "azerty", "admin temporaire à supprimer");
+    ("visitor", "password", "visiteur en lecture seule"),
+    ("admin", "$2b$12$hY/JBnKtuBKPaZxvFvcasuWWTmTHOoVqgSSCuRPywQxvHKYn8CEkK", "mot de passe : Azertyui123"),
+    ("color_manager", "password", "modifie les stocks");
+
 
 DELETE FROM permissions;
 INSERT INTO permissions (name, description) VALUES
+    ("visitor", "accede uniquement aux données en lecture seule"),
     ("admin", "acces total à tout"),
-    ("color visitor", "accès en lecture seule"),
     ("color manager", "peux modifier les stock d'une couleur"),
     ("color log seeker", "peux voir les logs des modifications de couleurs");
+
+DELETE FROM users_permissions;
+INSERT INTO users_permissions (id_user, id_permission) VALUES
+    (1, 1),
+    (2, 2),
+    (3, 1),
+    (3, 3);
+
 
 DELETE FROM colors_changes_types;
 INSERT INTO colors_changes_types (description) VALUES
@@ -28,8 +40,5 @@ INSERT INTO colors (type, value, color, name_en, name_fr, name_pt, shiny_stock, 
     ("RAL", "RAL5002", "20214F", "ultramarine blue", "bleu outremer", "azul ultramarino", false, true, false),
     ("OTHER", "MDR001", "002200", "wood look", "aspect bois", "Aparência de madeira", false, false, true);
 
-
-DELETE FROM users_permissions;
-INSERT INTO users_permissions (id_user, id_permission) VALUES
-    (1, 1);
-
+-- select * from users_permissions a join users b on a.id_user = b.id join permissions c on a.id_permission = c.id;
+select b.username, c.name from users_permissions a join users b on a.id_user = b.id join permissions c on a.id_permission = c.id;

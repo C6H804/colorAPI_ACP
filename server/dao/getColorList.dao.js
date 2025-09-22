@@ -2,18 +2,27 @@ const mysql = require("mysql2");
 const db = require("../config/db.connection.root");
 
 
-const getColorList = async (order) => {
-    const stmt = "SELECT * FROM colors ORDER BY ? ASC";
-    const values = [order];
-    console.log("Executing query:", stmt, values);
+const getColorListFiltered = async (filter) => {
+    const stmt = `SELECT * FROM colors WHERE ${filter} = 1 ORDER BY value DESC`;
+
     try {
-        const [results] = await db.execute(stmt, values);
-        // const [results] = await db.execute("SELECT * FROM colors ORDER BY shiny_stock ASC");
-        return { valid: true, data: results, status: 200 };
+        const [results] = await db.execute(stmt);
+        return { valid: true, value: results, status: 200 };
     } catch (error) {
-        console.error("Database error:", error);
-        return { valid: false, message: "Database error in getColorList", status: 500 };
+        console.error("getColorListFiltered error:", error);
+        return { valid: false, message: "failed to get colors", status: 500 };
     }
 }
 
-module.exports = getColorList;
+const getColorList = async () => {
+    const stmt = "SELECT * FROM colors ORDER BY value DESC";
+    try {
+        const [results] = await db.execute(stmt);
+        return { valid: true, value: results, status: 200 };
+    } catch (error) {
+        console.error("getColorList error:", error);
+        return { valid: false, message: "failed to get colors", status: 500 };
+    }
+}
+
+module.exports = { getColorList, getColorListFiltered };
