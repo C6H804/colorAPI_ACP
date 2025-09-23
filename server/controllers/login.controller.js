@@ -3,13 +3,17 @@ const verifyUserSchema = require("../schemas/verifyUser.schema");
 const getUserByUsername = require("../dao/getUserByUsername.dao");
 const CompareHash = require("../utils/_CompareHash");
 const CreateToken = require("../utils/_CreateToken");
+const UserExist = require("../utils/_UserExist").usernameExist;
 
 
 const loginController = async(req) => {
     const userData = await verifyUserSchema(req.body);
     if (!userData.valid) return { message: userData.message, status: userData.status };
 
-    // get user by username
+    const userExist = await UserExist(userData.value.username);
+    if (!userExist.valid) return { message: userExist.message, status: userExist.status };
+    if (!userExist.value) return { message: "user not found", status: 404 };
+
     const user = await getUserByUsername(userData.value.username);
     if (!user.valid) return { message: user.message, status: user.status };
 

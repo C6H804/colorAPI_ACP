@@ -13,11 +13,13 @@ app.get("/", (req, res) => {
 const login = require("./routes/login.route");
 const register = require("./routes/register.route");
 const colors = require("./routes/colors.route");
+const users = require("./routes/users.route");
 
 
-app.use("/api", login);
-app.use("/api", register);
+// app.use("/api", login);
+// app.use("/api", register);
 app.use("/api/colors", colors);
+app.use("/api", users);
 
 
 

@@ -22,7 +22,6 @@ router.post("/modifyStock/:id", async (req, res) => {
     const verify = await verifyPermissions(req.user, ["admin", "modify_colors"]);
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
 
-
     const result = await modifyColorStock(req);
     return res.status(result.status).json({ message: result.message });
 });
