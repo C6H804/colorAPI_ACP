@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Couleurs en stock - AC Portails</title>
+    <script src="../dist/js/dashboard.js" type="module"></script>
+    <link rel="stylesheet" href="../dist/css/colorsTab.css">
+</head>
+
+<body>
+    <section class="header">
+        <h1>Couleurs en stock</h1>
+        <div class="searchArea">
+            <input type="text" placeholder="Recherchez un code RAL ou une couleur" id="searchInput">
+            <div class="filter-area">
+                <label for="filterSelect">Trier par : </label>
+                <select name="filter" id="filterSelect">
+                    <option value="all" selected>Disponibles</option>
+                    <option value="shiny_stock">Brillant</option>
+                    <option value="matte_stock">Mat</option>
+                    <option value="sanded_stock">Sablée</option>
+                    <option value="no_stock">Tous</option>
+                </select>
+            </div>
+        </div>
+    </section>
+    <section class="main">
+        <div class="table-color">
+            <div class="top">
+                <div class="headCell">Couleurs</div>
+                <div class="headCell">#RAL</div>
+                <div class="headCell">Nom de la couleur</div>
+                <div class="headCell">Brillant</div>
+                <div class="headCell">Mat</div>
+                <div class="headCell">Sablée</div>
+            </div>
+            <div class="tab-body" id="colorsContainer">
+            </div>
+        </div>
+    </section>
+    <section class="footer"></section>
+
+</body>
+
+</html>

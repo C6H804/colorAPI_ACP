@@ -10,19 +10,22 @@ const registerController = require("../controllers/register.controller");
 
 router.post("/login", async (req, res) => {
     const result = await loginController(req);
-    if (!result.valid) return res.status(result.status ? result.status : 500).json({ message: result.message, status: result.status });
-    return res.status(200).json({ message: result.message, status: result.status, value: result.value });
+    if (!result.valid) return res.status(result.status ? result.status : 500).json({ valid:false, message: result.message, status: result.status });
+    return res.status(200).json({valid:true, message: result.message, status: result.status, value: result.value });
 });
 
 router.use(auth);
 
-router.use(async (req, res, next) => {
+const adminOnly = async (req, res) => {
     const verify = await verifyPermissions(req.user, ["admin"]);
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
-    next();
-});
+    return { valid: true, message: "Authorized", status: 200, value: null };
+};
 
 router.post("/addUser", async (req, res) => {
+    const adminCheck = await adminOnly(req, res);
+    if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
+    
     const result = await registerController(req);
     if (!result.valid) return res.status(result.status ? result.status : 500).json({ message: result.message, status: result.status });
     return res.status(201).json({ message: result.message, status: result.status, value: result.value });
@@ -31,6 +34,9 @@ router.post("/addUser", async (req, res) => {
 
 
 router.get("/permissions", async (req, res) => {
+    const adminCheck = await adminOnly(req, res);
+    if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
+
     const list = await permissionList(req);
     if (!list.valid) return res.status(list.status).json({ message: list.message });
     return res.status(200).json({ message: list.message, value: list.value });
@@ -39,7 +45,8 @@ router.get("/permissions", async (req, res) => {
 
 
 router.get("/permissions/:id", async (req, res) => {
-
+    const adminCheck = await adminOnly(req, res);
+    if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
 
     const list = await permissionUsers(req)
     if (!list.valid) return res.status(list.status).json({ message: list.message });
@@ -54,6 +61,9 @@ router.post("/permissions/grant/:id", async (req, res) => {
 
 
 const grantPermission = async (req) => {
+    const adminCheck = await adminOnly(req, res);
+    if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
+
     if (!req.params.id || isNaN(parseInt(req.params.id, 10)) || !Number.isInteger(parseInt(req.params.id, 10)) || parseInt(req.params.id, 10) <= 0) return { valid: false, message: "id is not valid", status: 400 };
     const userId = parseInt(req.params.id, 10);
     const permissions = req.body.permissions;

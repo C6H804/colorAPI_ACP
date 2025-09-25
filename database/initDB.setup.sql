@@ -40,11 +40,10 @@ CREATE TABLE colors (
     name_en VARCHAR(255) NOT NULL,
     name_fr VARCHAR(255) NOT NULL,
     name_pt VARCHAR(255) NOT NULL,
-    shiny_stock BOOLEAN NOT NULL,
-    matte_stock BOOLEAN NOT NULL,
-    sanded_stock BOOLEAN NOT NULL
+    shiny_stock BOOLEAN DEFAULT 0,
+    matte_stock BOOLEAN DEFAULT 0,
+    sanded_stock BOOLEAN DEFAULT 0
 );
-
 
 DROP TABLE IF EXISTS colors_changes_types;
 CREATE TABLE colors_changes_types (

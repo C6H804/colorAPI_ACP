@@ -9,11 +9,11 @@ const verifyPermissions = async (user, requiredPermissions) => {
     let result = { valid: false, message: "user lacks required permissions", status: 403 };
     requiredPermissions.forEach(e => {
         userPermissions.value.forEach(p => {
-            if (p.name === e) result = { valid: true, message: "user has required permissions", status: 200 };
+            if (e === p.name) result = { valid: true, message: "user has required permissions", status: 200 };
         });
     });
+
     return result;
-    
 }
 
 module.exports = verifyPermissions;

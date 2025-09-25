@@ -5,7 +5,7 @@ const filterSchema = joi.object({
 });
 
 const verifyFilters = (filter) => {
-    console.log("Verifying filter:", filter);
+    // console.log("Verifying filter:", filter);
     if (!filter || !filter.trim() || !["shiny_stock", "matte_stock", "sanded_stock"].includes(filter)) return { valid: false, message: "no filter provided", status: 400 };
     const { error, value } = filterSchema.validate({ filter });
     if (error) {
