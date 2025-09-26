@@ -1,0 +1,140 @@
+.table-color {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    background-color: rgba(0, 0, 0, 0.25);
+    width: 90%;
+    border-radius: 20px;
+    min-width: 250px;
+}
+
+.top {
+    display: grid;
+    grid-template-columns: 1fr 100px 2fr 100px 100px 100px;
+    text-align: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #3E3E3E;
+    border-radius: 20px 20px 0 0;
+    font-weight: bold;
+    font-size: 1.2em;
+    transition: ease-out 0.05s;
+    transition-delay: 0.25s;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    text-decoration: underline;
+}
+
+.tab-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.no-colors {
+    color: red;
+    text-align: center;
+    font-size: larger;
+    font-weight: bold;
+    padding: 20px;
+    text-decoration: underline;
+}
+
+.table-row {
+    display: grid;
+    background-color: #3E3E3E;
+    padding: 10px;
+    text-align: center;
+    gap: 10px;
+    font-size: larger;
+    transition: ease-out 0.1s;
+    transition-delay: 0.25s;
+    border-radius: 40px;
+    max-height: 46px;
+}
+
+.table-row:hover {
+    background-color: #575757;
+    cursor: pointer;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
+    transform: scale(1.05);
+    transition: ease-out 0.05s;
+}
+
+.available1 {
+    color: green;
+    scale: 1.5;
+}
+
+.available0 {
+    color: red;
+    scale: 1.5;
+}
+
+.row-item.color {
+    border-radius: 20px;
+}
+
+.OTHER {
+    background-color: #2e2e2e;
+}
+
+
+@media (min-width: 980px) {
+    .desktop {
+        display: none;
+    }
+
+    .top {
+        grid-template-columns: 1fr 100px 2fr 100px 100px 100px;
+    }
+
+    .table-row {
+        grid-template-columns: 1fr 100px 2fr 100px 100px 100px;
+    }
+}
+
+@media (max-width: 980px) {
+    .desktop {
+        display: block;
+    }
+
+    .mobile {
+        display: block;
+    }
+
+    .tablet {
+        display: none;
+    }
+    
+    .table-row {
+        grid-template-columns: 1fr 100px 2fr 40px 40px 40px;
+    }
+
+    .top {
+        grid-template-columns: 1fr 100px 2fr 40px 40px 40px;
+    }
+}
+
+@media (max-width: 600px) {
+    .desktop {
+        display: block;
+    }
+
+    .tablet {
+        display: block;
+    }
+
+    .mobile {
+        display: none;
+    }
+
+    .top {
+        grid-template-columns: 1fr 100px 30px 30px 30px;
+    }
+    .table-row {
+        grid-template-columns: 1fr 100px 30px 30px 30px;
+    }
+}

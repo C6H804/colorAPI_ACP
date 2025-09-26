@@ -1,0 +1,11 @@
+:root {
+    --primary-color: #3E3E3E;
+    --secondary-color: #2e2e2e;
+    --success-color: #4caf50;
+    --error-color: red;
+    --text-color: white;
+    --success-color-hover: darkgreen;
+    --error-color-hover: darkred;
+    --tablet-breakpoint: 980px;
+    --mobile-breakpoint: 600px;
+}

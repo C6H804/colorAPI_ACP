@@ -14,18 +14,25 @@ const modifyColorStock = async (req) => {
     const verifyStock = await verifyColorStock(req.body);
     if (!verifyStock.valid) return { status: 400, valid: false, message: verifyStock.message };
 
+
+    const oldStockMessage = `Brillant : ${color.value.shiny_stock}, Mat : ${color.value.matte_stock}, Sablé : ${color.value.sanded_stock}`;
+    const newStockMessage = `Brillant : ${verifyStock.value.shiny_stock}, Mat : ${verifyStock.value.matte_stock}, Sablé : ${verifyStock.value.sanded_stock}`;
+    const logMessage = `Stock modifié. Ancien stock - ${oldStockMessage}. Nouveau stock - ${newStockMessage}.`;
+
+
     const newStock = {
-        shiny_stock: verifyStock.value.shiny_stock !== undefined ? verifyStock.value.shiny_stock : color.value[0].shiny_stock,
-        matte_stock: verifyStock.value.matte_stock !== undefined ? verifyStock.value.matte_stock : color.value[0].matte_stock,
-        sanded_stock: verifyStock.value.sanded_stock !== undefined ? verifyStock.value.sanded_stock : color.value[0].sanded_stock
+        shiny_stock: verifyStock.value.shiny_stock,
+        matte_stock: verifyStock.value.matte_stock,
+        sanded_stock: verifyStock.value.sanded_stock
     };
+
+
 
     const update = await updateColorStockById(idColor, newStock.shiny_stock, newStock.matte_stock, newStock.sanded_stock);
     if (!update.valid) return { valid: false, status: update.status, message: update.message };
 
-    const logDescription = "changement de " + JSON.stringify(verifyStock.value).replace(/"/g, '').replace(/,/g, ' -').replace(/{|}/g, '') + " | en : " + JSON.stringify(newStock).replace(/"/g, '').replace(/,/g, ' -').replace(/{|}/g, '');
 
-    const log = await addColorLog(req.user.value.id, color.value.id, logDescription, 3);
+    const log = await addColorLog(req.user.value.id, color.value.id, logMessage, 3);
     if (!log.valid) return { valid: false, status: log.status, message: log.message };
 
     return { valid: true, status: 200, message: "Color stock updated successfully" };

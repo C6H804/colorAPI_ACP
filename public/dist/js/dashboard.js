@@ -20,6 +20,7 @@ const getPermissions = async () => {
 
 let permissions = false;
 let modal = false;
+const upPageBtn = document.getElementById("upPageBtn");
 
 const init = async () => {
     const isAuth = await Auth();
@@ -43,16 +44,14 @@ const init = async () => {
         updateColorTable(filter, lang, search);
     });
 }
-
 init();
+
 
 const updateColorTable = async (filter, lang, search = "") => {
     const colors = await fetchColors(filter);
     const filteredColors = searchInColors(colors.colors, search);
     loadColorsTable(filteredColors, lang);
 }
-
-
 
 const fetchColors = async (filter) => {
     try {
@@ -73,49 +72,58 @@ const fetchColors = async (filter) => {
     return [];
 }
 
-
 const loadColorsTable = (colors, lang = "en") => {
     const tableBody = document.getElementById("colorsContainer");
     tableBody.innerHTML = "";
-    colors.forEach(e => {
-        const color = '#' + e.color;
-        const names = {
-            fr: e.name_fr,
-            en: e.name_en,
-            pt: e.name_pt
-        };
-        const name = names[lang] || e.name_en;
+    if (colors.length === 0) {
 
-        const type = e.type;
-        const b = e.shiny_stock;
-        const m = e.matte_stock;
-        const s = e.sanded_stock;
-        let value = e.value;
-        if (type === "RAL") value = e.value.replace("RAL", "");
+        const message = {
+            fr: "Aucune couleur trouvée.",
+            en: "No colors found.",
+            pt: "Nenhuma cor encontrada."
+        }
 
+        tableBody.appendChild(createElement("div", { class: "no-colors empty" }, [message[lang]]));
+    } else {
+        colors.forEach(e => {
+            const color = '#' + e.color;
+            const names = {
+                fr: e.name_fr,
+                en: e.name_en,
+                pt: e.name_pt
+            };
+            const name = names[lang] || e.name_en;
 
-        const available = ["❌", "✔️"];
+            const title = e.value + " - " + name;
+            const type = e.type;
+            const b = e.shiny_stock;
+            const m = e.matte_stock;
+            const s = e.sanded_stock;
+            let value = e.value;
+            if (type === "RAL") value = e.value.replace("RAL", "");
 
-        const row = createElement("div", { class: `table-row ${type}` }, [
-            createElement("div", { class: "row-item color", style: `background-color: ${color};` }),
-            createElement("div", { class: "row-item value" }, [value]),
-            createElement("div", { class: "row-item name" }, [name]),
-            createElement("div", { class: "row-item stock shiny available" + b }, [available[b]]),
-            createElement("div", { class: "row-item stock matte available" + m }, [available[m]]),
-            createElement("div", { class: "row-item stock sanded available" + s }, [available[s]])
-        ]);
-        row.addEventListener("click", () => {
-            renderModal(e.id, value, color, name, type, b, m, s);
+            const available = ["❌", "✔️"];
+
+            const row = createElement("div", { class: `table-row ${type}`, title: title }, [
+                createElement("div", { class: "row-item color", style: `background-color: ${color};` }),
+                createElement("div", { class: "row-item value" }, [value]),
+                createElement("div", { class: "row-item name mobile" }, [name]),
+                createElement("div", { class: "row-item stock shiny available" + b }, [available[b]]),
+                createElement("div", { class: "row-item stock matte available" + m }, [available[m]]),
+                createElement("div", { class: "row-item stock sanded available" + s }, [available[s]])
+            ]);
+            row.addEventListener("click", () => {
+                renderModal(e.id, value, color, name, type, b, m, s);
+            });
+
+            tableBody.appendChild(row);
         });
-
-        tableBody.appendChild(row);
-    });
+    }
 }
 
 const searchInColors = (colors, search) => {
     return colors.filter(e => {
         if (e.type === "OTHER") {
-
             return e.name_fr.toLowerCase().includes(search.toLowerCase()) ||
                 e.name_en.toLowerCase().includes(search.toLowerCase()) ||
                 e.name_pt.toLowerCase().includes(search.toLowerCase()) ||
@@ -225,7 +233,20 @@ const modifyStock = async (id) => {
     updateColorTable(document.getElementById("filterSelect").value, navigator.language.slice(0, 2), document.getElementById("searchInput").value);
 }
 
-
 document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal) closeModal();
 });
+
+document.addEventListener("scroll", () => {
+    if (window.scrollY > 100) {
+        upPageBtn.classList.remove("btn-hide");
+    } else {
+        upPageBtn.classList.add("btn-hide");
+    }
+});
+
+upPageBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Couleurs en stock - AC Portails</title>
     <script src="../dist/js/dashboard.js" type="module"></script>
-    <link rel="stylesheet" href="../dist/css/colorsTab.css">
+    <link rel="stylesheet" href="../dist/css/dashboard/style.css">
 </head>
 
 <body>
@@ -29,18 +29,31 @@
     <section class="main">
         <div class="table-color">
             <div class="top">
-                <div class="headCell">Couleurs</div>
+                <div class="headCell mobile">Couleurs</div>
+                <div class="headCell desktop tablet"> </div>
                 <div class="headCell">#RAL</div>
-                <div class="headCell">Nom de la couleur</div>
-                <div class="headCell">Brillant</div>
-                <div class="headCell">Mat</div>
-                <div class="headCell">Sablée</div>
+                <div class="headCell mobile">Nom de la couleur</div>
+                <div class="headCell mobile tablet">Brillant</div>
+                <div class="headCell desktop">B</div>
+                <div class="headCell mobile tablet">Mat</div>
+                <div class="headCell desktop">M</div>
+                <div class="headCell mobile tablet">Sablée</div>
+                <div class="headCell desktop">S</div>
             </div>
             <div class="tab-body" id="colorsContainer">
             </div>
         </div>
     </section>
-    <section class="footer"></section>
+
+    <section class="footer">
+        <div class="topBtn">
+            <button class="upPageBtn btn-hide" id="upPageBtn"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                    class="bi bi-chevron-up" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z" />
+                </svg></button>
+        </div>
+    </section>
 
 </body>
 

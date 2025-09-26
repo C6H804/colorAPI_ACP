@@ -1,0 +1,11 @@
+@import url("tableColor.css");
+@import url("modal.css");
+
+.main {
+    width: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

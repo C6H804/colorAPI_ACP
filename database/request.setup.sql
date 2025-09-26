@@ -30,3 +30,14 @@ insert into colors (type, value, color, name_en, name_fr, name_pt, shiny_stock, 
 -- noir 900
 -- rouge 2100
 -- vert 2100
+
+
+
+;
+
+SELECT date, u.username, c.name_fr, cct.description, uc.change_description
+    FROM update_colors uc
+    JOIN users u ON uc.id_user = u.id
+    JOIN colors c ON uc.id_color = c.id
+    JOIN colors_changes_types cct ON uc.id_color_change_types = cct.id
+    ORDER BY uc.date DESC;
