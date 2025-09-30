@@ -1,5 +1,6 @@
 import { createElement } from "./components/_CreateElement.js";
 
+
 const init = async () => {
     const lang = navigator.language.slice(0, 2) || "en".slice(0, 2)
     loadUserList(await getUserList());
@@ -29,7 +30,9 @@ const loadUserList = async (userList) => {
     const userListContainer = document.getElementById("user-list-container");
     userList.forEach(e => {
         const user = createElement("div", { class: "user", id: "user" + e.id }, [
+            // createElement("div", { class: "username-container" }, [
             createElement("div", { class: "username" }, [e.username]),
+            // ]),
             createElement("div", { class: "description" }, [e.description]),
             createElement("div", { class: "last-login" }, [new Date(e.last_connection).toLocaleString()])
         ]);
@@ -92,8 +95,22 @@ const loadLogs = (logs, lang) => {
 
 }
 
-const changeUser = (id) => {
+const changeUser = async (id) => {
     console.log("Change user " + id);
+
+    const user = await getUserData(id);
+    if (!user) return alert("User not found");
+    console.log(user);
+
+    const permissions = await getPermissions();
+    if (permissions.length === 0) return alert("Failed to fetch permissions");
+    console.log(permissions);
+
+    const userPermissions = await getUserPermissions(user.id);
+    if (userPermissions.length === 0) return alert("Failed to fetch user permissions");
+    console.log(userPermissions);
+
+    loadModalEdit(user, permissions, userPermissions);
 }
 
 const calculateTimePassed = (date, lang) => {
@@ -172,6 +189,139 @@ const calculateTimePassed = (date, lang) => {
     if (years < 2) return translation[lang].agoStart + Math.round(years) + " " + translation[lang].years + " " + Math.round(months) + " " + translation[lang].months + " " + translation[lang].agoEnd;
     return translation[lang].agoStart + Math.round(years) + " " + translation[lang].years + " " + translation[lang].agoEnd;
 }
+
+
+const getPermissions = async () => {
+    try {
+        const response = await fetch("/api/permissions", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+        });
+        const data = await response.json();
+        if (!data.valid) {
+            console.error("Invalid permissions response:", data.message);
+            return [];
+        }
+        return data.value;
+    } catch (error) {
+        console.error("Error fetching permissions:", error);
+        return [];
+    }
+}
+
+
+
+const getUserPermissions = async (userId) => {
+    try {
+        const permissions = await fetch(`/api/permissions/${userId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+        });
+        const data = await permissions.json();
+        return data.value;
+    } catch (error) {
+        console.error("Error fetching permissions:", error);
+        return [];
+    }
+}
+
+const getUserData = async (userId) => {
+    const userList = await getUserList();
+    if (userList.length === 0) return [];
+    const user = userList.find(e => e.id === userId);
+    if (!user) {
+        console.error("User not found:", userId);
+        return null;
+    }
+    return user;
+}
+
+
+
+const loadModalEdit = (user, permissions, userPermissions) => {
+    const existingModal = document.querySelector(".modal-container");
+    if (existingModal) existingModal.remove();
+
+    const permissionElements = createElement("div", { class: "permissions-container" }, []);
+    permissions.forEach(e => {
+        const checked = userPermissions.find(p => p.id === e.id) ? true : false;
+        console.log(checked);
+        const permissionElement = createElement("div", { class: "permission", id: "permission" + e.id }, [
+            createElement("label", { for: "chk-permission" + e.id }, [e.name, " : "]),
+            createElement("label", { class: "permission-description", for: "chk-permission" + e.id }, [e.description]),
+            checked ? createElement("input", { type: "checkbox", class: "chk-permission", id: "chk-permission" + e.id, name: "chk-permission" + e.id, checked: "checked" }) :
+            createElement("input", { type: "checkbox", class: "chk-permission", id: "chk-permission" + e.id, name: "chk-permission" + e.id }),
+            createElement("label", { for: "chk-permission" + e.id, class: "switch" })
+        ]);
+        permissionElements.appendChild(permissionElement);
+    });
+
+
+    const modalContainer = createElement("div", { class: "modal-container" }, [
+        createElement("div", { class: "modal edit-user-modal" }, [
+            createElement("div", { class: "modal-header" }, [
+                createElement("input", { type: "text", id: "user-name-edit", class: "modal-title modal-edit-username", value: user.username })
+            ]),
+            createElement("div", { class: "modal-body" }, [
+                createElement("div", { class: "description-container" }, [
+                    createElement("label", { for: "description" }, ["Description :"]),
+                    createElement("textarea", { id: "description", name: "description", rows: "4", cols: "50" }, [user.description])
+                ]),
+                createElement("div", { class: "permissions-container" }, [
+                    createElement("h3", {}, ["Permissions : "]),
+                    permissionElements
+                ])
+            ]
+            ),
+            createElement("div", { class: "modal-footer" }, [
+                createElement("button", { class: "btn btn-cancel", id: "cancel-btn" }, ["Annuler"]),
+                createElement("button", { class: "btn btn-save", id: "save-btn" }, ["Enregistrer"])
+            ])
+        ])
+    ]);
+
+
+    
+    modalContainer.addEventListener("click", (event) => {
+        if (event.target === modalContainer) {
+            closeModal();
+        }
+    });
+    document.body.appendChild(modalContainer);
+    
+    document.getElementById("cancel-btn").addEventListener("click", closeModal);
+
+    document.getElementById("save-btn").addEventListener("click", async () => {
+        const newUsername = document.getElementById("user-name-edit").value;
+        const newDescription = document.getElementById("description").value;
+        let newPermissions = {};
+        document.querySelectorAll(".chk-permission").forEach(e => {
+            newPermissions[e.id.replace("chk-permission", "")] = e.checked;
+
+        });
+        console.log("New username:", newUsername);
+        console.log("New description:", newDescription);
+        console.log("New permissions:", newPermissions);
+    });
+
+}
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+});
+
+const closeModal = () => {
+    const modal = document.querySelector(".modal-container");
+    if (modal) modal.remove();
+    // TODO add animation
+}
+
 
 
 init();

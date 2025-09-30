@@ -58,3 +58,15 @@
         background-color: rgba(0, 0, 0, 0);
     }
 }
+
+@keyframes rowSpawn {
+    0% {
+        scale: 0.95;
+    }
+    50% {
+        scale: 1.02;
+    }
+    100% {
+        scale: 1;
+    }
+}
