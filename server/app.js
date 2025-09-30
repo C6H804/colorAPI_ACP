@@ -26,7 +26,6 @@ app.use("/api", users);
 app.use("/api", auth);
 
 
-
 const PORT = parseInt(process.env.API_PORT, 10);
 
 if (!isNaN(PORT) && Number.isInteger(PORT) && PORT > 0) {

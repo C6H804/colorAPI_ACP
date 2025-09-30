@@ -33,6 +33,8 @@ const init = async () => {
     updateColorTable(filter, lang, search);
     console.log(colors); // TEMP
     permissions = await getPermissions();
+    if (permissions) document.querySelector(".admin-button").classList.remove("hide");
+
 
     document.getElementById("filterSelect").addEventListener("change", async (e) => {
         filter = e.target.value;
@@ -248,5 +250,4 @@ document.addEventListener("scroll", () => {
 upPageBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-
 

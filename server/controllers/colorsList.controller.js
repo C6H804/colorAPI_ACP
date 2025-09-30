@@ -22,5 +22,4 @@ const getColorsController = async (filter) => {
     return { valid: true, colors: colorList.value, status: 200 };
 }
 
-
 module.exports = getColorsController;

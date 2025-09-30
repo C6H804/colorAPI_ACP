@@ -7,6 +7,8 @@ const permissionList = require("../controllers/permissionsList.controller");
 const permissionUsers = require("../controllers/permissionsListUser.controller");
 const loginController = require("../controllers/login.controller");
 const registerController = require("../controllers/register.controller");
+const getUsers = require("../dao/getUsers.dao");
+const getLogs = require("../dao/getLogs.dao");
 
 router.post("/login", async (req, res) => {
     const result = await loginController(req);
@@ -21,6 +23,15 @@ const adminOnly = async (req, res) => {
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
     return { valid: true, message: "Authorized", status: 200, value: null };
 };
+
+router.get("/users", async (req, res) => {
+    const adminCheck = await adminOnly(req, res);
+    if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message, valid: false });
+
+    const users = await getUsers();
+    if (!users.valid) return res.status(users.status).json({ message: users.message, valid: false });
+    return res.status(200).json({ message: users.message, value: users.value, valid: true });
+});
 
 router.post("/addUser", async (req, res) => {
     const adminCheck = await adminOnly(req, res);
@@ -57,8 +68,9 @@ router.post("/permissions/grant/:id", async (req, res) => {
 
 });
 
+router.get("/permissions/revoke/:id", async (req, res) => {
 
-
+});
 
 const grantPermission = async (req) => {
     const adminCheck = await adminOnly(req, res);
@@ -68,11 +80,24 @@ const grantPermission = async (req) => {
     const userId = parseInt(req.params.id, 10);
     const permissions = req.body.permissions;
     if (!permissions || !Array.isArray(permissions) || permissions.length === 0) return { valid: false, message: "permissions is required and should be a non-empty array", status: 400 };
-    permissions.forEach( e => {
-        
-    });
+    // permissions.forEach( e => {
 
+    // });
 }
+router.get("/logs", async (req, res) => {
+    console.log("get reqest received in logs");
+    const adminCheck = await adminOnly(req, res);
+    if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
+    console.log("--- ici ---");
+    const logs = await getLogs();
+    if (!logs.valid) return res.status(logs.status).json({ message: logs.message });
+    return res.status(200).json({ message: logs.message, value: logs.value });
+
+});
+
+
+
+
 
 
 

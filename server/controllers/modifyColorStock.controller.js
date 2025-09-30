@@ -31,9 +31,11 @@ const modifyColorStock = async (req) => {
     const update = await updateColorStockById(idColor, newStock.shiny_stock, newStock.matte_stock, newStock.sanded_stock);
     if (!update.valid) return { valid: false, status: update.status, message: update.message };
 
+    if (oldStockMessage != newStockMessage) {
+        const log = await addColorLog(req.user.value.id, color.value.id, logMessage, 3);
+        if (!log.valid) return { valid: false, status: log.status, message: log.message };
+    }
 
-    const log = await addColorLog(req.user.value.id, color.value.id, logMessage, 3);
-    if (!log.valid) return { valid: false, status: log.status, message: log.message };
 
     return { valid: true, status: 200, message: "Color stock updated successfully" };
 }
