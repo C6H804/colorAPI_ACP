@@ -51,7 +51,6 @@ router.post("/editUser/:id", async (req, res) => {
     if (!req.params.id || req.params.id <= 0 || isNaN(parseInt(req.params.id, 10)) || !Number.isInteger(parseInt(req.params.id, 10))) return res.status(400).json({ message: "id is not valid", status: 400 });
     const result = await editUser(req);
     return res.status(result.status).json({ message: result.message, status: result.status, valid: result.valid });
-
 });
 
 
@@ -91,15 +90,11 @@ const grantPermission = async (req) => {
     const userId = parseInt(req.params.id, 10);
     const permissions = req.body.permissions;
     if (!permissions || !Array.isArray(permissions) || permissions.length === 0) return { valid: false, message: "permissions is required and should be a non-empty array", status: 400 };
-    // permissions.forEach( e => {
-
-    // });
 }
 router.get("/logs", async (req, res) => {
     console.log("get reqest received in logs");
     const adminCheck = await adminOnly(req, res);
     if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
-    console.log("--- ici ---");
     const logs = await getLogs();
     if (!logs.valid) return res.status(logs.status).json({ message: logs.message });
     return res.status(200).json({ message: logs.message, value: logs.value });

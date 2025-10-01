@@ -9,6 +9,7 @@ CREATE TABLE users (
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     description MEDIUMTEXT,
+    deleted BOOLEAN DEFAULT 0,
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_connection TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -40,6 +41,7 @@ CREATE TABLE colors (
     name_en VARCHAR(255) NOT NULL,
     name_fr VARCHAR(255) NOT NULL,
     name_pt VARCHAR(255) NOT NULL,
+    deleted BOOLEAN DEFAULT 0,
     shiny_stock BOOLEAN DEFAULT 0,
     matte_stock BOOLEAN DEFAULT 0,
     sanded_stock BOOLEAN DEFAULT 0

@@ -1,7 +1,7 @@
 const joi = require("joi");
 
 const userSchema = joi.object({
-    username: joi.string().alphanum().min(3).max(255).required(),
+    username: joi.string().regex(/^[a-z_]+$/).min(3).max(255).required(),
     description: joi.string().max(16777215).optional()
 });
 

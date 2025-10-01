@@ -3,13 +3,13 @@ const Auth = async () => {
     if (!token) return false;
 
     const response = await fetch("/api/auth", {
-        method: "POST",
+        method: "GET",
         headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
         }
     });
     const result = await response.json();
-    return result.valid;
+    return result;
 }
 export { Auth };

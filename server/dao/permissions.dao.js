@@ -51,14 +51,14 @@ const deletePermission = async (id) => {
 // }
 
 const getUserUserPermissions = async (userId) => {
-    const stmt = "SELECT p.* FROM users_permissions up JOIN users u ON up.id_user= u.id JOIN permissions p ON up.id_permission = p.id WHERE u.id = ?";
+    const stmt = "SELECT p.* FROM users_permissions up JOIN users u ON up.id_user = u.id JOIN permissions p ON up.id_permission = p.id WHERE u.id = ?";
     const values = [userId];
     try {
         const [results] = await db.execute(stmt, values);
         return { valid: true, value: results };
     } catch (error) {
         console.error("getUserUserPermission", error);
-        return { valid: false, message: "error in getUserUserPermission", status: 500 };
+        return { valid: false, message: "error fetching user permissions", status: 500 };
     }
 }
 
@@ -77,7 +77,7 @@ const grantPermission = async (userId, permissionId) => {
 }
 
 const revokePermission = async (userId, permissionId) => {
-    const stmt = "DELETE FROM users_permissions WHERE user_id = ? AND permission_id = ?";
+    const stmt = "DELETE FROM users_permissions WHERE id_user = ? AND id_permission = ?";
     const values = [userId, permissionId];
     try {
         const [results] = await db.execute(stmt, values);

@@ -28,6 +28,7 @@ const getUserList = async () => {
 
 const loadUserList = async (userList) => {
     const userListContainer = document.getElementById("user-list-container");
+    userListContainer.innerHTML = "";
     userList.forEach(e => {
         const user = createElement("div", { class: "user", id: "user" + e.id }, [
             // createElement("div", { class: "username-container" }, [
@@ -40,13 +41,69 @@ const loadUserList = async (userList) => {
         userListContainer.appendChild(user);
     });
     userListContainer.appendChild(createElement("div", { class: "add-user-container" }, [
-        createElement("button", { class: "add-user btn" }, ["+"])
+        createElement("button", { class: "add-user btn", id: "add-user-btn" }, ["+"])
     ]));
+    document.getElementById("add-user-btn").addEventListener("click", loadModalAddUser);
 }
 
-const addUser = () => {
+const loadModalAddUser = async () => {
     console.log("Add user");
+    const existingModal = document.querySelector(".modal-container");
+    if (existingModal) existingModal.remove();
+
+    const permissionElements = createElement("div", { class: "permissions-container" }, []);
+
+    const permissions = await getPermissions();
+
+    permissions.forEach(e => {
+        const permissionElement = createElement("div", { class: "permission", id: "permission" + e.id }, [
+            createElement("label", { for: "chk-permission" + e.id }, [e.name, " : "]),
+            createElement("label", { class: "permission-description", for: "chk-permission" + e.id }, [e.description]),
+            createElement("input", { type: "checkbox", class: "chk-permission", id: "chk-permission" + e.id, name: "chk-permission" + e.id }),
+            createElement("label", { for: "chk-permission" + e.id, class: "switch" })
+        ]);
+        permissionElements.appendChild(permissionElement);
+    });
+
+    const modalContainer = createElement("div", { class: "modal-container" }, [
+        createElement("div", { class: "modal add-user-modal" }, [
+            createElement("div", { class: "modal-header" }, [
+                createElement("input", { type: "text", id: "user-name-add", min: "3", class: "modal-title modal-edit-username", placeholder: "nom de l'utilisateur" })
+            ]),
+            createElement("div", { class: "modal-body" }, [
+                createElement("div", { class: "description-container" }, [
+                    createElement("label", { for: "description" }, ["Description :"]),
+                    createElement("textarea", { id: "description", name: "description", rows: "4", cols: "50" }, ["Description de l'utilisateur"])
+                ])
+            ]),
+            createElement("div", { class: "modal-footer" }, [
+                createElement("button", { class: "btn btn-cancel", id: "cancel-btn" }, ["Annuler"]),
+                createElement("button", { class: "btn btn-save", id: "save-btn" }, ["Enregistrer"])
+            ])
+        ])
+    ]);
+    document.body.appendChild(modalContainer);
+
+    document.getElementById("cancel-btn").addEventListener("click", closeModal);
+    document.getElementById("save-btn").addEventListener("click", async () => {
+        const newUsername = document.getElementById("user-name-add").value.trim().replace(/\s+/g, '_');
+        const newDescription = document.getElementById("description").value;
+    });
+    document.querySelector(".modal-container").addEventListener("click", (event) => {
+        if (event.target === document.querySelector(".modal-container")) {
+            closeModal();
+        }
+    });
+
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+    }, { once: true });
+
+
 }
+
+
 
 const getLogs = async () => {
     try {
@@ -107,7 +164,6 @@ const changeUser = async (id) => {
     console.log(permissions);
 
     const userPermissions = await getUserPermissions(user.id);
-    if (userPermissions.length === 0) return alert("Failed to fetch user permissions");
     console.log(userPermissions);
 
     loadModalEdit(user, permissions, userPermissions);
@@ -242,8 +298,6 @@ const getUserData = async (userId) => {
     return user;
 }
 
-
-
 const loadModalEdit = (user, permissions, userPermissions) => {
     const existingModal = document.querySelector(".modal-container");
     if (existingModal) existingModal.remove();
@@ -256,17 +310,16 @@ const loadModalEdit = (user, permissions, userPermissions) => {
             createElement("label", { for: "chk-permission" + e.id }, [e.name, " : "]),
             createElement("label", { class: "permission-description", for: "chk-permission" + e.id }, [e.description]),
             checked ? createElement("input", { type: "checkbox", class: "chk-permission", id: "chk-permission" + e.id, name: "chk-permission" + e.id, checked: "checked" }) :
-            createElement("input", { type: "checkbox", class: "chk-permission", id: "chk-permission" + e.id, name: "chk-permission" + e.id }),
+                createElement("input", { type: "checkbox", class: "chk-permission", id: "chk-permission" + e.id, name: "chk-permission" + e.id }),
             createElement("label", { for: "chk-permission" + e.id, class: "switch" })
         ]);
         permissionElements.appendChild(permissionElement);
     });
 
-
     const modalContainer = createElement("div", { class: "modal-container" }, [
         createElement("div", { class: "modal edit-user-modal" }, [
             createElement("div", { class: "modal-header" }, [
-                createElement("input", { type: "text", id: "user-name-edit", class: "modal-title modal-edit-username", value: user.username })
+                createElement("input", { type: "text", id: "user-name-edit", min: "3", class: "modal-title modal-edit-username", value: user.username })
             ]),
             createElement("div", { class: "modal-body" }, [
                 createElement("div", { class: "description-container" }, [
@@ -280,47 +333,86 @@ const loadModalEdit = (user, permissions, userPermissions) => {
             ]
             ),
             createElement("div", { class: "modal-footer" }, [
-                createElement("button", { class: "btn btn-cancel", id: "cancel-btn" }, ["Annuler"]),
-                createElement("button", { class: "btn btn-save", id: "save-btn" }, ["Enregistrer"])
+                createElement("button", { class: "btn btn-cancel", id: "cancel-btn", title: "Annuler les modifications" }, ["Annuler"]),
+                createElement("button", { class: "btn btn-save", id: "save-btn", title: "Enregistrer les modifications" }, ["Enregistrer"]),
+                createElement("a", { class: "delete-btn btn", id: "delete-btn", title: "Supprimer l'utilisateur" }, [
+                    createElement("img", { class: "trash-icon", src: "../dist/img/trash-fill.svg" })
+                ])
             ])
         ])
     ]);
 
-
-    
     modalContainer.addEventListener("click", (event) => {
         if (event.target === modalContainer) {
             closeModal();
         }
     });
+
     document.body.appendChild(modalContainer);
-    
+
     document.getElementById("cancel-btn").addEventListener("click", closeModal);
 
-    document.getElementById("save-btn").addEventListener("click", async () => {
-        const newUsername = document.getElementById("user-name-edit").value;
-        const newDescription = document.getElementById("description").value;
-        let newPermissions = {};
-        document.querySelectorAll(".chk-permission").forEach(e => {
-            newPermissions[e.id.replace("chk-permission", "")] = e.checked;
 
-        });
-        console.log("New username:", newUsername);
-        console.log("New description:", newDescription);
-        console.log("New permissions:", newPermissions);
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+    }, { once: true });
+
+
+    document.getElementById("save-btn").addEventListener("click", async () => saveEditData(user));
+
+    document.addEventListener("keydown", async (event) => {
+        if (event.key === "Enter") await saveEditData(user);
+    }, { once: true });
+    document.getElementById("delete-btn").addEventListener("click", async () => {
+        if (confirm("Êtes-vous sûr de vouloir supprmer cette utilisateur ? Cette action est irréversible.")) {
+            console.log("Delete user " + user.id);
+        }
+        loadUserList(await getUserList());
+
+        closeModal();
     });
-
 }
 
-document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal();
-});
+
 
 const closeModal = () => {
     const modal = document.querySelector(".modal-container");
     if (modal) modal.remove();
-    // TODO add animation
+};
+
+const saveEditData = async (user) => {
+    console.log("Save edit data");
+    const newUsername = document.getElementById("user-name-edit").value.toLowerCase().trim().replace(/\s+/g, '_');
+    const newDescription = document.getElementById("description").value.trim();
+    let newPermissions = {};
+    document.querySelectorAll(".chk-permission").forEach(e => {
+        newPermissions[e.id.replace("chk-permission", "")] = e.checked;
+
+    });
+    const userId = user.id;
+    const payload = { username: newUsername, description: newDescription, permissions: newPermissions };
+
+    try {
+        const response = await fetch("/api/editUser/" + userId, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (!data.valid) return alert("Error: " + data.message);
+    } catch (error) {
+        console.error("Error updating user:", error);
+        alert("Failed to update user. Please try again later.");
+    }
+    loadUserList(await getUserList());
+
+
+    closeModal();
 }
+
 
 
 

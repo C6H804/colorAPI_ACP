@@ -3,7 +3,7 @@ const db = require("../config/db.connection.root");
 
 const getUsers = async () => {
     try {
-        const [results] = await db.execute("SELECT id, username, description, last_connection FROM users");
+        const [results] = await db.execute("SELECT id, username, description, last_connection FROM users WHERE deleted = 0");
         return { valid: true, message: "Users retrieved successfully", status: 200, value: results };
     } catch (error) {
         console.error("Error retrieving users:", error);

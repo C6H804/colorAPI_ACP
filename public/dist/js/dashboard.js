@@ -1,21 +1,12 @@
 import { Auth } from "./components/_Auth.js";
 import { createElement } from "./components/_CreateElement.js";
 
-const getPermissions = async () => {
-    try {
-        const response = await fetch("/api/colors/modify/allow", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            }
-        });
-        const data = await response.json();
-        return data.valid;
-    } catch (error) {
-        console.error("Error fetching permissions:", error);
-        return false;
-    }
+const getPermissions = async (perms) => {
+    console.log(perms);
+    if (perms.find(e => e.name === "admin")) return "admin";
+    if (perms.find(e => e.name === "color manager")) return "color manager";
+    if (perms.find(e => e.name === "visitor")) return "visitor";
+    return "none";
 };
 
 let permissions = false;
@@ -24,7 +15,7 @@ const upPageBtn = document.getElementById("upPageBtn");
 
 const init = async () => {
     const isAuth = await Auth();
-    if (!isAuth) window.location.href = "../index.html";
+    if (!isAuth.valid) window.location.href = "../index.html";
     let colors = await fetchColors("");
 
     const lang = navigator.language.slice(0, 2);
@@ -32,8 +23,8 @@ const init = async () => {
     let search = document.getElementById("searchInput").value;
     updateColorTable(filter, lang, search);
     console.log(colors); // TEMP
-    permissions = await getPermissions();
-    if (permissions) document.querySelector(".admin-button").classList.remove("hide");
+    permissions = await getPermissions(isAuth.value.permissions);
+    if (permissions === "admin") document.querySelector(".admin-button").classList.remove("hide");
 
 
     document.getElementById("filterSelect").addEventListener("change", async (e) => {
@@ -150,7 +141,7 @@ const renderModal = (id, value, color, name, type, shiny, matte, sanded) => {
         if (e.target === modalContainer) closeModal();
     });
 
-    const disabled = permissions ? "" : "disabled";
+    const disabled = permissions === "admin" || permissions === "color manager" ? "" : "disabled";
 
     const modalDiv = createElement("div", { class: "modal-color" }, [
         createElement("div", { class: "modal-header" }, [
@@ -189,7 +180,7 @@ const renderModal = (id, value, color, name, type, shiny, matte, sanded) => {
 
     modalContainer.appendChild(modalDiv);
     document.body.appendChild(modalContainer);
-    if (!permissions) document.querySelectorAll(".modify-disable").forEach(e => e.setAttribute("disabled", "disabled"));
+    if (permissions !== "admin" && permissions !== "color manager") document.querySelectorAll(".modify-disable").forEach(e => e.setAttribute("disabled", "disabled"));
     document.querySelector(".btn.cancel").addEventListener("click", closeModal);
     document.querySelector(".btn.save").addEventListener("click", () => modifyStock(id));
 }

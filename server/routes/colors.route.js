@@ -19,15 +19,15 @@ router.post("/list", async (req, res) => {
     res.status(result.status).json(result);
 });
 
-router.post("/modify/allow", async (req, res) => {
+router.get("/modify/allow", async (req, res) => {
     const verify = await verifyPermissions(req.user, ["admin", "modify_colors"]);
     if (!verify.valid) return res.status(verify.status).json({ valid:false, message: verify.message });
     return res.status(200).json({ valid: true, message: "Permission granted" });
-});
+}); // TO DELETE
 
 
 router.post("/modifyStock/:id", async (req, res) => {
-    const verify = await verifyPermissions(req.user, ["admin", "modify_colors"]);
+    const verify = await verifyPermissions(req.user, ["admin", "color manager"]);
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
 
     const result = await modifyColorStock(req);

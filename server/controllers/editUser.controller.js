@@ -2,8 +2,11 @@ const getUserById = require("../dao/getUserById.dao");
 const verifyNewPermissions = require("../schemas/verifyNewPermissions.schema");
 const getPermissionsList = require("../dao/permissions.dao").getPermissionsList;
 
-const revokePermission = require("../dao/permissions.dao").deletePermission;
+const revokePermission = require("../dao/permissions.dao").revokePermission;
 const grantPermission = require("../dao/permissions.dao").grantPermission;
+
+const updateUsername = require("../dao/updateUser.dao").updateUsername;
+const updateDescription = require("../dao/updateUser.dao").updateDescription;
 
 const editUser = async (req) => {
     const id = parseInt(req.params.id, 10);
@@ -24,19 +27,23 @@ const editUser = async (req) => {
 
     allPermissions.value.forEach(async e => {
         if (e.name !== "admin") {
-            // remove the permission 
-            // delete from users_permissions where id_user = user.id and id_permission = e.id
             const revoke = await revokePermission(user.id, e.id);
             if (!revoke.valid && revoke.status !== 404) console.error("Error revoking permission:", revoke.message);
         }
         if (e.name !== "admin" && userInfo.permissions[e.id] === true) {
-            // add the permission to the user
-            // insert into users_permissions (id_user, id_permission) values (user.id, e.id)
             const grant = await grantPermission(user.id, e.id);
             if (!grant.valid) console.error("Error granting permission:", grant.message);
         }
 
     });
+
+    // change the username
+    const newUsername = await updateUsername(user.id, userInfo.username);
+    if (!newUsername.valid) return { message: newUsername.message, status: newUsername.status, valid: false };
+
+    // change the description
+    const newDescription = await updateDescription(user.id, userInfo.description);
+    if (!newDescription.valid) return { message: newDescription.message, status: newDescription.status, valid: false };
 
     return { message: "User permissions updated successfully", status: 200, valid: true };
 
