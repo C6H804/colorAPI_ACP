@@ -26,7 +26,7 @@ const getColorListAvailable = async () => {
 }
 
 const getColorList = async () => {
-    const stmt = "SELECT * FROM colors ORDER BY value DESC";
+    const stmt = "SELECT * FROM colors WHERE deleted = 0 ORDER BY value DESC";
     try {
         const [results] = await db.execute(stmt);
         return { valid: true, value: results, status: 200 };

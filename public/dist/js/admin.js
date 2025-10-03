@@ -1,11 +1,13 @@
 import { createElement } from "./components/_CreateElement.js";
-
-
+import { Auth } from "./components/_Auth.js";
 const init = async () => {
+    const auth = await Auth();
     const lang = navigator.language.slice(0, 2) || "en".slice(0, 2)
     loadUserList(await getUserList());
     loadLogs(await getLogs(), lang);
 };
+
+init();
 
 const getUserList = async () => {
     try {
@@ -17,7 +19,6 @@ const getUserList = async () => {
             }
         });
         const data = await response.json();
-        console.log(data.value);
         return data.value;
     } catch (error) {
         console.error("Error fetching user list:", error);
@@ -47,7 +48,6 @@ const loadUserList = async (userList) => {
 }
 
 const loadModalAddUser = async () => {
-    console.log("Add user");
     const existingModal = document.querySelector(".modal-container");
     if (existingModal) existingModal.remove();
 
@@ -68,12 +68,16 @@ const loadModalAddUser = async () => {
     const modalContainer = createElement("div", { class: "modal-container" }, [
         createElement("div", { class: "modal add-user-modal" }, [
             createElement("div", { class: "modal-header" }, [
-                createElement("input", { type: "text", id: "user-name-add", min: "3", class: "modal-title modal-edit-username", placeholder: "nom de l'utilisateur" })
+                createElement("input", { type: "text", id: "user-name-add", min: "3", class: "modal-title modal-edit-username", placeholder: "nom de l'utilisateur", autocomplete: "off" })
             ]),
             createElement("div", { class: "modal-body" }, [
                 createElement("div", { class: "description-container" }, [
                     createElement("label", { for: "description" }, ["Description :"]),
-                    createElement("textarea", { id: "description", name: "description", rows: "4", cols: "50" }, ["Description de l'utilisateur"])
+                    createElement("textarea", { id: "description", name: "description", rows: "4", cols: "50", autocomplete: "off" }, ["Description de l'utilisateur"])
+                ]),
+                createElement("div", { class: "password-container" }, [
+                    createElement("label", { for: "password" }, ["Mot de passe :"]),
+                    createElement("input", { type: "password", id: "password", name: "password", placeholder: "mot de passe", autocomplete: "new-password" })
                 ])
             ]),
             createElement("div", { class: "modal-footer" }, [
@@ -85,25 +89,37 @@ const loadModalAddUser = async () => {
     document.body.appendChild(modalContainer);
 
     document.getElementById("cancel-btn").addEventListener("click", closeModal);
+
     document.getElementById("save-btn").addEventListener("click", async () => {
         const newUsername = document.getElementById("user-name-add").value.trim().replace(/\s+/g, '_');
         const newDescription = document.getElementById("description").value;
+        const newPassword = document.getElementById("password").value;
+        try {
+            const newUser = await fetch("/api/addUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                },
+                body: JSON.stringify({ username: newUsername, description: newDescription, password: newPassword })
+            });
+            const data = await newUser.json();
+            if (!data.valid) {
+                alert("Erreur : " + data.message);
+            }
+        } catch (error) {
+            console.error("Error adding user:", error);
+            alert("échec de l'ajout de l'utilisateur.");
+        }
+        loadUserList(await getUserList());
+        closeModal();
     });
-    document.querySelector(".modal-container").addEventListener("click", (event) => {
-        if (event.target === document.querySelector(".modal-container")) {
+    modalContainer.addEventListener("click", (event) => {
+        if (event.target === modalContainer) {
             closeModal();
         }
     });
-
-
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeModal();
-    }, { once: true });
-
-
 }
-
-
 
 const getLogs = async () => {
     try {
@@ -115,7 +131,6 @@ const getLogs = async () => {
             }
         });
         const data = await response.json();
-        console.log(data.value);
         return data.value;
     } catch (error) {
         console.error("Error fetching logs:", error);
@@ -153,18 +168,14 @@ const loadLogs = (logs, lang) => {
 }
 
 const changeUser = async (id) => {
-    console.log("Change user " + id);
 
     const user = await getUserData(id);
     if (!user) return alert("User not found");
-    console.log(user);
 
     const permissions = await getPermissions();
     if (permissions.length === 0) return alert("Failed to fetch permissions");
-    console.log(permissions);
 
     const userPermissions = await getUserPermissions(user.id);
-    console.log(userPermissions);
 
     loadModalEdit(user, permissions, userPermissions);
 }
@@ -246,7 +257,6 @@ const calculateTimePassed = (date, lang) => {
     return translation[lang].agoStart + Math.round(years) + " " + translation[lang].years + " " + translation[lang].agoEnd;
 }
 
-
 const getPermissions = async () => {
     try {
         const response = await fetch("/api/permissions", {
@@ -267,8 +277,6 @@ const getPermissions = async () => {
         return [];
     }
 }
-
-
 
 const getUserPermissions = async (userId) => {
     try {
@@ -305,7 +313,6 @@ const loadModalEdit = (user, permissions, userPermissions) => {
     const permissionElements = createElement("div", { class: "permissions-container" }, []);
     permissions.forEach(e => {
         const checked = userPermissions.find(p => p.id === e.id) ? true : false;
-        console.log(checked);
         const permissionElement = createElement("div", { class: "permission", id: "permission" + e.id }, [
             createElement("label", { for: "chk-permission" + e.id }, [e.name, " : "]),
             createElement("label", { class: "permission-description", for: "chk-permission" + e.id }, [e.description]),
@@ -313,13 +320,14 @@ const loadModalEdit = (user, permissions, userPermissions) => {
                 createElement("input", { type: "checkbox", class: "chk-permission", id: "chk-permission" + e.id, name: "chk-permission" + e.id }),
             createElement("label", { for: "chk-permission" + e.id, class: "switch" })
         ]);
+        if (e.name === "admin") permissionElement.querySelector("input").disabled = true;
         permissionElements.appendChild(permissionElement);
     });
 
     const modalContainer = createElement("div", { class: "modal-container" }, [
         createElement("div", { class: "modal edit-user-modal" }, [
             createElement("div", { class: "modal-header" }, [
-                createElement("input", { type: "text", id: "user-name-edit", min: "3", class: "modal-title modal-edit-username", value: user.username })
+                createElement("input", { type: "text", autocomplete: "off", id: "user-name-edit", min: "3", class: "modal-title modal-edit-username", value: user.username })
             ]),
             createElement("div", { class: "modal-body" }, [
                 createElement("div", { class: "description-container" }, [
@@ -352,36 +360,57 @@ const loadModalEdit = (user, permissions, userPermissions) => {
 
     document.getElementById("cancel-btn").addEventListener("click", closeModal);
 
-
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeModal();
-    }, { once: true });
-
-
     document.getElementById("save-btn").addEventListener("click", async () => saveEditData(user));
 
     document.addEventListener("keydown", async (event) => {
         if (event.key === "Enter") await saveEditData(user);
-    }, { once: true });
+    });
+
+
     document.getElementById("delete-btn").addEventListener("click", async () => {
         if (confirm("Êtes-vous sûr de vouloir supprmer cette utilisateur ? Cette action est irréversible.")) {
-            console.log("Delete user " + user.id);
+            try {
+                const response = await fetch("/api/deleteUser/" + user.id, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                });
+                const data = await response.json();
+                if (!data.valid) return alert("Erreur : " + data.message);
+                closeModal();
+                alert("Utilisateur supprimé avec succès.");
+            } catch (error) {
+                console.error("Error deleting user:", error);
+                alert("échec de la suppression de l'utilisateur.");
+            }
+            loadUserList(await getUserList());
         }
-        loadUserList(await getUserList());
-
-        closeModal();
     });
 }
 
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+});
 
 
 const closeModal = () => {
+    const modalContainer = document.querySelector(".modal-container");
+    modalContainer.classList.add("modal-close-bg");
+    document.querySelector(".modal").classList.add("modal-close");
+
+
+
     const modal = document.querySelector(".modal-container");
-    if (modal) modal.remove();
+        modalContainer.addEventListener("animationend", () => {
+        console.log("close modal");
+        modalContainer.remove();
+        document.querySelectorAll(".modal-container").forEach(e => e.remove());
+    });
 };
 
 const saveEditData = async (user) => {
-    console.log("Save edit data");
     const newUsername = document.getElementById("user-name-edit").value.toLowerCase().trim().replace(/\s+/g, '_');
     const newDescription = document.getElementById("description").value.trim();
     let newPermissions = {};
@@ -413,7 +442,101 @@ const saveEditData = async (user) => {
     closeModal();
 }
 
+const loadColorModal = async () => {
+    const existingModal = document.querySelector(".modal-container");
+    if (existingModal) existingModal.remove();
+    const modalContainer = createElement("div", { class: "modal-container" }, [
+        createElement("div", { class: "modal add-color-modal" }, [
+            createElement("div", { class: "modal-header" }, [
+                createElement("h2", { class: "modal-title" }, ["Ajouter une couleur"])
+            ]),
+            createElement("div", { class: "modal-body" }, [
+                createElement("div", { class: "color-name-container" }, [
+                    createElement("label", { for: "color-name" }, ["Nom de la couleur :"]),
+                    createElement("input", { type: "text", id: "color-name", name: "color-name", placeholder: "Exemple : Gris anthracite", autocomplete: "off" })
+                ]),
+                createElement("div", { class: "color-ral-container" }, [
+                    createElement("label", { for: "color-ral" }, ["Code RAL :"]),
+                    createElement("input", { type: "text", id: "color-ral", name: "color-ral", placeholder: "Exemple : RAL7016", autocomplete: "off" })
+                ]),
+                createElement("div", { class: "color-hex-container" }, [
+                    createElement("input", { class: "color-hex-selector", type: "color", id: "color-hex-selector", value: getRandomColor() })
+                ]),
+                createElement("div", { class: "stock-chk-container" }, [
+                    createElement("div", { class: "shinyStock" }, [
+                        createElement("label", { for: "shinyStock" }, ["Brillant"]),
+                        createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "shinyStock" })
+                    ]),
+                    createElement("div", { class: "matteStock" }, [
+                        createElement("label", { for: "matteStock" }, ["Mat"]),
+                        createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "matteStock" })
+                    ]),
+                    createElement("div", { class: "sandedStock" }, [
+                        createElement("label", { for: "sandedStock" }, ["Sablé"]),
+                        createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "sandedStock" })
+                    ])
+                ])
+            ]),
+            createElement("div", { class: "modal-footer" }, [
+                createElement("button", { class: "btn cancel", id: "btn-cancel-add-color" }, ["Annuler"]),
+                createElement("button", { class: "btn save modify-disable", id: "btn-save-add-color" }, ["Enregistrer"])
+            ])
+        ])
+    ]);
+    document.body.appendChild(modalContainer);
+    
+    modalContainer.addEventListener("click", (event) => {
+        if (event.target === modalContainer) closeModal();
+    });
+
+    document.getElementById("btn-cancel-add-color").addEventListener("click", closeModal);
+
+    document.getElementById("btn-save-add-color").addEventListener("click", async () => {
+        const colorName = document.getElementById("color-name").value.trim();
+        const colorRal = document.getElementById("color-ral").value.trim().toUpperCase();
+        const colorHex = document.getElementById("color-hex-selector").value;
+        const shiny_stock = document.getElementById("shinyStock").checked ? 1 : 0;
+        const matte_stock = document.getElementById("matteStock").checked ? 1 : 0;
+        const sanded_stock = document.getElementById("sandedStock").checked ? 1 : 0;
+        if (colorName.length < 3) return alert("Le nom de la couleur doit contenir au moins 3 caractères.");
+
+        console.log({ name: colorName, ral: colorRal, hex: colorHex, stock: { shiny_stock, matte_stock, sanded_stock } });
+        try {
+            const response = await fetch("/api/colors/addColor", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                },
+                body: JSON.stringify({
+                    name: colorName,
+                    ral: colorRal,
+                    hex: colorHex,
+                    stock: { shiny_stock, matte_stock, sanded_stock }
+                })
+            });
+            const data = await response.json();
+            if (!data.valid) return alert("Erreur : " + data.message);
+            alert("Couleur ajoutée avec succès.");
+            closeModal();
+
+        } catch (error) {
+            console.error("Error adding color:", error);
+            alert("échec de l'ajout de la couleur.");
+            return;
+        }
+    });
+
+
+}
+
+document.getElementById("btn-addColor").addEventListener("click", loadColorModal);
 
 
 
-init();
+const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) color += letters[Math.floor(Math.random() * 16)];
+    return color;
+}

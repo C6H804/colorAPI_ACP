@@ -7,6 +7,8 @@ const auth = require("../middlewares/auth");
 const getColorsController = require("../controllers/colorsList.controller");
 const verifyPermissions = require("../utils/_VerifyPermissions");
 const modifyColorStock = require("../controllers/modifyColorStock.controller");
+const addColor = require("../controllers/addColor.controller");
+const deleteColor = require("../dao/deleteColor.dao");
 
 router.use(auth);
 
@@ -19,13 +21,6 @@ router.post("/list", async (req, res) => {
     res.status(result.status).json(result);
 });
 
-router.get("/modify/allow", async (req, res) => {
-    const verify = await verifyPermissions(req.user, ["admin", "modify_colors"]);
-    if (!verify.valid) return res.status(verify.status).json({ valid:false, message: verify.message });
-    return res.status(200).json({ valid: true, message: "Permission granted" });
-}); // TO DELETE
-
-
 router.post("/modifyStock/:id", async (req, res) => {
     const verify = await verifyPermissions(req.user, ["admin", "color manager"]);
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
@@ -33,5 +28,39 @@ router.post("/modifyStock/:id", async (req, res) => {
     const result = await modifyColorStock(req);
     return res.status(result.status).json({ message: result.message, valid: result.valid });
 });
+
+
+
+const adminOnly = async (req, res) => {
+    const verify = await verifyPermissions(req.user, ["admin"]);
+    if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
+    return { valid: true, message: "Authorized", status: 200, value: null };
+};
+
+
+router.post("/addColor", async (req, res) => {
+    const adminCheck = await adminOnly(req, res);
+    if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
+
+    const result = await addColor(req);
+    if (!result.valid) return res.status(result.status ? result.status : 500).json({ message: result.message, status: result.status, valid: false });
+    return res.status(201).json({ message: result.message, status: result.status, value: result.value, valid: true });
+});
+
+
+router.post("/deleteColor/:id", async (req, res) => {
+    const adminCheck = await adminOnly(req, res);
+    if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
+
+    if (!req.params.id) return res.status(400).json({ message: "id required", valid: false });
+    if (isNaN(req.params.id)) return res.status(400).json({ message: "id must be a number", valid: false });
+    if (req.params.id <= 0) return res.status(400).json({ message: "id must be greater than 0", valid: false });
+    if (req.params.id % 1 !== 0) return res.status(400).json({ message: "id must be an integer", valid: false });
+
+    const result = await deleteColor(req.params.id);
+    if (!result.valid) return res.status(result.status ? result.status : 500).json({ message: result.message, status: result.status, valid: false });
+    return res.status(200).json({ message: result.message, valid: true });
+});
+
 
 module.exports = router;

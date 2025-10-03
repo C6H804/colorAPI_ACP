@@ -1,0 +1,253 @@
+@import url("../components/__modal.css");
+
+.modal-edit-username {
+    color: white;
+    border: none;
+    background: none;
+    text-align: center;
+    font-size: 2.5em;
+    text-transform: capitalize;
+    width: 100%;
+}
+
+.modal-edit-username:focus {
+    border-radius: 1em;
+    outline: none;
+    box-shadow: 0px 0px 8px rgba(100, 149, 237, 0.7);
+
+}
+
+.description-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.description-container label {
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.description-container textarea {
+    resize: none;
+    padding: 0.5em;
+    font-size: 1em;
+    border-radius: 5px;
+    border: none;
+    font-family: Arial, sans-serif;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+    background-color: #2e2e2e;
+    color: white;
+    scrollbar-width: thin;
+    scrollbar-color: #3e3e3e transparent;
+}
+
+.description-container textarea:focus {
+    outline: none;
+    box-shadow: 0px 0px 8px rgba(100, 149, 237, 0.7);
+}
+
+.permissions-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.permissions-container h3 {
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.permissions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin-bottom: 1em;
+}
+
+.permissions-container .permission {
+    display: grid;
+    gap: 0.8em;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    font-size: 1.1em;
+}
+
+@media (width < 730px) {
+    .permissions-container .permission {
+        grid-template-columns: auto 1fr;
+        gap:0.2em;
+        align-items: center;
+        margin-bottom: 1em;
+    }
+    .permissions-container label {
+        margin-right: 0.2em;
+    }
+}
+
+@media (width < 490px) {
+    .permissions-container .permission {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+    }
+}
+
+
+.permissions-container .permission label {
+    cursor: pointer;
+    user-select: none;
+}
+
+
+.permissions-container .permission label::first-letter {
+    text-transform: uppercase;
+}
+
+
+.permissions-container .permission-description {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.permissions-container .permission-description span {
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.permissions-container .permission-description::after {
+    content: "";
+    display: block;
+    background-color: #575757;
+    height: 1px;
+    border-radius: 1px;
+    flex-grow: 1;
+}
+
+.chk-permission {
+    display: none;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.switch::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 100%;
+    background-color: white;
+    transition: all 0.3s;
+    left: 0px;
+    top: 1px;
+}
+
+.chk-permission:checked+.switch::after {
+    left: 22px;
+}
+
+.chk-permission:checked+.switch {
+    background-color: yellowgreen;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-around;
+    gap: 1em;
+}
+
+.modal-footer .btn {
+    padding: 0.5em 1em;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-save {
+    background-color: green;
+    color: white;
+}
+
+.btn-save:hover {
+    background-color: limegreen;
+    box-shadow: 0px 8px 16px rgba(0, 255, 0, 0.5);
+    scale: 1.05;
+}
+
+.btn-cancel {
+    background-color: darkred;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: red;
+    box-shadow: 0px 8px 16px rgba(255, 0, 0, 0.5);
+    scale: 1.05;
+}
+
+
+.delete-btn {
+    background-color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+    max-width: 100px;
+}
+
+.delete-btn:hover {
+    background-color: darkred;
+    box-shadow: 0px 8px 16px rgba(255, 0, 0, 0.5);
+    scale: 1.05;
+}
+
+.trash-icon {
+    height: 25px;
+    width: 25px;
+    filter: invert(1);
+}
+
+.modal .password-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 1em 0;
+    font-size: 1.2em;
+    align-items: center;
+}
+
+.modal .password-container label {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.modal .password-container input {
+    padding: 0.5em;
+    font-size: 1em;
+    border-radius: 5px;
+    border: none;
+    font-family: Arial, sans-serif;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+    background-color: #2e2e2e;
+    color: white;
+    width: 100%;
+}

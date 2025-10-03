@@ -134,6 +134,9 @@ const renderModal = (id, value, color, name, type, shiny, matte, sanded) => {
     if (modal) return;
     modal = true;
     console.log(id, color, name, type, shiny, matte, sanded);
+    const deleteButton = permissions === "admin" ? createElement("button", { class: "btn delete-btn", id: "delete-color" }, [
+        createElement("img", { src: "../dist/img/trash-fill.svg", alt: "Delete", title: "Supprimer la couleur" })
+    ]) : "";
 
     const modalContainer = document.createElement("div");
     modalContainer.classList.add("modal-container");
@@ -173,7 +176,8 @@ const renderModal = (id, value, color, name, type, shiny, matte, sanded) => {
             ]),
             createElement("div", { class: "modal-actions" }, [
                 createElement("button", { class: "btn cancel" }, ["Annuler"]),
-                createElement("button", { class: "btn save modify-disable" }, ["Enregistrer"])
+                createElement("button", { class: "btn save modify-disable" }, ["Enregistrer"]),
+                deleteButton
             ])
         ])
     ]);
@@ -182,7 +186,32 @@ const renderModal = (id, value, color, name, type, shiny, matte, sanded) => {
     document.body.appendChild(modalContainer);
     if (permissions !== "admin" && permissions !== "color manager") document.querySelectorAll(".modify-disable").forEach(e => e.setAttribute("disabled", "disabled"));
     document.querySelector(".btn.cancel").addEventListener("click", closeModal);
-    document.querySelector(".btn.save").addEventListener("click", () => modifyStock(id));
+    document.querySelector(".btn.save").addEventListener("click", async () => modifyStock(id));
+
+
+    document.getElementById("delete-color").addEventListener("click", async () => {
+        if (confirm("Êtes-vous sûr de vouloir supprimer cette couleur ? Cette action est irréversible.") && permissions === "admin") {
+            try {
+                const response = await fetch("/api/colors/deleteColor/" + id, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                });
+                const data = await response.json();
+                console.log(data);
+                if (!data.valid) return alert("Erreur lors de la suppression de la couleur : " + data.message);
+                alert("Couleur supprimée avec succès");
+                updateColorTable(document.getElementById("filterSelect").value, navigator.language.slice(0, 2), document.getElementById("searchInput").value);
+                return closeModal();
+
+            } catch (error) {
+                console.error("Error deleting color:", error);
+                alert("Erreur lors de la suppression de la couleur. Veuillez réessayer plus tard.");
+            }
+        }
+    });
 }
 
 const closeModal = () => {
@@ -196,8 +225,6 @@ const closeModal = () => {
         document.querySelectorAll(".modal-container").forEach(e => e.remove());
         modal = false;
     });
-
-
 }
 
 const modifyStock = async (id) => {

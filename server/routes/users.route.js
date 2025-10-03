@@ -11,6 +11,7 @@ const getUsers = require("../dao/getUsers.dao");
 const getLogs = require("../dao/getLogs.dao");
 const { valid } = require("joi");
 const editUser = require("../controllers/editUser.controller");
+const deleteUser = require("../controllers/deleteUser.controller");
 
 router.post("/login", async (req, res) => {
     const result = await loginController(req);
@@ -26,6 +27,7 @@ const adminOnly = async (req, res) => {
     return { valid: true, message: "Authorized", status: 200, value: null };
 };
 
+
 router.get("/users", async (req, res) => {
     const adminCheck = await adminOnly(req, res);
     if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message, valid: false });
@@ -40,8 +42,8 @@ router.post("/addUser", async (req, res) => {
     if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
     
     const result = await registerController(req);
-    if (!result.valid) return res.status(result.status ? result.status : 500).json({ message: result.message, status: result.status });
-    return res.status(201).json({ message: result.message, status: result.status, value: result.value });
+    if (!result.valid) return res.status(result.status ? result.status : 500).json({ message: result.message, status: result.status, valid: false });
+    return res.status(201).json({ message: result.message, status: result.status, value: result.value, valid: true });
 });
 
 
@@ -50,6 +52,15 @@ router.post("/editUser/:id", async (req, res) => {
     if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
     if (!req.params.id || req.params.id <= 0 || isNaN(parseInt(req.params.id, 10)) || !Number.isInteger(parseInt(req.params.id, 10))) return res.status(400).json({ message: "id is not valid", status: 400 });
     const result = await editUser(req);
+    return res.status(result.status).json({ message: result.message, status: result.status, valid: result.valid });
+});
+
+router.post("/deleteUser/:id", async (req, res) => {
+    const adminCheck = await adminOnly(req, res);
+    if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
+    if (!req.params.id || req.params.id <= 0 || isNaN(parseInt(req.params.id, 10)) || !Number.isInteger(parseInt(req.params.id, 10))) return res.status(400).json({ message: "id is not valid", status: 400 });
+
+    const result = await deleteUser(req, parseInt(req.params.id, 10));
     return res.status(result.status).json({ message: result.message, status: result.status, valid: result.valid });
 });
 

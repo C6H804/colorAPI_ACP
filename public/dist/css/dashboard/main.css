@@ -1,5 +1,6 @@
 @import url("tableColor.css");
 @import url("modal.css");
+@import url("../components/__modal.css");
 
 .main {
     width: 100%;

@@ -10,6 +10,7 @@ const Auth = async () => {
         }
     });
     const result = await response.json();
+    if (!result.valid) return window.location.href = "/index.html";
     return result;
 }
 export { Auth };

@@ -4,6 +4,7 @@ const getUserByUsername = require("../dao/getUserByUsername.dao");
 const CompareHash = require("../utils/_CompareHash");
 const CreateToken = require("../utils/_CreateToken");
 const UserExist = require("../utils/_UserExist").usernameExist;
+const updateLastConnexion = require("../dao/updateLastConnexion.dao");
 
 
 const loginController = async(req) => {
@@ -17,6 +18,8 @@ const loginController = async(req) => {
     const user = await getUserByUsername(userData.value.username);
     if (!user.valid) return { message: user.message, status: user.status };
 
+    if (user.value.deleted) return { message: "user not found", status: 404 };
+
     const compare = await CompareHash(userData.value.password, user.value.password);
     if (!compare.valid) return { message: compare.message, status: compare.status };
     if (!compare.value) return { message: "invalid password", status: 401 };
@@ -25,6 +28,10 @@ const loginController = async(req) => {
 
     const token = await CreateToken(payload);
     if (!token.valid) return { message: token.message, status: token.status };
+
+    // update last_connection
+    const updateLastConnexionResult = await updateLastConnexion(user.value.id);
+    if (!updateLastConnexionResult.valid) console.error("Failed to update last connection:", updateLastConnexionResult.message);
 
     return { valid: true, message: "login successful", status: 200, value: token.value };
 };
