@@ -50,6 +50,10 @@ colorAPI_ACP/
 │   └── 📄 app.js                  # Point d'entrée serveur
 ├── 📁 public/                       # Frontend web
 │   ├── 📁 pages/                  # Pages HTML
+│   ├── 📁 dist/                     # Fichiers statiques
+│   │   ├── 📁 css/                # Fichiers CSS
+│   │   ├── 📁 js/                   # Fichiers JavaScript
+│   │   └── 📁 img/                # Images
 │   └── 📄 index.html                # Page d'accueil
 ├── 📁 database/                   # Scripts SQL
 └── 📄 package.json                  # Dépendances Node.js
