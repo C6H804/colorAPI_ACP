@@ -35,6 +35,11 @@ const init = async () => {
 }
 init();
 
+document.getElementById("btn-logout").addEventListener("click", () => {
+    window.localStorage.removeItem("token");
+    window.location.href = "../index.html";
+});
+
 document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && window.modal) closeModal();
 });

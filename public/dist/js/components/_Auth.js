@@ -1,6 +1,6 @@
 const Auth = async () => {
     const token = localStorage.getItem("token");
-    if (!token) return false;
+    if (!token) return window.location.href = "/index.html";
 
     const response = await fetch("/api/auth", {
         method: "GET",

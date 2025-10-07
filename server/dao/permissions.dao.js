@@ -66,7 +66,6 @@ const getUserUserPermissions = async (userId) => {
 const grantPermission = async (userId, permissionId) => {
     const stmt = "INSERT INTO users_permissions (id_user, id_permission) VALUES (?, ?)";
     const values = [userId, permissionId];
-    console.log(userId, permissionId);
     try {
         const [results] = await db.execute(stmt, values);
         return { valid: true, message: "permission granted", status: 201 };

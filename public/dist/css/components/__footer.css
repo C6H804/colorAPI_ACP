@@ -1,0 +1,29 @@
+.footer {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    padding: 1em 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footer .btn {
+    background-color: #3e3e3e;
+    color: white;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    gap: 0.5em;
+}
+.footer .btn:hover {
+    background-color: #747474;
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: 0.3s;
+}
+
+.footer .btn:first-child {
+    scale: 2;
+}

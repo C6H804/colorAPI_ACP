@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Couleurs en stock - AC Portails</title>
+    <title>Couleurs en stock - ACPortails</title>
     <script src="../dist/js/dashboard/script.js" type="module"></script>
     <link rel="stylesheet" href="../dist/css/dashboard/style.css">
 </head>
@@ -12,7 +12,8 @@
 <body>
     <section class="header">
         <div class="title">
-            <a class="logo" href="https://www.acportail.fr/"><img src="../dist/img/Logo_Acportail_Small_01.png" alt="logo AC Portail"></a>
+            <a class="logo" href="https://www.acportail.fr/"><img src="../dist/img/Logo_Acportail_Small_01.png"
+                    alt="logo ACPortail"></a>
             <h1>Couleurs en stock</h1>
             <a class="admin-button btn hide" href="admin.html">Page Admin</a>
         </div>
@@ -51,12 +52,21 @@
 
     <section class="footer">
         <div class="topBtn">
-            <button class="upPageBtn btn-hide" id="upPageBtn"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
-                    class="bi bi-chevron-up" viewBox="0 0 16 16">
+            <button class="upPageBtn btn-hide" id="upPageBtn"><svg xmlns="http://www.w3.org/2000/svg" width="32"
+                    height="32" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
                         d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z" />
                 </svg></button>
         </div>
+        <p>© 2025 - ACPortails - Tous droits réservés</p>
+        <button class="btn-logout btn" id="btn-logout" title="Se déconnecter" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-power"
+                viewBox="0 0 16 16">
+                <path d="M7.5 1v7h1V1z" />
+                <path d="M3 8.812a5 5 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812" />
+            </svg>
+            <span id="logoutText">Se déconnecter</span>
+        </button>
     </section>
 
 </body>

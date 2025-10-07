@@ -28,7 +28,5 @@ INSERT INTO colors_changes_types (description) VALUES
     ("modification des stocks d'une couleur"),
     ("suppression d'une couleur");
 
--- insert suppression d'une couleur dans colors_changes_types
-
 -- select * from users_permissions a join users b on a.id_user = b.id join permissions c on a.id_permission = c.id;
 select b.username, c.name from users_permissions a join users b on a.id_user = b.id join permissions c on a.id_permission = c.id;

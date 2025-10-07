@@ -35,6 +35,10 @@ export const loadModalEdit = (user, permissions, userPermissions) => {
                 createElement("div", { class: "permissions-container" }, [
                     createElement("h3", {}, ["Permissions : "]),
                     permissionElements
+                ]),
+                createElement("div", { class: "change-password-container" }, [
+                    createElement("label", { for: "new-password" }, ["Mot de passe :"]),
+                    createElement("input", { type: "password", id: "new-password", name: "new-password", placeholder: "Laisser vide pour ne pas changer...", autocomplete: "new-password" })
                 ])
             ]
             ),
@@ -65,6 +69,8 @@ export const loadModalEdit = (user, permissions, userPermissions) => {
     });
 
 
+
+    // suppression de l'utilisateur
     document.getElementById("delete-btn").addEventListener("click", async () => {
         if (confirm("Êtes-vous sûr de vouloir supprmer cette utilisateur ? Cette action est irréversible.")) {
             try {

@@ -1,11 +1,4 @@
-body {
-    background-image: url("../../img/bg.jpg");
-    background-size: cover;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-position: center;
-    min-height: 100vh;
-}
+@import url("../components/__background.css");
 
 .header {
     display: flex;

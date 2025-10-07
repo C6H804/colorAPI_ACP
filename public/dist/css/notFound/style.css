@@ -2,10 +2,14 @@
 
 .header {
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    padding: 2em;
+    flex-direction: column;
+    margin: 1em;
+}
 
+.logo {
+    align-self: flex-start;
 }
 
 h1 {

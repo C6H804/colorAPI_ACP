@@ -167,12 +167,13 @@ La documentation complète de l'API est disponible via Swagger UI :
 - **`/`** : Page de connexion
 - **`/pages/dashboard.html`** : Tableau de bord principal
 - **`/pages/admin.html`** : Interface d'administration
+- **`/pages/notFound.html`** : Page 404 personnalisée (est envoyée pour les routes inconnues)
 
 ### Fonctionnalités Dashboard
 - **Visualisation** : Grille de couleurs avec codes et noms
-- **Filtrage** : Par type de stock (brillant, mat, sablée)
-- **Recherche** : Par nom (en 3 langues) ou code couleur
-- **Modification** : Changement de disponibilité en temps réel
+- **Filtrage** : Par type de stock (brillant, mat, sablée, disponible)
+- **Recherche** : Par nom (en 3 langues) ou code RAL
+- **Modification** : Changement de disponibilité en temps réel pour ceux qui ont les droits
 - **Suppression** : Pour les administrateurs
 
 ## Base de Données

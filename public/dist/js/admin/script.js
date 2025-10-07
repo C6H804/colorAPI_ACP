@@ -12,6 +12,7 @@ import { getUserPermissions } from "./__getUserPermissions.js";
 import { getUserData } from "./__getUserData.js";
 import { loadModalEdit } from "./__loadModalEdit.js";
 import { loadColorModal } from "./__loadColorModal.js";
+import { closeModal } from "./__closeModal.js";
 
 const init = async () => {
     const auth = await Auth();
@@ -21,7 +22,6 @@ const init = async () => {
 };
 
 init();
-
 
 
 document.addEventListener("keydown", (e) => {

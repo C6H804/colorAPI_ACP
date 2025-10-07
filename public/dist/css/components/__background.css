@@ -4,7 +4,15 @@ body {
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-position: center;
-    max-height: 100vh;
+    height: 100vh;
     color: white;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
+.main {
+    align-self: flex-start;
+}

@@ -1,3 +1,6 @@
+const joi = require("joi");
+
+
 const getUserById = require("../dao/getUserById.dao");
 const verifyNewPermissions = require("../schemas/verifyNewPermissions.schema");
 const getPermissionsList = require("../dao/permissions.dao").getPermissionsList;
@@ -7,6 +10,9 @@ const grantPermission = require("../dao/permissions.dao").grantPermission;
 
 const updateUsername = require("../dao/updateUser.dao").updateUsername;
 const updateDescription = require("../dao/updateUser.dao").updateDescription;
+
+const Hash = require("../utils/_Hash");
+const changePassword = require("../dao/changePassword.dao");
 
 const editUser = async (req) => {
     const id = parseInt(req.params.id, 10);
@@ -44,6 +50,19 @@ const editUser = async (req) => {
     // change the description
     const newDescription = await updateDescription(user.id, userInfo.description);
     if (!newDescription.valid) return { message: newDescription.message, status: newDescription.status, valid: false };
+
+    // change the password
+    if (typeof req.body.password !== "string") return { message: "Password must be a string", status: 400, valid: false };
+    
+    if (req.body.password !== "") {
+        const passwordSchema = joi.string().min(10).max(50).pattern(new RegExp("^[a-zA-Z0-9]{10,50}$")).required();
+        const { error } = passwordSchema.validate(req.body.password);
+        if (error) return { message: "Password must be 10-50 characters long and contain only letters and numbers", status: 400, valid: false };
+        const hashedPassword = await Hash(req.body.password);
+        if (!hashedPassword.valid) return { message: "Error hashing password", status: 500, valid: false };
+        const passwordChange = await changePassword(user.id, hashedPassword.value);
+        if (!passwordChange.valid) return { message: passwordChange.message, status: passwordChange.status, valid: false };
+    }
 
     return { message: "User permissions updated successfully", status: 200, valid: true };
 
