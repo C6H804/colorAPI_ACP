@@ -3,11 +3,18 @@
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/C6H804/colorAPI_ACP)
 [![Node.js](https://img.shields.io/badge/node.js-v18+-green.svg)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/express-v5.1.0-lightgrey.svg)](https://expressjs.com/)
+[![Tests](https://img.shields.io/badge/tests-142%20passed-brightgreen.svg)](#tests-et-qualité)
 [![License](https://img.shields.io/badge/license-ISC-orange.svg)](LICENSE)
 
 ## Description
 
 Color API est une API RESTful complète pour la gestion des stocks de couleurs avec système d'authentification JWT et gestion des permissions utilisateurs. L'application permet de gérer un catalogue de couleurs (RAL, Pantone, etc.) avec suivi de la disponibilité des stocks par finition (brillant, mat, sablée).
+
+### Navigation Rapide
+- **[Documentation des Tests](tests/README.md)** - Vue d'ensemble complète des 142 tests
+- **[Tests Frontend](tests/frontend/README.md)** - Guide spécialisé des tests JavaScript
+- **[Documentation API](http://localhost:3000/api-docs)** - Swagger UI interactif
+- **[Schéma Base de Données](database/database_shema.png)** - Diagramme ERD
 
 ## Fonctionnalités
 
@@ -55,6 +62,14 @@ colorAPI_ACP/
 │   │   ├── 📁 js/                   # Fichiers JavaScript
 │   │   └── 📁 img/                # Images
 │   └── 📄 index.html                # Page d'accueil
+├── 📁 tests/                        # Suite de tests complète (142 tests) → [📋 Documentation](tests/README.md)
+│   ├── 📁 unit/                   # Tests unitaires backend (41 tests)
+│   ├── 📁 integration/            # Tests API endpoints (83 tests)
+│   ├── 📁 frontend/               # Tests JavaScript UI (18 tests) → [🌐 Guide](tests/frontend/README.md)
+│   ├── 📁 fixtures/               # Données de test
+│   ├── 📁 helpers/                # Utilitaires de test
+│   ├── 📁 setup/                  # Configuration Jest
+│   └── 📁 __mocks__/              # Mocks automatiques
 ├── 📁 database/                   # Scripts SQL
 └── 📄 package.json                  # Dépendances Node.js
 ```
@@ -70,11 +85,13 @@ colorAPI_ACP/
 - **Validation** : Joi
 - **Documentation** : Swagger UI + OpenAPI 3.0
 - **Développement** : Nodemon
+- **Tests** : Jest + Supertest
 
 #### Frontend
 - **HTML5/CSS3/JavaScript** (Vanilla)
 - **Architecture modulaire** : Composants réutilisables
 - **Design responsive** : Compatible tous écrans
+- **Tests** : Jest + JSDOM
 
 ## Installation et Configuration
 
@@ -93,6 +110,8 @@ cd colorAPI_ACP
 ```bash
 npm install
 ```
+
+> Les dépendances de développement incluent Jest, Supertest et JSDOM pour les tests automatisés.
 
 ### 3️⃣ Configuration de la base de données
 1. Créer une base de données MySQL
@@ -132,6 +151,16 @@ node server/app.js
 ```
 
 L'API sera accessible sur : `http://localhost:3000`
+
+### 6️⃣ Vérification de l'installation
+```bash
+# Lancer les tests pour vérifier que tout fonctionne
+npm test
+
+# Résultat attendu : 142 tests passés
+# - Backend Tests: 124 passed
+# - Frontend Tests: 18 passed
+```
 
 ## Documentation API
 
@@ -239,24 +268,60 @@ La documentation complète de l'API est disponible via Swagger UI :
 - **Index de performance** : Sur les champs de recherche fréquente (`name_*`, `type`, `value`)
 - **Contraintes référentielles** : Clés étrangères avec CASCADE sur DELETE/UPDATE
 
-## Tests et Développement
+## Tests et Qualité
+
+### Suite de Tests Complète
+Une suite de **142 tests automatisés** couvre l'ensemble du projet :
+
+#### **Tests Backend (124 tests)** → [Voir détails](tests/README.md)
+- **Tests unitaires** (41 tests) : Fonctions de hachage, JWT, validation Joi
+- **Tests d'intégration** (83 tests) : 15 endpoints API avec tous les cas d'usage
+- **Couverture complète** : Authentification, permissions, CRUD, gestion d'erreurs
+
+#### **Tests Frontend (18 tests)** → [Guide complet](tests/frontend/README.md)
+- **Fonctions JavaScript** : API calls, logique métier, manipulation DOM
+- **Environnement JSDOM** : Simulation navigateur pour tests complets
+- **Dashboard functions** : Recherche, filtrage, gestion des permissions
+
+#### **Couverture Fonctionnelle**
+- **15 endpoints API** complètement testés
+- **Authentification JWT** avec tous les cas d'erreur
+- **Système de permissions** (admin, color manager, visitor)
+- **Validation des données** avec schémas Joi
+- **Interface utilisateur** (appels API, DOM, interactions)
 
 ### Scripts Disponibles
 ```bash
 # Développement avec hot reload
 npm run dev
 
-# Tests (à configurer)
+# Tests complets (backend + frontend)
 npm test
 
-# Vérification des erreurs
-npm run lint
+# Tests en mode watch (redémarre automatiquement)
+npm run test:watch
+
+# Tests avec rapport de couverture
+npm run test:coverage
+
+# Tests backend uniquement
+npm test -- tests/unit/ tests/integration/
+
+# Tests frontend uniquement
+npm test -- tests/frontend/
 ```
 
+### Documentation des Tests
+- **Tests Complets** : [Documentation principale des tests](tests/README.md)
+- **Tests Frontend** : [Guide spécialisé des tests JavaScript](tests/frontend/README.md)
+- **Configuration Jest** : Support backend (Node.js) et frontend (JSDOM)
+
 ### Outils de Développement
-- **Nodemon** : Rechargement automatique
-- **Swagger UI** : Documentation interactive
-- **Postman Collection** : Tests d'API (à générer depuis Swagger)
+- **Jest** : Framework de tests avec mocking avancé
+- **Supertest** : Tests HTTP pour l'API REST
+- **JSDOM** : Environnement DOM pour tests frontend
+- **Nodemon** : Rechargement automatique en développement
+- **Swagger UI** : Documentation interactive de l'API
 
 ## Contribution
 
@@ -265,13 +330,23 @@ npm run lint
 - **Structure** : Séparation claire Controller/DAO/Routes
 - **Documentation** : Swagger pour API, JSDoc pour fonctions
 - **Sécurité** : Validation systématique des entrées
+- **Tests** : TDD avec Jest, couverture minimale 80%
+- **Qualité** : Tests automatisés obligatoires pour chaque PR
 
 ### Workflow
 1. Fork du projet
 2. Branche feature (`git checkout -b feature/nouvelle-fonctionnalite`)
-3. Commit des changements (`git commit -m 'Ajout nouvelle fonctionnalité'`)
-4. Push vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
-5. Création d'une Pull Request
+3. **Développement avec tests** (`npm run test:watch` pendant le développement)
+4. **Validation** : S'assurer que tous les tests passent (`npm test`)
+5. Commit des changements (`git commit -m 'Ajout nouvelle fonctionnalité'`)
+6. Push vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
+7. Création d'une Pull Request
+
+### Critères de Qualité
+- **Tous les tests passent** : `npm test` doit être vert
+- **Couverture maintenue** : Nouvelles fonctionnalités testées
+- **Documentation mise à jour** : README et Swagger si nécessaire
+- **Pas de régression** : Tests existants toujours valides
 
 ## Licence et Propriété
 

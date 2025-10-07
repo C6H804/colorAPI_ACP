@@ -659,7 +659,13 @@ paths:
       description: |
         ⚠️ **Permissions requises** : admin uniquement
         
-        Modifie les informations et permissions d'un utilisateur existant.
+        Modifie les informations, mot de passe et permissions d'un utilisateur existant.
+        
+        **Changement de mot de passe :**
+        - Le champ `password` est optionnel
+        - Si fourni et non vide, le mot de passe sera mis à jour
+        - Si vide ou omis, le mot de passe reste inchangé
+        - Doit respecter : 10-50 caractères alphanumériques uniquement
       security:
         - bearerAuth: []
       parameters:
@@ -686,6 +692,13 @@ paths:
                   type: string
                   description: "Nouvelle description de l'utilisateur"
                   example: "Utilisateur modifié"
+                password:
+                  type: string
+                  minLength: 10
+                  maxLength: 50
+                  pattern: "^[a-zA-Z0-9]{10,50}$"
+                  description: "Nouveau mot de passe (optionnel). Si fourni, doit contenir 10-50 caractères alphanumériques. Laisser vide pour ne pas changer le mot de passe."
+                  example: "newpassword123"
                 permissions:
                   type: array
                   items:
@@ -718,10 +731,20 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "id is not valid"
+                    example: "Password must be 10-50 characters long and contain only letters and numbers"
                   status:
                     type: integer
                     example: 400
+                oneOf:
+                  - properties:
+                      message:
+                        example: "id is not valid"
+                  - properties:
+                      message:
+                        example: "Password must be 10-50 characters long and contain only letters and numbers"
+                  - properties:
+                      message:
+                        example: "Password must be a string"
         '401':
           description: Token manquant ou invalide.
         '403':

@@ -4,8 +4,45 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "dev": "nodemon server/app.js"
+  },
+  "jest": {
+    "projects": [
+      {
+        "displayName": "Backend Tests",
+        "testEnvironment": "node",
+        "setupFilesAfterEnv": [
+          "<rootDir>/tests/setup/jest.setup.js"
+        ],
+        "testMatch": [
+          "**/tests/unit/**/*.test.js",
+          "**/tests/integration/**/*.test.js"
+        ],
+        "collectCoverageFrom": [
+          "server/**/*.js",
+          "!server/app.js",
+          "!**/node_modules/**"
+        ]
+      },
+      {
+        "displayName": "Frontend Tests",
+        "testEnvironment": "jsdom",
+        "testMatch": [
+          "**/tests/frontend/**/*.test.js"
+        ],
+        "setupFilesAfterEnv": [
+          "<rootDir>/tests/setup/jest.frontend.setup.js"
+        ],
+        "collectCoverageFrom": [
+          "public/dist/js/**/*.js",
+          "!**/node_modules/**"
+        ]
+      }
+    ],
+    "coverageDirectory": "coverage"
   },
   "repository": {
     "type": "git",
@@ -25,11 +62,15 @@
     "joi": "^18.0.1",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.15.0",
-    "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "jsdom": "^27.0.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4",
+    "swagger-jsdoc": "^6.2.8"
   }
 }

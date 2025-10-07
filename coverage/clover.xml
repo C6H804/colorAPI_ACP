@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1759848128056" clover="3.2.0">
+  <project timestamp="1759848128056" name="All files">
+    <metrics statements="112" coveredstatements="98" conditionals="51" coveredconditionals="39" methods="17" coveredmethods="13" elements="180" coveredelements="150" complexity="0" loc="112" ncloc="112" packages="3" files="9" classes="9"/>
+    <package name="server.schemas">
+      <metrics statements="41" coveredstatements="39" conditionals="27" coveredconditionals="26" methods="4" coveredmethods="4"/>
+      <file name="verifyColorStock.schema.js" path="C:\Users\STAGIAIRE\Documents\GitHub\colorAPI_ACP\server\schemas\verifyColorStock.schema.js">
+        <metrics statements="7" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="7" type="stmt"/>
+        <line num="12" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+      </file>
+      <file name="verifyFilters.schema.js" path="C:\Users\STAGIAIRE\Documents\GitHub\colorAPI_ACP\server\schemas\verifyFilters.schema.js">
+        <metrics statements="10" coveredstatements="8" conditionals="7" coveredconditionals="6" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="9" count="7" type="cond" truecount="5" falsecount="0"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="11" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+      </file>
+      <file name="verifyNewPermissions.schema.js" path="C:\Users\STAGIAIRE\Documents\GitHub\colorAPI_ACP\server\schemas\verifyNewPermissions.schema.js">
+        <metrics statements="9" coveredstatements="9" conditionals="8" coveredconditionals="8" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="7" type="stmt"/>
+        <line num="11" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+      </file>
+      <file name="verifyUser.schema.js" path="C:\Users\STAGIAIRE\Documents\GitHub\colorAPI_ACP\server\schemas\verifyUser.schema.js">
+        <metrics statements="15" coveredstatements="15" conditionals="10" coveredconditionals="10" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="6" count="8" type="cond" truecount="4" falsecount="0"/>
+        <line num="7" count="6" type="stmt"/>
+        <line num="8" count="6" type="stmt"/>
+        <line num="9" count="6" type="stmt"/>
+        <line num="10" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="6" type="stmt"/>
+        <line num="13" count="6" type="stmt"/>
+        <line num="18" count="6" type="stmt"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="22" count="4" type="stmt"/>
+        <line num="23" count="4" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="server.utils">
+      <metrics statements="40" coveredstatements="35" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="4"/>
+      <file name="_CompareHash.js" path="C:\Users\STAGIAIRE\Documents\GitHub\colorAPI_ACP\server\utils\_CompareHash.js">
+        <metrics statements="9" coveredstatements="7" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="6" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+      </file>
+      <file name="_CreateToken.js" path="C:\Users\STAGIAIRE\Documents\GitHub\colorAPI_ACP\server\utils\_CreateToken.js">
+        <metrics statements="9" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="6" type="stmt"/>
+        <line num="6" count="6" type="stmt"/>
+        <line num="7" count="6" type="stmt"/>
+        <line num="8" count="6" type="stmt"/>
+        <line num="9" count="6" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+      </file>
+      <file name="_Hash.js" path="C:\Users\STAGIAIRE\Documents\GitHub\colorAPI_ACP\server\utils\_Hash.js">
+        <metrics statements="12" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="4" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+      </file>
+      <file name="_ReadToken.js" path="C:\Users\STAGIAIRE\Documents\GitHub\colorAPI_ACP\server\utils\_ReadToken.js">
+        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="9" type="stmt"/>
+        <line num="8" count="9" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="11" count="6" type="stmt"/>
+        <line num="12" count="6" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="tests.helpers">
+      <metrics statements="31" coveredstatements="24" conditionals="22" coveredconditionals="12" methods="9" coveredmethods="5"/>
+      <file name="testHelpers.js" path="C:\Users\STAGIAIRE\Documents\GitHub\colorAPI_ACP\tests\helpers\testHelpers.js">
+        <metrics statements="31" coveredstatements="24" conditionals="22" coveredconditionals="12" methods="9" coveredmethods="5"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="6" count="4" type="cond" truecount="0" falsecount="1"/>
+        <line num="7" count="13" type="stmt"/>
+        <line num="12" count="13" type="cond" truecount="1" falsecount="1"/>
+        <line num="16" count="4" type="stmt"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="52" count="4" type="stmt"/>
+        <line num="82" count="4" type="stmt"/>
+        <line num="89" count="4" type="stmt"/>
+        <line num="107" count="4" type="cond" truecount="0" falsecount="1"/>
+        <line num="108" count="0" type="stmt"/>
+        <line num="113" count="4" type="stmt"/>
+        <line num="116" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="117" count="0" type="stmt"/>
+        <line num="119" count="0" type="stmt"/>
+        <line num="124" count="3" type="stmt"/>
+        <line num="125" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="126" count="2" type="stmt"/>
+        <line num="127" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="128" count="0" type="stmt"/>
+        <line num="129" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="130" count="0" type="stmt"/>
+        <line num="132" count="3" type="stmt"/>
+        <line num="137" count="84" type="stmt"/>
+        <line num="138" count="61" type="cond" truecount="2" falsecount="0"/>
+        <line num="140" count="60" type="cond" truecount="2" falsecount="0"/>
+        <line num="141" count="17" type="cond" truecount="2" falsecount="0"/>
+        <line num="142" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="144" count="0" type="stmt"/>
+        <line num="148" count="4" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
