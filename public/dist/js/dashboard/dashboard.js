@@ -1,5 +1,5 @@
-import { Auth } from "./components/_Auth.js";
-import { createElement } from "./components/_CreateElement.js";
+import { Auth } from "../components/_Auth.js";
+import { createElement } from "../components/_CreateElement.js";
 
 const getPermissions = async (perms) => {
     console.log(perms);
@@ -135,7 +135,7 @@ const renderModal = (id, value, color, name, type, shiny, matte, sanded) => {
     modal = true;
     console.log(id, color, name, type, shiny, matte, sanded);
     const deleteButton = permissions === "admin" ? createElement("button", { class: "btn delete-btn", id: "delete-color" }, [
-        createElement("img", { src: "../dist/img/trash-fill.svg", alt: "Delete", title: "Supprimer la couleur" })
+        createElement("img", { src: "../../img/trash-fill.svg", alt: "Delete", title: "Supprimer la couleur" })
     ]) : "";
 
     const modalContainer = document.createElement("div");
@@ -268,4 +268,3 @@ document.addEventListener("scroll", () => {
 upPageBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-

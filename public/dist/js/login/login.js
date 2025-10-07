@@ -26,4 +26,3 @@ form.addEventListener("submit", async (event) => {
         window.location.reload();
     }
 });
-

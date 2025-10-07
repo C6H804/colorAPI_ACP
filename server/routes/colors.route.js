@@ -13,6 +13,12 @@ const deleteColor = require("../dao/deleteColor.dao");
 router.use(auth);
 
 router.post("/list", async (req, res) => {
+    // renvoie la liste des couleurs en fonction d'un filtre optionnel
+    // demande un token JWT en header Authorization Bearer <token>
+    // nécessite les permissions admin, visitor ou modify_colors
+    // le filtre peut contenir les champs suivants :
+    // - name : string (shiny_stockn, matte_stock, sanded_stock ou no_stock)
+
     const verify = await verifyPermissions(req.user, ["admin", "visitor", "modify_colors"]);
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
     // console.log("Filter received:", req.body.filter); // Debugging line
@@ -22,6 +28,10 @@ router.post("/list", async (req, res) => {
 });
 
 router.post("/modifyStock/:id", async (req, res) => {
+    // modifie le stock d'une couleur à partir de son id et du nouveau stock
+    // demande un token JWT en header Authorization Bearer <token>
+    // nécessite les permissions admin ou color manager
+    
     const verify = await verifyPermissions(req.user, ["admin", "color manager"]);
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
 
@@ -39,6 +49,10 @@ const adminOnly = async (req, res) => {
 
 
 router.post("/addColor", async (req, res) => {
+    // ajoute une couleur à partir de name, value, color et des stocks shiny_stock, matte_stock, sanded_stock
+    // demande un token JWT en header Authorization Bearer <token>
+    // seulement les admin peuvent accéder à cette route
+
     const adminCheck = await adminOnly(req, res);
     if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
 
@@ -49,6 +63,9 @@ router.post("/addColor", async (req, res) => {
 
 
 router.post("/deleteColor/:id", async (req, res) => {
+    // supprime une couleur à partir de son id (logical delete)
+    // demande un token JWT en header Authorization Bearer <token>
+    // seulement les admin peuvent accéder à cette route
     const adminCheck = await adminOnly(req, res);
     if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
 

@@ -1,12 +1,22 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const path = require("path");
+const swaggerUI = require("swagger-ui-express");
+const YAML = require('yamljs');
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));
+
+// Configuration Swagger avec fichier YAML externe
+const swaggerDocument = YAML.load(path.join(__dirname, "./docs/swagger.yaml"));
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
+    explorer: true,
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "Color API Documentation"
+}));
 
 app.get("/", (req, res) => {
     res.status(200).json({ message: "API is running", status: 200 });
@@ -18,13 +28,13 @@ const colors = require("./routes/colors.route");
 const users = require("./routes/users.route");
 const auth = require("./routes/auth.route");
 
-
-// app.use("/api", login);
-// app.use("/api", register);
 app.use("/api/colors", colors);
 app.use("/api", users);
 app.use("/api", auth);
 
+app.use((req, res, next) => {
+    res.status(404).sendFile(path.join(__dirname, "../public/pages/notfound.html"));
+});
 
 const PORT = parseInt(process.env.API_PORT, 10);
 

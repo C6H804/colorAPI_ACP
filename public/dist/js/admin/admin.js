@@ -1,5 +1,6 @@
-import { createElement } from "./components/_CreateElement.js";
-import { Auth } from "./components/_Auth.js";
+import { createElement } from "../components/_CreateElement.js";
+import { Auth } from "../components/_Auth.js";
+
 const init = async () => {
     const auth = await Auth();
     const lang = navigator.language.slice(0, 2) || "en".slice(0, 2)
@@ -10,6 +11,9 @@ const init = async () => {
 init();
 
 const getUserList = async () => {
+    // fonction getUserList a pour but de récupérer la liste des utilisateurs
+    // récupère le token JWT dans le localStorage
+    // renvoie un tableau d'objets d'utilisateurs ou un tableau vide en cas d'erreur
     try {
         const response = await fetch("/api/users", {
             method: "GET",
@@ -28,6 +32,15 @@ const getUserList = async () => {
 }
 
 const loadUserList = async (userList) => {
+    // fonction loadUserList a pour but de charger la liste des utilisateurs dans le DOM
+    // prends en paramètre un tableau d'objets d'utilisateurs
+
+    // crée les éléments HTML pour chaque utilisateur et les ajoute au conteneur
+    // ajoute la logique pour ouvrir le modal d'édition d'utilisateur au clic sur un utilisateur
+    
+    // ajoute un bouton pour ajouter un nouvel utilisateur
+    // ajoute la logique pour ouvrir le modal d'ajout d'utilisateur au clic sur le bouton
+
     const userListContainer = document.getElementById("user-list-container");
     userListContainer.innerHTML = "";
     userList.forEach(e => {
@@ -48,6 +61,10 @@ const loadUserList = async (userList) => {
 }
 
 const loadModalAddUser = async () => {
+    // crée et affiche le modal d'ajout d'utilisateur
+    // permet de saisir le nom d'utilisateur, la description et le mot de passe
+    // ajoute la logique pour enregistrer le nouvel utilisateur au clic sur le bouton "Enregistrer"
+
     const existingModal = document.querySelector(".modal-container");
     if (existingModal) existingModal.remove();
 
@@ -57,7 +74,7 @@ const loadModalAddUser = async () => {
 
     permissions.forEach(e => {
         const permissionElement = createElement("div", { class: "permission", id: "permission" + e.id }, [
-            createElement("label", { for: "chk-permission" + e.id }, [e.name, " : "]),
+            createElement("label", { for: "chk-permission" + e.id }, [e.name, " : "]),
             createElement("label", { class: "permission-description", for: "chk-permission" + e.id }, [e.description]),
             createElement("input", { type: "checkbox", class: "chk-permission", id: "chk-permission" + e.id, name: "chk-permission" + e.id }),
             createElement("label", { for: "chk-permission" + e.id, class: "switch" })
@@ -72,11 +89,11 @@ const loadModalAddUser = async () => {
             ]),
             createElement("div", { class: "modal-body" }, [
                 createElement("div", { class: "description-container" }, [
-                    createElement("label", { for: "description" }, ["Description :"]),
+                    createElement("label", { for: "description" }, ["Description :"]),
                     createElement("textarea", { id: "description", name: "description", rows: "4", cols: "50", autocomplete: "off" }, ["Description de l'utilisateur"])
                 ]),
                 createElement("div", { class: "password-container" }, [
-                    createElement("label", { for: "password" }, ["Mot de passe :"]),
+                    createElement("label", { for: "password" }, ["Mot de passe :"]),
                     createElement("input", { type: "password", id: "password", name: "password", placeholder: "mot de passe", autocomplete: "new-password" })
                 ])
             ]),
@@ -105,7 +122,7 @@ const loadModalAddUser = async () => {
             });
             const data = await newUser.json();
             if (!data.valid) {
-                alert("Erreur : " + data.message);
+                alert("Erreur : " + data.message);
             }
         } catch (error) {
             console.error("Error adding user:", error);
@@ -314,7 +331,7 @@ const loadModalEdit = (user, permissions, userPermissions) => {
     permissions.forEach(e => {
         const checked = userPermissions.find(p => p.id === e.id) ? true : false;
         const permissionElement = createElement("div", { class: "permission", id: "permission" + e.id }, [
-            createElement("label", { for: "chk-permission" + e.id }, [e.name, " : "]),
+            createElement("label", { for: "chk-permission" + e.id }, [e.name, " : "]),
             createElement("label", { class: "permission-description", for: "chk-permission" + e.id }, [e.description]),
             checked ? createElement("input", { type: "checkbox", class: "chk-permission", id: "chk-permission" + e.id, name: "chk-permission" + e.id, checked: "checked" }) :
                 createElement("input", { type: "checkbox", class: "chk-permission", id: "chk-permission" + e.id, name: "chk-permission" + e.id }),
@@ -331,11 +348,11 @@ const loadModalEdit = (user, permissions, userPermissions) => {
             ]),
             createElement("div", { class: "modal-body" }, [
                 createElement("div", { class: "description-container" }, [
-                    createElement("label", { for: "description" }, ["Description :"]),
+                    createElement("label", { for: "description" }, ["Description :"]),
                     createElement("textarea", { id: "description", name: "description", rows: "4", cols: "50" }, [user.description])
                 ]),
                 createElement("div", { class: "permissions-container" }, [
-                    createElement("h3", {}, ["Permissions : "]),
+                    createElement("h3", {}, ["Permissions : "]),
                     permissionElements
                 ])
             ]
@@ -344,7 +361,7 @@ const loadModalEdit = (user, permissions, userPermissions) => {
                 createElement("button", { class: "btn btn-cancel", id: "cancel-btn", title: "Annuler les modifications" }, ["Annuler"]),
                 createElement("button", { class: "btn btn-save", id: "save-btn", title: "Enregistrer les modifications" }, ["Enregistrer"]),
                 createElement("a", { class: "delete-btn btn", id: "delete-btn", title: "Supprimer l'utilisateur" }, [
-                    createElement("img", { class: "trash-icon", src: "../dist/img/trash-fill.svg" })
+                    createElement("img", { class: "trash-icon", src: "../img/trash-fill.svg" })
                 ])
             ])
         ])
@@ -378,7 +395,7 @@ const loadModalEdit = (user, permissions, userPermissions) => {
                     }
                 });
                 const data = await response.json();
-                if (!data.valid) return alert("Erreur : " + data.message);
+                if (!data.valid) return alert("Erreur : " + data.message);
                 closeModal();
                 alert("Utilisateur supprimé avec succès.");
             } catch (error) {
@@ -452,11 +469,19 @@ const loadColorModal = async () => {
             ]),
             createElement("div", { class: "modal-body" }, [
                 createElement("div", { class: "color-name-container" }, [
-                    createElement("label", { for: "color-name" }, ["Nom de la couleur :"]),
-                    createElement("input", { type: "text", id: "color-name", name: "color-name", placeholder: "Exemple : Gris anthracite", autocomplete: "off" })
+                    createElement("label", { for: "color-name-fr" }, ["Nom de la couleur :"]),
+                    createElement("input", { type: "text", id: "color-name-fr", name: "color-name-fr", placeholder: "Exemple : Gris anthracite", autocomplete: "off" })
+                ]),
+                createElement("div", { class: "color-name-container" }, [
+                    createElement("label", { for: "color-name-en" }, ["Color name :"]),
+                    createElement("input", { type: "text", id: "color-name-en", name: "color-name-en", placeholder: "Example: Anthracite Grey", autocomplete: "off" })
+                ]),
+                createElement("div", { class: "color-name-container" }, [
+                    createElement("label", { for: "color-name-pt" }, ["Nome da cor :"]),
+                    createElement("input", { type: "text", id: "color-name-pt", name: "color-name-pt", placeholder: "Exemplo: Cinza antracite", autocomplete: "off" })
                 ]),
                 createElement("div", { class: "color-ral-container" }, [
-                    createElement("label", { for: "color-ral" }, ["Code RAL :"]),
+                    createElement("label", { for: "color-ral" }, ["Code RAL :"]),
                     createElement("input", { type: "text", id: "color-ral", name: "color-ral", placeholder: "Exemple : RAL7016", autocomplete: "off" })
                 ]),
                 createElement("div", { class: "color-hex-container" }, [
@@ -492,15 +517,33 @@ const loadColorModal = async () => {
     document.getElementById("btn-cancel-add-color").addEventListener("click", closeModal);
 
     document.getElementById("btn-save-add-color").addEventListener("click", async () => {
-        const colorName = document.getElementById("color-name").value.trim();
+        let colorNameFr = document.getElementById("color-name-fr").value.trim();
+        let colorNameEn =document.getElementById("color-name-en").value.trim();
+        let colorNamePt =document.getElementById("color-name-pt").value.trim();
         const colorRal = document.getElementById("color-ral").value.trim().toUpperCase();
         const colorHex = document.getElementById("color-hex-selector").value;
         const shiny_stock = document.getElementById("shinyStock").checked ? 1 : 0;
         const matte_stock = document.getElementById("matteStock").checked ? 1 : 0;
         const sanded_stock = document.getElementById("sandedStock").checked ? 1 : 0;
-        if (colorName.length < 3) return alert("Le nom de la couleur doit contenir au moins 3 caractères.");
 
-        console.log({ name: colorName, ral: colorRal, hex: colorHex, stock: { shiny_stock, matte_stock, sanded_stock } });
+
+        if (colorNameFr.length < 3 && colorNameEn.length < 3 && colorNamePt.length < 3) return alert("Le nom de la couleur ne peut pas être vide dans toutes les langues.");
+        
+        if (colorNameEn.length < 3) {
+            if (colorNameFr.length >= 3) colorNameEn = colorNameFr;
+            else if (colorNamePt.length >= 3) colorNameEn = colorNamePt;
+        }
+        if (colorNamePt.length < 3) {
+            if (colorNameFr.length >= 3) colorNamePt = colorNameFr;
+            else if (colorNameEn.length >= 3) colorNamePt = colorNameEn;
+        }
+        if (colorNameFr.length < 3) {
+            if (colorNamePt.length >= 3) colorNameFr = colorNamePt;
+            else if (colorNameEn.length >= 3) colorNameFr = colorNameEn;
+        }
+
+        console.log({ fr: colorNameFr, en: colorNameEn, pt: colorNamePt, ral: colorRal, hex: colorHex, stock: { shiny_stock, matte_stock, sanded_stock } });
+
         try {
             const response = await fetch("/api/colors/addColor", {
                 method: "POST",
@@ -509,14 +552,16 @@ const loadColorModal = async () => {
                     "Authorization": "Bearer " + localStorage.getItem("token")
                 },
                 body: JSON.stringify({
-                    name: colorName,
+                    nameFr: colorNameFr,
+                    nameEn: colorNameEn,
+                    namePt: colorNamePt,
                     ral: colorRal,
                     hex: colorHex,
                     stock: { shiny_stock, matte_stock, sanded_stock }
                 })
             });
             const data = await response.json();
-            if (!data.valid) return alert("Erreur : " + data.message);
+            if (!data.valid) return alert("Erreur : " + data.message);
             alert("Couleur ajoutée avec succès.");
             closeModal();
 

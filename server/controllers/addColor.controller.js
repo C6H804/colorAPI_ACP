@@ -2,14 +2,21 @@ const verifyColorStock = require("../schemas/verifyColorStock.schema");
 const addColorDao = require("../dao/addColor.dao");
 
 const addColor = async (req) => {
-    if (!req.body.name || !req.body.hex || !req.body.stock || !req.body.ral) return { valid: false, message: "Missing required fields", status: 400 };
+    if (!req.body.nameFr || !req.body.nameEn || !req.body.namePt || !req.body.hex || !req.body.stock || !req.body.ral) return { valid: false, message: "Missing required fields", status: 400 };
     const verifyStock = verifyColorStock(req.body.stock);
     if (!verifyStock.valid) return { valid: false, message: verifyStock.message, status: 400 };
-    if (typeof req.body.name !== "string" || req.body.name.length < 3) return { valid: false, message: "Invalid name", status: 400 };
+    if (
+        typeof req.body.nameFr !== "string" || req.body.nameFr.trim().length < 3 || req.body.nameFr.trim().length > 254 ||
+        typeof req.body.nameEn !== "string" || req.body.nameEn.trim().length < 3 || req.body.nameEn.trim().length > 254 ||
+        typeof req.body.namePt !== "string" || req.body.namePt.trim().length < 3 || req.body.namePt.trim().length > 254
+    ) return { valid: false, message: "Invalid name(s)", status: 400 };
     if (typeof req.body.hex !== "string" || !/^#([0-9A-F]{3}){1,2}$/i.test(req.body.hex)) return { valid: false, message: "Invalid hex code", status: 400 };
     if (typeof req.body.ral !== "string" || req.body.ral.length < 3 || req.body.ral.length > 20) return { valid: false, message: "Invalid RAL code", status: 400 };
 
-    const name = req.body.name.trim();
+    const nameFr = req.body.nameFr.trim();
+    const nameEn = req.body.nameEn.trim();
+    const namePt = req.body.namePt.trim();
+    console.lo
     const value = req.body.ral.trim().toUpperCase();
     const hex = req.body.hex.trim().toUpperCase().replace("#", "");
     const shiny_stock = req.body.stock.shiny_stock;
@@ -17,7 +24,7 @@ const addColor = async (req) => {
     const sanded_stock = req.body.stock.sanded_stock;
     const type = value.startsWith("RAL") ? "RAL" : "OTHER";
 
-    const result = await addColorDao(type, value, hex, name, shiny_stock, matte_stock, sanded_stock);
+    const result = await addColorDao(type, value, hex, nameFr, nameEn, namePt, shiny_stock, matte_stock, sanded_stock);
     
 
 

@@ -1,0 +1,14 @@
+@import url("../components/__background.css");
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2em;
+
+}
+
+h1 {
+    font-size: 3em;
+    text-align: center;
+}

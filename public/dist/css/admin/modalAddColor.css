@@ -6,13 +6,19 @@
     margin-top: 0;
 }
 
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em 2em 2em 2em;
+}
+
 .color-name-container {
     display: grid;
     grid-template-columns: 170px 1fr;
     gap: 10px;
     align-items: center;
     text-align: end;
-
 }
 
 .color-name-container label {
