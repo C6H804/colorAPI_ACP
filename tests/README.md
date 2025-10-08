@@ -94,7 +94,7 @@ Pour la documentation détaillée des tests frontend, consultez le [README des t
 | **closeModal()**              | 1               | Fermeture modal, nettoyage DOM                                                  |
 | **loadColorsTable()**         | 2               | Génération tableau HTML, gestion cas vide                                      |
 
-## 📊 Résumé Total des Tests
+## Résumé Total des Tests
 
 ### Backend : **124 tests**
 - Tests unitaires : **41 tests**
@@ -103,11 +103,11 @@ Pour la documentation détaillée des tests frontend, consultez le [README des t
 ### Frontend : **18 tests**
 - Tests fonctions dashboard : **18 tests**
 
-### **TOTAL : 142 tests** ✅
+### **TOTAL : 142 tests** [x]
 
-## 🎯 Couverture Fonctionnelle
+## Couverture Fonctionnelle
 
-### ✅ Backend (API)
+### [x] Backend (API)
 - **15 endpoints API** complètement testés
 - **Authentification JWT** avec tous les cas d'erreur
 - **Permissions utilisateur** (admin, color manager, visitor)
@@ -115,7 +115,7 @@ Pour la documentation détaillée des tests frontend, consultez le [README des t
 - **Gestion des erreurs** de base de données et validation
 - **Sécurité** (tokens, hachage mots de passe)
 
-### ✅ Frontend (Interface)
+### [x] Frontend (Interface)
 - **Appels API** avec authentification
 - **Logique métier** (permissions, recherche)
 - **Manipulation DOM** (modals, tableaux)
@@ -170,7 +170,7 @@ Pour la documentation détaillée des tests frontend, consultez le [README des t
 
 ---
 
-## 📊 Résumé Total
+## Résumé Total
 
 - **Nombre total de fonctions testées** : 11 principales
 - **Nombre total de tests** : 124
