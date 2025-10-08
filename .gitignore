@@ -1,4 +1,25 @@
+# Variables d'environnement
 .env
-node_modules
+.env.local
+.env.test
+
+# Dépendances Node.js
+node_modules/
 package-lock.json
+
+# Rapports de tests et coverage
+coverage/
+*.lcov
+.nyc_output
+
+# Fichiers temporaires de développement
 saveUsers.sql
+*.log
+.DS_Store
+Thumbs.db
+
+# Fichiers IDE
+.vscode/
+.idea/
+*.swp
+*.swo
