@@ -67,36 +67,8 @@ CREATE TABLE update_colors (
     FOREIGN KEY (id_color_change_types) REFERENCES colors_changes_types(id)
 );
 
-
--- Insertion des données initiales --
-DELETE FROM users;
-INSERT INTO users (username, password, description) VALUES
-    ("admin", "$2b$12$hY/JBnKtuBKPaZxvFvcasuWWTmTHOoVqgSSCuRPywQxvHKYn8CEkK", "mot de passe : Azertyuiop123")
-
-
-DELETE FROM permissions;
-INSERT INTO permissions (name, description) VALUES
-    ("visitor", "accede uniquement aux données en lecture seule"),
-    ("admin", "acces total à tout"),
-    ("color manager", "peux modifier les stock d'une couleur"),
-    ("color log seeker", "peux voir les logs des modifications de couleurs");
-
-DELETE FROM users_permissions;
-INSERT INTO users_permissions (id_user, id_permission) VALUES
-    (1, 1),
-    (2, 2),
-    (3, 1),
-    (3, 3);
-
-
-DELETE FROM colors_changes_types;
-INSERT INTO colors_changes_types (description) VALUES
-    ("unknown"),
-    ("ajout d'une nouvelle couleur"),
-    ("modification des stocks d'une couleur"),
-    ("suppression d'une couleur");
-
 -- Insertion des couleurs initiales --
+DELETE FROM colors;
 INSERT INTO colors (type, value, name_en, name_fr, name_pt, color) VALUES 
 ('RAL', 'RAL1000', 'Green beige', 'Beige vert', 'Bege verde', 'BEBD7F'),
 ('RAL', 'RAL1001', 'Beige', 'Beige', 'Bege', 'C2B078'),
@@ -327,3 +299,30 @@ INSERT INTO colors (type, value, name_en, name_fr, name_pt, color) VALUES
 ('OTHER', 'MARS M80', '', '', '', ''),
 ('OTHER', 'MARS 2525', 'Rust', 'Rouille', 'Ferrugem', ''),
 ('OTHER', 'BLEU700', 'Textured metallic blue', 'Bleu métallisé texturé', 'Azul metálico texturizado', '');
+
+
+-- Insertion des données initiales --
+DELETE FROM users;
+INSERT INTO users (username, password, description) VALUES
+    ("admin", "$2b$12$hY/JBnKtuBKPaZxvFvcasuWWTmTHOoVqgSSCuRPywQxvHKYn8CEkK", "mot de passe : Azertyuiop123");
+
+
+DELETE FROM permissions;
+INSERT INTO permissions (name, description) VALUES
+    ("visitor", "accede uniquement aux données en lecture seule"),
+    ("admin", "acces total à tout"),
+    ("color manager", "peux modifier les stock d'une couleur"),
+    ("color log seeker", "peux voir les logs des modifications de couleurs");
+
+DELETE FROM users_permissions;
+INSERT INTO users_permissions (id_user, id_permission) VALUES
+    (1, 2);
+
+
+DELETE FROM colors_changes_types;
+INSERT INTO colors_changes_types (description) VALUES
+    ("unknown"),
+    ("ajout d'une nouvelle couleur"),
+    ("modification des stocks d'une couleur"),
+    ("suppression d'une couleur");
+

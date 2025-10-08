@@ -103,11 +103,11 @@ Pour la documentation détaillée des tests frontend, consultez le [README des t
 ### Frontend : **18 tests**
 - Tests fonctions dashboard : **18 tests**
 
-### **TOTAL : 142 tests** [x]
+### **TOTAL : 142 tests** ☑️
 
 ## Couverture Fonctionnelle
 
-### [x] Backend (API)
+### ☑️ Backend (API)
 - **15 endpoints API** complètement testés
 - **Authentification JWT** avec tous les cas d'erreur
 - **Permissions utilisateur** (admin, color manager, visitor)
@@ -115,7 +115,7 @@ Pour la documentation détaillée des tests frontend, consultez le [README des t
 - **Gestion des erreurs** de base de données et validation
 - **Sécurité** (tokens, hachage mots de passe)
 
-### [x] Frontend (Interface)
+### ☑️ Frontend (Interface)
 - **Appels API** avec authentification
 - **Logique métier** (permissions, recherche)
 - **Manipulation DOM** (modals, tableaux)

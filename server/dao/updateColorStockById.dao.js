@@ -1,12 +1,14 @@
 const mysql = require("mysql2");
-const db = require("../config/db.connection.root");
+const connect = require("../config/db.connection.root");
 
 const updateColorStockById = async (id, shiny, matte, sanded) => {
+    // Utilisation de l'utilisateur colorStockChanger (UPDATE/SELECT sur colors pour les stocks)
+    const db = connect("colorStockChanger");
     const smt = "UPDATE colors SET shiny_stock = ?, matte_stock = ?, sanded_stock = ? WHERE id = ?";
     const values = [shiny, matte, sanded, id];
 
     try {
-        const [results] = await db.execute(smt, values);
+        const [results] = await db.promise().execute(smt, values);
         return { valid: true, status: 200, message: "Color stock updated successfully", value: results };
     } catch (error) {
         console.error("updateColorStockById:", error);

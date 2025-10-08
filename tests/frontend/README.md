@@ -14,34 +14,34 @@ tests/frontend/
 ## Fonctions Testées
 
 ### 1. **fetchColors** - 2 tests
-- [x] Appel API correct avec paramètres
-- [x] Gestion des erreurs réseau
+- ☑️ Appel API correct avec paramètres
+- ☑️ Gestion des erreurs réseau
 
 ### 2. **getPermissions** - 4 tests  
-- [x] Retour "admin" pour permission admin
-- [x] Retour "color manager" pour permission gestionnaire
-- [x] Retour "visitor" pour permission visiteur
-- [x] Retour "none" pour aucune permission reconnue
+- ☑️ Retour "admin" pour permission admin
+- ☑️ Retour "color manager" pour permission gestionnaire
+- ☑️ Retour "visitor" pour permission visiteur
+- ☑️ Retour "none" pour aucune permission reconnue
 
 ### 3. **searchInColors** - 7 tests
-- [x] Filtrage par nom français
-- [x] Filtrage par nom anglais  
-- [x] Filtrage couleurs RAL (sans préfixe)
-- [x] Filtrage couleurs OTHER (valeur complète)
-- [x] Recherche insensible à la casse
-- [x] Gestion chaîne de recherche vide
-- [x] Retour tableau vide si aucun résultat
+- ☑️ Filtrage par nom français
+- ☑️ Filtrage par nom anglais  
+- ☑️ Filtrage couleurs RAL (sans préfixe)
+- ☑️ Filtrage couleurs OTHER (valeur complète)
+- ☑️ Recherche insensible à la casse
+- ☑️ Gestion chaîne de recherche vide
+- ☑️ Retour tableau vide si aucun résultat
 
 ### 4. **modifyStock** - 2 tests
-- [x] Retour anticipé sans permissions
-- [x] Appel API correct avec permissions admin
+- ☑️ Retour anticipé sans permissions
+- ☑️ Appel API correct avec permissions admin
 
 ### 5. **closeModal** - 1 test
-- [x] Fermeture modal et nettoyage DOM
+- ☑️ Fermeture modal et nettoyage DOM
 
 ### 6. **loadColorsTable** - 2 tests
-- [x] Affichage message "aucune couleur" si tableau vide
-- [x] Affichage couleurs en format tableau
+- ☑️ Affichage message "aucune couleur" si tableau vide
+- ☑️ Affichage couleurs en format tableau
 
 ## Total des Tests Dashboard
 
@@ -74,12 +74,12 @@ Les tests frontend utilisent :
 ## Couverture
 
 Les tests couvrent :
-- [x] Appels API avec authentification
-- [x] Gestion des permissions utilisateur
-- [x] Filtrage et recherche de données
-- [x] Manipulation et nettoyage DOM
-- [x] Gestion des erreurs réseau/serveur
-- [x] Validation des paramètres d'entrée
+- ☑️ Appels API avec authentification
+- ☑️ Gestion des permissions utilisateur
+- ☑️ Filtrage et recherche de données
+- ☑️ Manipulation et nettoyage DOM
+- ☑️ Gestion des erreurs réseau/serveur
+- ☑️ Validation des paramètres d'entrée
 
 ## Environnement de Test
 
