@@ -94,10 +94,64 @@ Pour la documentation détaillée des tests frontend, consultez le [README des t
 | **closeModal()**              | 1               | Fermeture modal, nettoyage DOM                                                  |
 | **loadColorsTable()**         | 2               | Génération tableau HTML, gestion cas vide                                      |
 
+## 🔐 Tests de Sécurité MySQL
+
+### Considérations Importantes
+
+Avec le nouveau système de 14 utilisateurs MySQL spécialisés, les tests d'intégration nécessitent une configuration particulière :
+
+#### Configuration Requise
+```bash
+# OBLIGATOIRE : Créer les utilisateurs MySQL avant les tests
+mysql -u root -p < database/init/users.sql
+```
+
+#### Tests Impactés par la Sécurité MySQL
+
+| Type de Test | Impact | Solution |
+|--------------|--------|----------|
+| **Tests d'intégration API** | ✅ **Fonctionnent** | Utilisent les vraies connexions MySQL sécurisées |
+| **Tests unitaires** | ✅ **Non impactés** | Utilisent des mocks, pas de vraie BDD |
+| **Tests frontend** | ✅ **Non impactés** | Utilisent JSDOM + mocks, pas de vraie BDD |
+
+#### Points de Vigilance
+
+1. **🚨 Base de données requise** : Les tests d'intégration ont besoin d'une vraie base de données avec les 14 utilisateurs MySQL
+2. **🔐 Permissions réelles** : Chaque DAO teste sa connexion avec l'utilisateur MySQL approprié
+3. **🧪 Isolation** : Les tests nettoient leurs données mais préservent les utilisateurs MySQL
+4. **⚡ Performance** : 14 pools de connexions peuvent ralentir les tests d'intégration
+
+#### Tests de Sécurité Spécifiques
+
+```javascript
+// Exemple de test vérifiant les permissions MySQL
+describe('Sécurité MySQL', () => {
+    test('colorReader ne peut que SELECT sur colors', async () => {
+        // Test que colorReader ne peut pas faire INSERT/UPDATE/DELETE
+    });
+    
+    test('userAdder ne peut que INSERT sur users', async () => {
+        // Test des limitations de permissions
+    });
+});
+```
+
+### Variables d'Environnement pour Tests
+
+```env
+# .env.test (pour les tests d'intégration)
+DB_HOST=localhost
+DB_NAME=api_acp_test
+DB_USER=root  # Pour créer les utilisateurs de test
+DB_PASSWORD=your_password
+JWT_SECRET=test_secret_key
+```
+
 ## Résumé Total des Tests
 
 ### Backend : **124 tests**
-- Tests unitaires : **41 tests**
+- Tests unitaires : **41 tests** (indépendants de MySQL)
+- Tests d'intégration : **83 tests** (nécessitent MySQL + utilisateurs sécurisés)
 - Tests d'intégration : **83 tests**
 
 ### Frontend : **18 tests**

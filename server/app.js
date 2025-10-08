@@ -2,10 +2,23 @@ const express = require("express");
 const dotenv = require("dotenv");
 const path = require("path");
 const swaggerUI = require("swagger-ui-express");
-const YAML = require('yamljs');
+const YAML = require("yamljs");
+const cors = require("cors");
 dotenv.config();
 
 const app = express();
+
+app.use(cors({
+    origin: [
+        'http://localhost:3000'
+        // insérer ici les adresses pour l'accés à l'API
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));

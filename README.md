@@ -11,6 +11,8 @@
 Color API est une API RESTful complète pour la gestion des stocks de couleurs avec système d'authentification JWT et gestion des permissions utilisateurs. L'application permet de gérer un catalogue de couleurs (RAL, Pantone, etc.) avec suivi de la disponibilité des stocks par finition (brillant, mat, sablée).
 
 ### Navigation Rapide
+- **[Guide de Déploiement](DEPLOYMENT.md)** - Configuration complète et mise en production
+- **[Documentation Base de Données](database/README.md)** - Architecture MySQL sécurisée
 - **[Documentation des Tests](tests/README.md)** - Vue d'ensemble complète des 142 tests
 - **[Tests Frontend](tests/frontend/README.md)** - Guide spécialisé des tests JavaScript
 - **[Documentation API](http://localhost:3000/api-docs)** - Swagger UI interactif
@@ -19,10 +21,13 @@ Color API est une API RESTful complète pour la gestion des stocks de couleurs a
 ## Fonctionnalités
 
 ### Authentification & Sécurité
+- **Architecture MySQL Sécurisée** : 14 utilisateurs spécialisés (principe de moindre privilège)
 - **Authentification JWT** : Système sécurisé avec tokens Bearer
 - **Gestion des permissions** : Système de rôles (admin, color manager, visitor)
 - **Middleware de sécurité** : Protection des routes sensibles
 - **Hachage des mots de passe** : Utilisation de bcrypt
+- **Support CORS** : Configuration pour accès cross-domain sécurisé
+- **Isolation des risques** : Chaque fonction DB avec permissions minimales
 
 ### Gestion des Couleurs
 - **Catalogue complet** : Support RAL, Pantone et autres standards
@@ -79,9 +84,10 @@ colorAPI_ACP/
 #### Backend
 - **Runtime** : Node.js v18+
 - **Framework** : Express.js v5.1.0
-- **Base de données** : MySQL2
+- **Base de données** : MySQL2 (14 utilisateurs sécurisés)
 - **Authentification** : JWT (jsonwebtoken)
 - **Sécurité** : bcrypt pour le hachage
+- **Cross-Domain** : CORS (optionnel, pour accès externe)
 - **Validation** : Joi
 - **Documentation** : Swagger UI + OpenAPI 3.0
 - **Développement** : Nodemon
@@ -109,13 +115,17 @@ cd colorAPI_ACP
 ### 2️⃣ Installer les dépendances
 ```bash
 npm install
+
+# Pour l'accès cross-domain (optionnel)
+npm install cors
 ```
 
-> Les dépendances de développement incluent Jest, Supertest et JSDOM pour les tests automatisés.
+> Les dépendances de développement incluent Jest, Supertest et JSDOM pour les tests automatisés.  
+> **CORS** est requis uniquement si vous souhaitez permettre l'accès à l'API depuis d'autres domaines.
 
 ### 3️⃣ Configuration de la base de données
-1. Créer une base de données MySQL
-2. Exécuter les scripts dans l'ordre :
+1. **Créer une base de données MySQL**
+2. **Exécuter les scripts dans l'ordre** :
    ```bash
    # Structure de base
    mysql -u root -p votre_db < database/initDB.setup.sql
@@ -123,7 +133,30 @@ npm install
    # Données initiales
    mysql -u root -p votre_db < database/insert.setup.sql
    mysql -u root -p votre_db < database/insertColor.setup.sql
+   
+   # ⚠️ IMPORTANT: Système de sécurité MySQL (obligatoire)
+   mysql -u root -p < database/init/users.sql
    ```
+
+### Architecture Sécurisée MySQL
+L'application utilise désormais un **système de 14 utilisateurs MySQL spécialisés** suivant le principe de **moindre privilège** :
+
+| Utilisateur | Permissions | Utilisation |
+|-------------|------------|-------------|
+| `colorAdder` | INSERT colors | Ajout nouvelles couleurs |
+| `colorReader` | SELECT colors | Lecture catalogue |
+| `colorStockChanger` | UPDATE stocks | Modification disponibilité |
+| `userReader` | SELECT users/permissions | Authentification |
+| `userAdder` | INSERT users | Création comptes |
+| `permissionsManager` | Gestion complète permissions | Administration |
+| `logReader` | SELECT logs + JOINs | Consultation historique |
+| ... | ... | *11 autres utilisateurs spécialisés* |
+
+**Avantages** :
+- ✅ **Sécurité maximale** : Chaque fonction n'a que les droits nécessaires
+- ✅ **Isolation des risques** : Une faille ne compromet qu'une fonction
+- ✅ **Audit précis** : Traçabilité par type d'opération
+- ✅ **Conformité** : Respect des bonnes pratiques sécuritaires
 
 ### 4️⃣ Variables d'environnement
 Créer un fichier `.env` à la racine :
@@ -189,6 +222,58 @@ La documentation complète de l'API est disponible via Swagger UI :
 - **Authentifié** : Consultation des couleurs
 - **Color Manager** : Modification des stocks
 - **Admin** : Accès complet (CRUD couleurs, utilisateurs, logs)
+
+### Accès Cross-Domain (CORS)
+
+L'API peut être configurée pour accepter des requêtes depuis d'autres domaines via CORS :
+
+#### Configuration CORS
+```javascript
+// Installation CORS
+npm install cors
+
+// Configuration dans server/app.js
+const cors = require('cors');
+
+// Option 1: Développement (tous domaines autorisés)
+app.use(cors());
+
+// Option 2: Production (domaines spécifiques)
+app.use(cors({
+    origin: ['https://votre-site.com', 'https://app.entreprise.com'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+```
+
+#### Utilisation depuis un Autre Site
+```javascript
+// Exemple d'appel API depuis un domaine externe
+const response = await fetch('https://votre-api.com/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: 'user', password: 'pass' })
+});
+
+const { token } = await response.json();
+
+// Utiliser le token pour les requêtes suivantes
+const colors = await fetch('https://votre-api.com/api/colors/list', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({})
+});
+```
+
+#### Points Importants
+- **CORS requis** : Sans configuration CORS, les navigateurs bloquent les requêtes cross-domain
+- **Sécurité** : En production, spécifiez uniquement les domaines autorisés
+- **Authentification** : Le système JWT fonctionne normalement avec CORS
+- **Documentation** : Swagger UI accessible même avec CORS configuré
 
 ## Interface Web
 
@@ -268,6 +353,71 @@ La documentation complète de l'API est disponible via Swagger UI :
 - **Index de performance** : Sur les champs de recherche fréquente (`name_*`, `type`, `value`)
 - **Contraintes référentielles** : Clés étrangères avec CASCADE sur DELETE/UPDATE
 
+## Sécurité & Architecture MySQL
+
+### Système de Connexions Sécurisées
+
+L'application implémente un **système de 14 utilisateurs MySQL spécialisés** suivant le principe de **moindre privilège**. Chaque utilisateur n'a que les permissions strictement nécessaires à sa fonction.
+
+### Liste Complète des Utilisateurs MySQL
+
+| Utilisateur | Permissions MySQL | Fichiers DAO Concernés | Fonction |
+|-------------|-------------------|------------------------|----------|
+| `colorAdder` | `INSERT` sur `colors` | `addColor.dao.js` | Ajout nouvelles couleurs |
+| `colorLogAdder` | `INSERT` sur `update_colors` | `addColorLog.dao.js` | Historique modifications |
+| `userAdder` | `INSERT` sur `users` | `addUser.dao.js` | Création comptes utilisateurs |
+| `passwordChanger` | `UPDATE` password + `SELECT` users | `changePassword.dao.js` | Changement mots de passe |
+| `colorDeleter` | `UPDATE` deleted + `SELECT` colors | `deleteColor.dao.js` | Suppression logique couleurs |
+| `userDeleter` | `UPDATE` deleted + `DELETE` permissions | `deleteUser.dao.js` | Suppression utilisateurs |
+| `colorReader` | `SELECT` sur `colors` | `getColor*.dao.js` (4 fichiers) | Lecture catalogue couleurs |
+| `logReader` | `SELECT` avec `JOIN` multi-tables | `getLogs.dao.js` | Consultation historique |
+| `userReader` | `SELECT` users + permissions | `getUser*.dao.js` (3 fichiers) | Authentification/profils |
+| `usersPermissionsReader` | `SELECT` sur `users_permissions` | `isUserAdmin.dao.js` | Vérification admin |
+| `permissionsManager` | Gestion complète permissions | `permissions.dao.js` | Administration permissions |
+| `colorStockChanger` | `UPDATE` stocks + `SELECT` colors | `updateColorStockById.dao.js` | Modification disponibilité |
+| `userChanger` | `UPDATE` username/description/connexion | `updateUser.dao.js`, `updateLastConnexion.dao.js` | Profils utilisateurs |
+
+### Configuration des Connexions
+
+```javascript
+// server/config/db.connections.secure.js
+const pools = {};
+
+// Chaque utilisateur a son pool de connexions dédié
+const getSecureConnection = (userType) => {
+    return pools[userType]; // Ex: pools['colorReader']
+};
+```
+
+### Avantages Sécuritaires
+
+#### **Isolation des Risques**
+- **Blast radius limité** : Une compromission n'affecte qu'une fonction
+- **Séparation des privilèges** : Aucun utilisateur n'a d'accès superflus
+- **Audit granulaire** : Traçabilité précise par type d'opération
+
+#### **Conformité et Bonnes Pratiques**
+- **Principe de moindre privilège** : Chaque utilisateur = permissions minimales
+- **Defense in depth** : Sécurité en couches (JWT + MySQL + validation)
+- **Standards industriels** : Conforme aux recommandations OWASP/NIST
+
+#### **Monitoring et Traçabilité**
+```sql
+-- Exemple: Monitoring des connexions par utilisateur
+SELECT User, Host, Info FROM INFORMATION_SCHEMA.PROCESSLIST 
+WHERE User LIKE 'color%' OR User LIKE 'user%';
+```
+
+### Migration depuis Système Monolithique
+
+```bash
+# Ancien système (1 utilisateur root)
+const db = mysql.createConnection({ user: 'root' });
+
+# Nouveau système (14 utilisateurs spécialisés)
+const db = getSecureConnection('colorReader'); // Selon le besoin
+```
+
 ## Tests et Qualité
 
 ### Suite de Tests Complète
@@ -322,6 +472,7 @@ npm test -- tests/frontend/
 - **JSDOM** : Environnement DOM pour tests frontend
 - **Nodemon** : Rechargement automatique en développement
 - **Swagger UI** : Documentation interactive de l'API
+- **CORS** : Support cross-domain pour intégrations externes
 
 ## Contribution
 
