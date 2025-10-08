@@ -47,51 +47,49 @@ DROP USER IF EXISTS "permissionsManager"@"localhost";
 DROP USER IF EXISTS "colorStockChanger"@"localhost";
 DROP USER IF EXISTS "userChanger"@"localhost";
 
-
-
-CREATE USER "colorAdder"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "colorAdder"@"localhost" IDENTIFIED BY "k1ZY8wyt5FfF";
 GRANT INSERT ON api_acp.colors TO "colorAdder"@"localhost";
 
-CREATE USER "colorLogAdder"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "colorLogAdder"@"localhost" IDENTIFIED BY "Fr5sd8VXbVC5";
 GRANT INSERT ON api_acp.update_colors TO "colorLogAdder"@"localhost";
 
-CREATE USER "userAdder"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "userAdder"@"localhost" IDENTIFIED BY "dXep6AuE75KG";
 GRANT INSERT ON api_acp.users TO "userAdder"@"localhost";
 
-CREATE USER "passwordChanger"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "passwordChanger"@"localhost" IDENTIFIED BY "e48pImxSCEX2";
 GRANT UPDATE, SELECT ON api_acp.users TO "passwordChanger"@"localhost";
 
-CREATE USER "colorDeleter"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "colorDeleter"@"localhost" IDENTIFIED BY "e8S3K0vXZe62";
 GRANT UPDATE, SELECT ON api_acp.colors TO "colorDeleter"@"localhost";
 
-CREATE USER "userDeleter"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "userDeleter"@"localhost" IDENTIFIED BY "D4aD497uCJPJ";
 GRANT UPDATE, SELECT ON api_acp.users TO "userDeleter"@"localhost";
 
-CREATE USER "colorReader"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "colorReader"@"localhost" IDENTIFIED BY "Sb6NZMU764iS";
 GRANT SELECT ON api_acp.colors TO "colorReader"@"localhost";
 
-CREATE USER "logReader"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "logReader"@"localhost" IDENTIFIED BY "5Nqp0l63Lg6g";
 GRANT SELECT ON api_acp.update_colors TO "logReader"@"localhost";
 GRANT SELECT ON api_acp.users TO "logReader"@"localhost";
 GRANT SELECT ON api_acp.colors_changes_types TO "logReader"@"localhost";
 GRANT SELECT ON api_acp.colors TO "logReader"@"localhost";
 
-CREATE USER "userReader"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "userReader"@"localhost" IDENTIFIED BY "1ZLM74WqdcqP";
 GRANT SELECT ON api_acp.users TO "userReader"@"localhost";
 GRANT SELECT ON api_acp.users_permissions TO "userReader"@"localhost";
 GRANT SELECT ON api_acp.permissions TO "userReader"@"localhost";
 
-CREATE USER "usersPermissionsReader"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "usersPermissionsReader"@"localhost" IDENTIFIED BY "1fNyP7SPwZ8i";
 GRANT SELECT ON api_acp.users_permissions TO "adminChecker"@"localhost";
 GRANT SELECT ON api_acp.permissions TO "adminChecker"@"localhost";
 
-CREATE USER "permissionsManager"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "permissionsManager"@"localhost" IDENTIFIED BY "Olj9n19gHXFI";
 GRANT SELECT, INSERT ON api_acp.permissions TO "permissionsManager"@"localhost";
 GRANT SELECT, INSERT, DELETE ON api_acp.users_permissions TO "permissionsManager"@"localhost";
 GRANT SELECT ON api_acp.users TO "permissionsManager"@"localhost";
 
-CREATE USER "colorStockChanger"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "colorStockChanger"@"localhost" IDENTIFIED BY "8CJiG20j0s5L";
 GRANT UPDATE, SELECT ON api_acp.colors TO "colorStockChanger"@"localhost";
 
-CREATE USER "userChanger"@"localhost" IDENTIFIED BY "mdp";
+CREATE USER "userChanger"@"localhost" IDENTIFIED BY "wGyq7k07gLgX";
 GRANT UPDATE, SELECT ON api_acp.users TO "userChanger"@"localhost";
