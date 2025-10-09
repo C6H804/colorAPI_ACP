@@ -23,7 +23,7 @@ export const saveEditData = async (user) => {
             body: JSON.stringify(payload)
         });
         const data = await response.json();
-        console.log(data); // TEMP
+        // console.log(data); // TEMP
         if (!data.valid) return alert("Error: " + data.message);
     } catch (error) {
         console.error("Error updating user:", error);

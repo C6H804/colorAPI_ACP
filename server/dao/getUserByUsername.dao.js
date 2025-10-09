@@ -1,9 +1,9 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const { getPool } = require("../config/db.connection.root");
 
 const getUserByUsername = async (username) => {
     // Utilisation de l'utilisateur userReader (SELECT sur users et permissions)
-    const db = connect("userReader");
+    const db = getPool("userReader");
     const stmt = "SELECT * FROM users WHERE username = ? AND deleted = 0 LIMIT 1";
     const values = [username];
     try {

@@ -1,8 +1,8 @@
 const mysql = "mysql2";
-const connect = require("../config/db.connection.root");
+const { getPool } = require("../config/db.connection.root");
 
 const getColorById = async (id) => {
-    const db = connect("colorReader");
+    const db = getPool("colorReader");
     const stmt = "SELECT * FROM colors WHERE id = ?";
     const value = [id];
     try {

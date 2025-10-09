@@ -1,8 +1,8 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const { getPool } = require("../config/db.connection.root");
 
 const addColor = async (type, value, color, nameFr, nameEn, namePt, shiny_stock, matte_stock, sanded_stock) => {
-    const db = connect("colorAdder");
+    const db = getPool("colorAdder");
     const stmt = "INSERT INTO colors (type, value, color, name_en, name_fr, name_pt, shiny_stock, matte_stock, sanded_stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [type, value, color, nameEn, nameFr, namePt, shiny_stock, matte_stock, sanded_stock];
     console.log("addColor DAO called with:", values); // TEMP

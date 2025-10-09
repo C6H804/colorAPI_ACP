@@ -1,10 +1,10 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const { getPool } = require("../config/db.connection.root");
 
 
 const getColorListFiltered = async (filter) => {
     // Utilisation de l'utilisateur colorReader (SELECT sur colors uniquement)
-    const db = connect("colorReader");
+    const db = getPool("colorReader");
     const stmt = `SELECT * FROM colors WHERE ${filter} = 1 AND deleted = 0 ORDER BY value DESC`;
 
     try {
@@ -18,7 +18,7 @@ const getColorListFiltered = async (filter) => {
 
 const getColorListAvailable = async () => {
     // Utilisation de l'utilisateur colorReader (SELECT sur colors uniquement)
-    const db = connect("colorReader");
+    const db = getPool("colorReader");
     const stmt = "SELECT * FROM colors WHERE (shiny_stock > 0 OR matte_stock > 0 OR sanded_stock > 0) AND deleted = 0 ORDER BY value DESC";
     try {
         const [results] = await db.promise().execute(stmt);
@@ -31,7 +31,7 @@ const getColorListAvailable = async () => {
 
 const getColorList = async () => {
     // Utilisation de l'utilisateur colorReader (SELECT sur colors uniquement)
-    const db = connect("colorReader");
+    const db = getPool("colorReader");
     const stmt = "SELECT * FROM colors WHERE deleted = 0 ORDER BY value DESC";
     try {
         const [results] = await db.promise().execute(stmt);

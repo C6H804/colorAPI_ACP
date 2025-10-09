@@ -1,9 +1,9 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const { getPool } = require("../config/db.connection.root");
 
 const deleteColorDao = async (id) => {
     // Utilisation de l'utilisateur colorDeleter (UPDATE/SELECT sur colors pour soft delete)
-    const db = connect("colorDeleter");
+    const db = getPool("colorDeleter");
     // const stmt = "DELETE FROM colors WHERE id = ?";
     const stmt = "UPDATE colors SET deleted = 1 WHERE id = ?";
     const values = [id];

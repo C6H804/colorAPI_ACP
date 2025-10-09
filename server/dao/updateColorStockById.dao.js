@@ -1,9 +1,9 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const { getPool } = require("../config/db.connection.root");
 
 const updateColorStockById = async (id, shiny, matte, sanded) => {
     // Utilisation de l'utilisateur colorStockChanger (UPDATE/SELECT sur colors pour les stocks)
-    const db = connect("colorStockChanger");
+    const db = getPool("colorStockChanger");
     const smt = "UPDATE colors SET shiny_stock = ?, matte_stock = ?, sanded_stock = ? WHERE id = ?";
     const values = [shiny, matte, sanded, id];
 

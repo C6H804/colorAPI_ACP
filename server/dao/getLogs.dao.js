@@ -1,9 +1,9 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const { getPool } = require("../config/db.connection.root");
 
 const getLogs = async () => {
     // Utilisation de l'utilisateur logReader (SELECT avec JOIN sur multiple tables)
-    const db = connect("logReader");
+    const db = getPool("logReader");
     const stmt = "SELECT date, u.username, c.value, cct.description, uc.change_description FROM update_colors uc JOIN users u ON uc.id_user = u.id JOIN colors c ON uc.id_color = c.id JOIN colors_changes_types cct ON uc.id_color_change_types = cct.id ORDER BY uc.date DESC";
     try {
         const [resuls] = await db.promise().execute(stmt);

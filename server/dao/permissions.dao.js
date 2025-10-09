@@ -1,9 +1,9 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const { getPool } = require("../config/db.connection.root");
 
 const getPermissionsList = async () => {
     // Utilisation de l'utilisateur permissionsManager (gestion complète des permissions)
-    const db = connect("permissionsManager");
+    const db = getPool("permissionsManager");
     const stmt = "SELECT * FROM permissions";
     try {
         const [results] = await db.promise().execute(stmt);
@@ -16,7 +16,7 @@ const getPermissionsList = async () => {
 
 const createPermission = async (name, description) => {
     // Utilisation de l'utilisateur permissionsManager (gestion complète des permissions)
-    const db = connect("permissionsManager");
+    const db = getPool("permissionsManager");
     const stmt = "INSERT INTO permissions (name, description) VALUES (?, ?)";
     const values = [name, description];
     try {
@@ -30,7 +30,7 @@ const createPermission = async (name, description) => {
 
 const deletePermission = async (id) => {
     // Utilisation de l'utilisateur permissionsManager (gestion complète des permissions)
-    const db = connect("permissionsManager");
+    const db = getPool("permissionsManager");
     const stmt = "DELETE FROM permissions WHERE id = ?";
     const values = [id];
     try {
@@ -58,7 +58,7 @@ const deletePermission = async (id) => {
 
 const getUserUserPermissions = async (userId) => {
     // Utilisation de l'utilisateur permissionsManager (gestion complète des permissions)
-    const db = connect("permissionsManager");
+    const db = getPool("permissionsManager");
     const stmt = "SELECT p.* FROM users_permissions up JOIN users u ON up.id_user = u.id JOIN permissions p ON up.id_permission = p.id WHERE u.id = ?";
     const values = [userId];
     try {
@@ -73,7 +73,7 @@ const getUserUserPermissions = async (userId) => {
 
 const grantPermission = async (userId, permissionId) => {
     // Utilisation de l'utilisateur permissionsManager (gestion complète des permissions)
-    const db = connect("permissionsManager");
+    const db = getPool("permissionsManager");
     const stmt = "INSERT INTO users_permissions (id_user, id_permission) VALUES (?, ?)";
     const values = [userId, permissionId];
     try {
@@ -87,7 +87,7 @@ const grantPermission = async (userId, permissionId) => {
 
 const revokePermission = async (userId, permissionId) => {
     // Utilisation de l'utilisateur permissionsManager (gestion complète des permissions)
-    const db = connect("permissionsManager");
+    const db = getPool("permissionsManager");
     const stmt = "DELETE FROM users_permissions WHERE id_user = ? AND id_permission = ?";
     const values = [userId, permissionId];
     try {

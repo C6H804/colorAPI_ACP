@@ -1,9 +1,9 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const { getPool } = require("../config/db.connection.root");
 
 const updateUsername = async (userId, newUsername) => {
     // Utilisation de l'utilisateur userChanger (UPDATE/SELECT sur users pour username/description)
-    const db = connect("userChanger");
+    const db = getPool("userChanger");
     const stmt = "UPDATE users SET username = ? WHERE id = ? AND deleted = 0";
     const values = [newUsername, userId];
     try {
@@ -19,7 +19,7 @@ const updateUsername = async (userId, newUsername) => {
 
 const updateDescription = async (userId, newDescription) => {
     // Utilisation de l'utilisateur userChanger (UPDATE/SELECT sur users pour username/description)
-    const db = connect("userChanger");
+    const db = getPool("userChanger");
     const stmt = "UPDATE users SET description = ? WHERE id = ? AND deleted = 0";
     const values = [newDescription, userId];
     try {
