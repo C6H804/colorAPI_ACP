@@ -1,19 +1,19 @@
 const mysql = require("mysql2");
-const { getPool } = require("../config/db.connection.root");
+const connect = require("../config/db.connection.root");
 
 const deleteUser = async (userId) => {
     // Utilisation de l'utilisateur userDeleter (UPDATE/SELECT sur users + DELETE sur users_permissions)
-    const db = getPool("userDeleter");
+    const db = connect("userDeleter");
     const stmt = "UPDATE users SET deleted = 1 WHERE id = ?";
     const values = [userId];
     try {
-        const [results] = await db.promise().execute(stmt, values);
+        const [results] = await db.execute(stmt, values);
         return { valid: true, message: "user deleted successfully", status: 200 };
     } catch (error) {
         console.error("error in deleteUser.dao.js:", error);
         return { valid: false, message: "Database error", status: 500 };
     }
-}
+};
 
 
 

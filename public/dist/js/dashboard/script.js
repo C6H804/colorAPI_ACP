@@ -7,6 +7,7 @@ import { closeModal } from "./__closeModal.js";
 let permissions = false;
 window.modal = false;
 const upPageBtn = document.getElementById("upPageBtn");
+let prevSearch = '';
 
 const init = async () => {
     const isAuth = await Auth();
@@ -30,7 +31,9 @@ const init = async () => {
 
     document.getElementById("searchInput").addEventListener("input", async (e) => {
         search = e.target.value;
-        updateColorTable(filter, lang, search, permissions);
+        if (search.length > prevSearch.length || !search.startsWith(prevSearch))
+            updateColorTable(filter, lang, search, permissions);
+        prevSearch = search;
     });
 }
 init();
