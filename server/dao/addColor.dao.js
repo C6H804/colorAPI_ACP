@@ -1,5 +1,5 @@
 const mysql = require("mysql2");
-const { getPool } = require("../config/db.connection.root");
+const getPool = require("../config/db.connection.root");
 
 const addColor = async (type, value, color, nameFr, nameEn, namePt, shiny_stock, matte_stock, sanded_stock) => {
     const db = getPool("colorAdder");

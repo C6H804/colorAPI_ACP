@@ -1,5 +1,5 @@
 const mysql = require("mysql2");
-const { getPool } = require("../config/db.connection.root");
+const getPool = require("../config/db.connection.root");
 
 const changePassword = async (userId, newHashedPassword) => {
     // Utilisation de l'utilisateur passwordChanger (UPDATE/SELECT sur users pour password)

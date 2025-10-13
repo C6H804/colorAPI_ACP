@@ -1,5 +1,5 @@
 const mysql = require("mysql2");
-const { getPool } = require("../config/db.connection.root");
+const getPool = require("../config/db.connection.root");
 
 const addColorLog = async (idU, idC, changeDescription, idColorChangeType) => {
 

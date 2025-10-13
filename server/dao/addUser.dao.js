@@ -1,5 +1,5 @@
 const mysql = require("mysql2");
-const { getPool } = require("../config/db.connection.root");
+const getPool = require("../config/db.connection.root");
 
 const addUser = async (username, hashedPassword, description = "aucune description") => {
     // Utilisation de l'utilisateur userAdder (INSERT sur users uniquement)

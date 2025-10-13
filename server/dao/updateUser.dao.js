@@ -1,5 +1,5 @@
 const mysql = require("mysql2");
-const { getPool } = require("../config/db.connection.root");
+const getPool = require("../config/db.connection.root");
 
 const updateUsername = async (userId, newUsername) => {
     // Utilisation de l'utilisateur userChanger (UPDATE/SELECT sur users pour username/description)

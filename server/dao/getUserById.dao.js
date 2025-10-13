@@ -1,5 +1,5 @@
 const mysql = require("mysql2");
-const { getPool } = require("../config/db.connection.root");
+const getPool = require("../config/db.connection.root");
 
 const getUserById = async (id) => {
     // Utilisation de l'utilisateur userReader (SELECT sur users et permissions)
