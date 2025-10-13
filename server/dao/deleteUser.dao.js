@@ -1,9 +1,8 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const db = require("../config/db.connection.root");
 
 const deleteUser = async (userId) => {
     // Utilisation de l'utilisateur userDeleter (UPDATE/SELECT sur users + DELETE sur users_permissions)
-    const db = connect("userDeleter");
     const stmt = "UPDATE users SET deleted = 1 WHERE id = ?";
     const values = [userId];
     try {

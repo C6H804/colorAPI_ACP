@@ -1,9 +1,8 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const db = require("../config/db.connection.root");
 
 const addUser = async (username, hashedPassword, description = "aucune description") => {
     // Utilisation de l'utilisateur userAdder (INSERT sur users uniquement)
-    const db = connect("userAdder");
     const stmt = "INSERT INTO users (username, password, description) VALUES (?, ?, ?)";
     const values = [username, hashedPassword, description];
     try {

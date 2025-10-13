@@ -1,9 +1,8 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const db = require("../config/db.connection.root");
 
 const isUserAdmin = async (userId) => {
     // Utilisation de l'utilisateur usersPermissionsReader (SELECT sur users_permissions)
-    const db = connect("usersPermissionsReader");
     const stmt = "SELECT COUNT(id_user) AS result FROM users_permissions WHERE id_permission = 2 AND id_user = ?"; // 2 is the id of the "admin" permission
     const values = [userId];
 

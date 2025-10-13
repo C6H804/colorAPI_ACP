@@ -1,9 +1,8 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const db = require("../config/db.connection.root");
 
 const updateLastConnexion = async (userId) => {
     // Utilisation de l'utilisateur userChanger (UPDATE/SELECT sur users pour last_connection)
-    const db = connect("userChanger");
     const stmt = "UPDATE users SET last_connection = NOW() WHERE id = ?";
     const values = [userId];
     try {
