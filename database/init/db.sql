@@ -1,9 +1,9 @@
 -- créer la base de données et les tables --
 
 DROP DATABASE IF EXISTS api_acp;
-CREATE DATABASE api_acp;
+CREATE DATABASE API;
 
-USE api_acp;
+USE API;
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
