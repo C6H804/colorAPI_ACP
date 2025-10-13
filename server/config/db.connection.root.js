@@ -16,16 +16,12 @@ const passwords = {
     userChanger: "wGyq7k07gLgX",
 }
 
-const connect = (user) => {
-    const pool = mysql.createPool({
-        host: process.env.DB_HOST || 'localhost',
-        // user: user, 
-        user: process.env.DB_USER || "root",
-        password: process.env.DB_PASSWORD /* + "" + passwords[user] */ || "0000",
-        database: process.env.DB_DATABASE || "api_acp",
-        port: process.env.DB_PORT || 3306,
-    });
-    return pool;
-}
+const pool = mysql.createPool({
+    host: "ca664385-001.eu.clouddb.ovh.net",
+    user: "Alan",
+    password: "Acportail40",
+    database: "API",
+    port: 35521
+});
 
-module.exports = connect;
+module.exports = pool.promise();

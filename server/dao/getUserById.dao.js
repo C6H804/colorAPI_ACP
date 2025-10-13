@@ -1,13 +1,12 @@
 const mysql = require("mysql2");
-const connect = require("../config/db.connection.root");
+const db = require("../config/db.connection.root");
 
 const getUserById = async (id) => {
     // Utilisation de l'utilisateur userReader (SELECT sur users et permissions)
-    const db = connect("userReader");
     const stmt = "SELECT * FROM users WHERE id = ?";
     const values = [id];
     try {
-        const [results] = await db.promise().execute(stmt, values);
+        const [results] = await db.execute(stmt, values);
         if (results.length === 0) return { valid: false, message: "user not found", status: 404 };
         return { valid: true, message: "user found", status: 200, value: results[0] };
     } catch (error) {
