@@ -15,7 +15,7 @@
 
 .color-name-container {
     display: grid;
-    grid-template-columns: 170px 1fr;
+    grid-template-columns: 180px 1fr;
     gap: 10px;
     align-items: center;
     text-align: end;
@@ -40,7 +40,7 @@
 
 .color-ral-container {
     display: grid;
-    grid-template-columns: 170px 1fr;
+    grid-template-columns: 180px 1fr;
     gap: 10px;
     margin-top: 10px;
     align-items: center;
