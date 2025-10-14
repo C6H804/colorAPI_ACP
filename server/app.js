@@ -10,7 +10,7 @@ const app = express();
 
 app.use(cors({
     origin: [
-        "http://localhost:3000"
+        "127.0.0.1"
         // insérer ici les adresses pour l'accés à l'API
     ],
     credentials: true,
