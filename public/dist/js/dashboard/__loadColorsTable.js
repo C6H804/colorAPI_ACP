@@ -37,11 +37,11 @@ export const loadColorsTable = (colors, lang = "en", permissions = false) => {
                 createElement("div", { class: "row-item color", style: `background-color: ${color};` }),
                 createElement("div", { class: "row-item value" }, [value]),
                 createElement("div", { class: "row-item name mobile" }, [name]),
-                createElement("div", { class: "row-item stock shiny available" + b }, [
-                    createElement("img", { src: "/dist/img/" + available[b], alt: b ? "En stock" : "Hors stock", title: b ? "En stock" : "Hors stock", height: "32", width: "32" })
-                ]),
                 createElement("div", { class: "row-item stock matte available" + m }, [
                     createElement("img", { src: "/dist/img/" + available[m], alt: m ? "En stock" : "Hors stock", title: m ? "En stock" : "Hors stock", height: "32", width: "32" })
+                ]),
+                createElement("div", { class: "row-item stock shiny available" + b }, [
+                    createElement("img", { src: "/dist/img/" + available[b], alt: b ? "En stock" : "Hors stock", title: b ? "En stock" : "Hors stock", height: "32", width: "32" })
                 ]),
                 createElement("div", { class: "row-item stock sanded available" + s }, [
                     createElement("img", { src: "/dist/img/" + available[s], alt: s ? "En stock" : "Hors stock", title: s ? "En stock" : "Hors stock", height: "32", width: "32" })

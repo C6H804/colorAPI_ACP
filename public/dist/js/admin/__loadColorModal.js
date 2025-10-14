@@ -48,13 +48,13 @@ export const loadColorModal = async () => {
                     createElement("input", { class: "color-hex-selector", type: "color", id: "color-hex-selector", value: getRandomColor() })
                 ]),
                 createElement("div", { class: "stock-chk-container" }, [
-                    createElement("div", { class: "shinyStock" }, [
-                        createElement("label", { for: "shinyStock" }, ["Brillant"]),
-                        createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "shinyStock" })
-                    ]),
                     createElement("div", { class: "matteStock" }, [
                         createElement("label", { for: "matteStock" }, ["Mat"]),
                         createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "matteStock" })
+                    ]),
+                    createElement("div", { class: "shinyStock" }, [
+                        createElement("label", { for: "shinyStock" }, ["Brillant"]),
+                        createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "shinyStock" })
                     ]),
                     createElement("div", { class: "sandedStock" }, [
                         createElement("label", { for: "sandedStock" }, ["Sablé"]),

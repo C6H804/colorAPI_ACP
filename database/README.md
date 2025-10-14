@@ -64,20 +64,20 @@ CREATE TABLE permissions (
 
 #### Champs
 
-| Champ | Type | Description |
-|-------|------|-------------|
-| `id` | INT | Identifiant unique de la permission |
-| `name` | VARCHAR(255) | Nom de la permission/rôle |
-| `description` | MEDIUMTEXT | Description détaillée du rôle |
+| Champ         | Type         | Description                         |
+|---------------|--------------|-------------------------------------|
+| `id`          | INT          | Identifiant unique de la permission |
+| `name`        | VARCHAR(255) | Nom de la permission/rôle           |
+| `description` | MEDIUMTEXT   | Description détaillée du rôle       |
 
 #### Permissions disponibles
 
-| ID | Nom | Description |
-|----|-----|-------------|
-| 1 | `visitor` | Accès en lecture seule |
-| 2 | `admin` | Accès total à toutes les fonctionnalités |
-| 3 | `color manager` | Modification des stocks de couleurs |
-| 4 | `color log seeker` | Consultation de l'historique des modifications |
+| ID | Nom                | Description                                     |
+|----|--------------------|-------------------------------------------------|
+| 1  | `visitor`          | Accès en lecture seule                          |
+| 2  | `admin`            | Accès total à toutes les fonctionnalités        |
+| 3  | `color manager`    | Modification des stocks de couleurs             |
+| 4  | `color log seeker` | Consultation de l'historique des modifications  |
 
 ---
 
@@ -96,10 +96,10 @@ CREATE TABLE users_permissions (
 
 #### Champs
 
-| Champ | Type | Description |
-|-------|------|-------------|
-| `id_user` | INT | Référence à `users.id` |
-| `id_permission` | INT | Référence à `permissions.id` (défaut : 1 = visitor) |
+| Champ           | Type | Description                                                  |
+|-----------------|------|--------------------------------------------------------------|
+| `id_user`       | INT  | Référence à `users.id`                                       |
+| `id_permission` | INT  | Référence à `permissions.id` (défaut : 1 = visitor)          |
 
 #### Relations
 
@@ -594,15 +594,8 @@ GROUP BY p.id;
 
 ### Performance
 
-1. **Index recommandés** :
-   ```sql
-   CREATE INDEX idx_colors_value ON colors(value);
-   CREATE INDEX idx_colors_type ON colors(type);
-   CREATE INDEX idx_users_username ON users(username);
-   CREATE INDEX idx_update_colors_date ON update_colors(date);
-   ```
 
-2. **Requêtes optimisées** :
+ **Requêtes optimisées** :
    - Toujours filtrer les couleurs avec `deleted = 0`
    - Utiliser `LIMIT` pour les grandes listes
    - Éviter `SELECT *` en production
