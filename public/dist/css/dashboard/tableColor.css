@@ -52,8 +52,9 @@
     transition: ease-out 0.1s;
     transition-delay: 0.25s;
     border-radius: 40px;
-    max-height: 46px;
+    max-height: 26px;
     animation: rowSpawn 0.3s ease;
+
 }
 
 .table-row:hover {
@@ -66,17 +67,20 @@
 }
 
 .available1 {
-    color: green;
-    scale: 1.5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .available0 {
-    color: red;
-    scale: 1.5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .row-item.color {
     border-radius: 20px;
+    height: 26px;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
 }
 

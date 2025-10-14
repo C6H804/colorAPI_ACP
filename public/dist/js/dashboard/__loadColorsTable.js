@@ -31,16 +31,23 @@ export const loadColorsTable = (colors, lang = "en", permissions = false) => {
             let value = e.value;
             if (type === "RAL") value = e.value.replace("RAL", "");
 
-            const available = ["❌", "✔️"];
+            const available = ["cross.svg", "check.svg"];
 
             const row = createElement("div", { class: `table-row ${type}`, title: title }, [
                 createElement("div", { class: "row-item color", style: `background-color: ${color};` }),
                 createElement("div", { class: "row-item value" }, [value]),
                 createElement("div", { class: "row-item name mobile" }, [name]),
-                createElement("div", { class: "row-item stock shiny available" + b }, [available[b]]),
-                createElement("div", { class: "row-item stock matte available" + m }, [available[m]]),
-                createElement("div", { class: "row-item stock sanded available" + s }, [available[s]])
+                createElement("div", { class: "row-item stock shiny available" + b }, [
+                    createElement("img", { src: "/dist/img/" + available[b], alt: b ? "En stock" : "Hors stock", title: b ? "En stock" : "Hors stock", height: "32", width: "32" })
+                ]),
+                createElement("div", { class: "row-item stock matte available" + m }, [
+                    createElement("img", { src: "/dist/img/" + available[m], alt: m ? "En stock" : "Hors stock", title: m ? "En stock" : "Hors stock", height: "32", width: "32" })
+                ]),
+                createElement("div", { class: "row-item stock sanded available" + s }, [
+                    createElement("img", { src: "/dist/img/" + available[s], alt: s ? "En stock" : "Hors stock", title: s ? "En stock" : "Hors stock", height: "32", width: "32" })
+                ])
             ]);
+
             row.addEventListener("click", () => {
                 renderModal(e.id, value, color, name, type, b, m, s, permissions);
             });

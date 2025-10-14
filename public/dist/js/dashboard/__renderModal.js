@@ -17,13 +17,20 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
         if (e.target === modalContainer) closeModal();
     });
 
+    // convert color (#rrggbb) into decimal value of rgb like 120 20 255
+
+    const rgb = color.match(/\w\w/g).map(x => parseInt(x, 16));
+
     const disabled = permissions === "admin" || permissions === "color manager" ? "" : "disabled";
 
     const modalDiv = createElement("div", { class: "modal-color" }, [
         createElement("div", { class: "modal-header" }, [
             createElement("h2", {}, [name]),
             createElement("div", { class: "color-info" }, [
-                createElement("label", { class: "label-color" }, [type === "RAL" ? "RAL" + value : value]),
+                createElement("div", { class: "label-color-container" }, [
+                    createElement("label", { class: "label-color-ral" }, [type === "RAL" ? "RAL" + value : value]),
+                    createElement("label", { class: "label-color-rgb" }, [`rgb (${rgb[0]}, ${rgb[1]}, ${rgb[2]})`])
+                ]),
                 createElement("span", {
                     class: "color-btn", style: `background-color: ${color};`, onclick: () => {
                         if (!permissions) return;
