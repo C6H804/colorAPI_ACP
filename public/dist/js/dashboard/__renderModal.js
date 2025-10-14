@@ -19,7 +19,8 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
 
     // convert color (#rrggbb) into decimal value of rgb like 120 20 255
 
-    const rgb = color.match(/\w\w/g).map(x => parseInt(x, 16));
+    const rgb = type === "RAL" ? color.match(/\w\w/g).map(x => parseInt(x, 16)) : [0, 0, 0];
+
 
     const disabled = permissions === "admin" || permissions === "color manager" ? "" : "disabled";
 
