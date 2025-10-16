@@ -45,9 +45,7 @@ export const loadModalEdit = (user, permissions, userPermissions) => {
             createElement("div", { class: "modal-footer" }, [
                 createElement("button", { class: "btn btn-cancel", id: "cancel-btn", title: "Annuler les modifications" }, ["Annuler"]),
                 createElement("button", { class: "btn btn-save", id: "save-btn", title: "Enregistrer les modifications" }, ["Enregistrer"]),
-                createElement("a", { class: "delete-btn btn", id: "delete-btn", title: "Supprimer l'utilisateur" }, [
-                    createElement("img", { class: "trash-icon", src: "../dist/img/trash-fill.svg" })
-                ])
+                createElement("a", { class: "delete-btn btn", id: "delete-btn", title: "Supprimer l'utilisateur" }, ["Supprimer"])
             ])
         ])
     ]);

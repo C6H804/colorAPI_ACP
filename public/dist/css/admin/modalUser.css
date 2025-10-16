@@ -243,6 +243,7 @@
 
 
 .delete-btn {
+    color: white;
     background-color: red;
     display: flex;
     align-items: center;

@@ -80,12 +80,11 @@ export const loadColorModal = async () => {
         let colorNameFr = document.getElementById("color-name-fr").value.trim();
         let colorNameEn =document.getElementById("color-name-en").value.trim();
         let colorNamePt =document.getElementById("color-name-pt").value.trim();
-        const colorRal = document.getElementById("color-ral").value.trim().toUpperCase();
+        let colorRal = document.getElementById("color-ral").value.trim().toUpperCase().replace(" ", "");
         const colorHex = document.getElementById("color-hex-selector").value;
         const shiny_stock = document.getElementById("shinyStock").checked ? 1 : 0;
         const matte_stock = document.getElementById("matteStock").checked ? 1 : 0;
         const sanded_stock = document.getElementById("sandedStock").checked ? 1 : 0;
-
 
         if (colorNameFr.length < 3 && colorNameEn.length < 3 && colorNamePt.length < 3) return alert("Le nom de la couleur ne peut pas être vide dans toutes les langues.");
         

@@ -14,7 +14,7 @@ const init = async () => {
     if (!isAuth.valid) window.location.href = "../index.html";
     let colors = await fetchColors("");
 
-    
+
     const lang = navigator.language.slice(0, 2);
     let filter = document.getElementById("filterSelect").value;
     let search = document.getElementById("searchInput").value;
@@ -22,7 +22,7 @@ const init = async () => {
     permissions = await getPermissions(isAuth.value.permissions);
 
     updateColorTable(filter, lang, search, permissions);
-    if (permissions === "admin") document.querySelector(".admin-button").classList.remove("hide");
+    if (permissions === "admin" || permissions === "moderator") document.querySelector(".admin-button").classList.remove("hide");
 
 
     document.getElementById("filterSelect").addEventListener("change", async (e) => {
@@ -57,5 +57,5 @@ document.addEventListener("scroll", () => {
 });
 
 upPageBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
 });

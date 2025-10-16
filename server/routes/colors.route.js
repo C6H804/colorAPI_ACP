@@ -10,6 +10,7 @@ const modifyColorStock = require("../controllers/modifyColorStock.controller");
 const addColor = require("../controllers/addColor.controller");
 const deleteColor = require("../dao/deleteColor.dao");
 const getLastModification = require("../controllers/getLastModification.controller");
+const deleteColorController = require("../controllers/deleteColor.controller.js");
 
 router.use(auth);
 
@@ -20,7 +21,7 @@ router.post("/list", async (req, res) => {
     // le filtre peut contenir les champs suivants :
     // - name : string (shiny_stockn, matte_stock, sanded_stock ou no_stock)
 
-    const verify = await verifyPermissions(req.user, ["admin", "visitor", "modify_colors"]);
+    const verify = await verifyPermissions(req.user, ["admin", "moderator", "visitor", "modify_colors"]);
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
     // console.log("Filter received:", req.body.filter); // Debugging line
 
@@ -34,7 +35,7 @@ router.get("/lastUpdate", async (req, res) => {
     // demande un token JWT en header Authorization Bearer <token>
     // nécessite les permissions admin, visitor ou modify_colors
 
-    const verify = await verifyPermissions(req.user, ["admin", "visitor", "modify_colors"]);
+    const verify = await verifyPermissions(req.user, ["admin", "moderator", "visitor", "modify_colors"]);
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
 
     const result = await getLastModification();
@@ -47,7 +48,7 @@ router.post("/modifyStock/:id", async (req, res) => {
     // demande un token JWT en header Authorization Bearer <token>
     // nécessite les permissions admin ou color manager
     
-    const verify = await verifyPermissions(req.user, ["admin", "color manager"]);
+    const verify = await verifyPermissions(req.user, ["admin", "moderator", "color manager"]);
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
 
     const result = await modifyColorStock(req);
@@ -57,7 +58,7 @@ router.post("/modifyStock/:id", async (req, res) => {
 
 
 const adminOnly = async (req, res) => {
-    const verify = await verifyPermissions(req.user, ["admin"]);
+    const verify = await verifyPermissions(req.user, ["admin", "moderator"]);
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
     return { valid: true, message: "Authorized", status: 200, value: null };
 };
@@ -84,14 +85,10 @@ router.post("/deleteColor/:id", async (req, res) => {
     const adminCheck = await adminOnly(req, res);
     if (!adminCheck.valid) return res.status(adminCheck.status).json({ message: adminCheck.message });
 
-    if (!req.params.id) return res.status(400).json({ message: "id required", valid: false });
-    if (isNaN(req.params.id)) return res.status(400).json({ message: "id must be a number", valid: false });
-    if (req.params.id <= 0) return res.status(400).json({ message: "id must be greater than 0", valid: false });
-    if (req.params.id % 1 !== 0) return res.status(400).json({ message: "id must be an integer", valid: false });
-
-    const result = await deleteColor(req.params.id);
+    const result = await deleteColorController(req);
     if (!result.valid) return res.status(result.status ? result.status : 500).json({ message: result.message, status: result.status, valid: false });
-    return res.status(200).json({ message: result.message, valid: true });
+    return res.status(200).json({ message: result.message, status: result.status, valid: true });
+
 });
 
 

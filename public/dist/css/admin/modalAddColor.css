@@ -149,10 +149,10 @@
     padding: 0px;
 }
 
+
 @media (max-height: 700px) {
     .modal {
         max-height: 80vh;
         overflow-y: auto;
     }
 }
-

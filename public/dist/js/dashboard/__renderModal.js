@@ -7,9 +7,7 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
     if (window.modal) return;
     window.modal = true;
     console.log(id, color, name, type, shiny, matte, sanded);
-    const deleteButton = permissions === "admin" ? createElement("button", { class: "btn delete-btn", id: "delete-color" }, [
-        createElement("img", { src: "../dist/img/trash-fill.svg", alt: "Delete", title: "Supprimer la couleur" })
-    ]) : "";
+    const deleteButton = permissions === "admin" || permissions === "moderator" ? createElement("button", { class: "btn delete-btn", id: "delete-color" }, ["Supprimer"]) : "";
 
     const modalContainer = document.createElement("div");
     modalContainer.classList.add("modal-container");
@@ -66,13 +64,13 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
 
     modalContainer.appendChild(modalDiv);
     document.body.appendChild(modalContainer);
-    if (permissions !== "admin" && permissions !== "color manager") document.querySelectorAll(".modify-disable").forEach(e => e.setAttribute("disabled", "disabled"));
+    if (permissions !== "admin" && permissions !== "color manager" && permissions !== "moderator") document.querySelectorAll(".modify-disable").forEach(e => e.setAttribute("disabled", "disabled"));
     document.querySelector(".btn.cancel").addEventListener("click", closeModal);
     document.querySelector(".btn.save").addEventListener("click", async () => modifyStock(id, permissions));
 
     if (deleteButton) {
         document.getElementById("delete-color").addEventListener("click", async () => {
-            if (confirm("Êtes-vous sûr de vouloir supprimer cette couleur ? Cette action est irréversible.") && permissions === "admin") {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cette couleur ? Cette action est irréversible.") && (permissions === "admin" || permissions === "moderator")) {
                 try {
                     const response = await fetch("/api/colors/deleteColor/" + id, {
                         method: "POST",

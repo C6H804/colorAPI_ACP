@@ -28,7 +28,6 @@
 
 .logs .log:hover {
     background-color: #575757;
-    cursor: pointer;
     scale: 1.01;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
     transition-delay: 0s;

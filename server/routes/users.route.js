@@ -27,7 +27,7 @@ router.post("/login", async (req, res) => {
 router.use(auth);
 
 const adminOnly = async (req, res) => {
-    const verify = await verifyPermissions(req.user, ["admin"]);
+    const verify = await verifyPermissions(req.user, ["admin", "moderator"]);
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
     return { valid: true, message: "Authorized", status: 200, value: null };
 };
