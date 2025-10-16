@@ -6,7 +6,6 @@ import { loadModalAddUser } from "./__loadModalAddUser.js";
 import { getLogs } from "./__getLogs.js";
 import { loadLogs } from "./__loadLogs.js";
 import { changeUser } from "./__changeUser.js";
-import { calculateTimePassed } from "./__calculateTimePassed.js";
 import { getPermissions } from "./__getPermissions.js";
 import { getUserPermissions } from "./__getUserPermissions.js";
 import { getUserData } from "./__getUserData.js";

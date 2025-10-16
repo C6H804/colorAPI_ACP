@@ -57,7 +57,7 @@ const mockColors = [
     name_en: 'Cardinal Red',
     name_pt: 'Vermelho Cardeal',
     value: 'RAL3000',
-    color: '#FF0000',
+    color: 'FF0000',
     shiny_stock: 1,
     matte_stock: 0,
     sanded_stock: 1,

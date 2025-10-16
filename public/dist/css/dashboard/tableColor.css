@@ -10,7 +10,7 @@
 
 .top {
     display: grid;
-    grid-template-columns: 1fr 100px 2fr 100px 100px 100px;
+    grid-template-columns: 1fr 1fr 2fr 100px 100px 100px;
     text-align: center;
     gap: 10px;
     padding: 10px;
@@ -53,8 +53,8 @@
     transition-delay: 0.25s;
     border-radius: 40px;
     max-height: 26px;
+    text-wrap: nowrap;
     animation: rowSpawn 0.3s ease;
-
 }
 
 .table-row:hover {
@@ -95,11 +95,11 @@
     }
 
     .top {
-        grid-template-columns: 1fr 100px 2fr 100px 100px 100px;
+        grid-template-columns: 1fr 1fr 2fr 100px 100px 100px;
     }
 
     .table-row {
-        grid-template-columns: 1fr 100px 2fr 100px 100px 100px;
+        grid-template-columns: 1fr 1fr 2fr 100px 100px 100px;
     }
 }
 
@@ -117,11 +117,11 @@
     }
     
     .table-row {
-        grid-template-columns: 1fr 100px 2fr 40px 40px 40px;
+        grid-template-columns: 1fr 1fr 2fr 40px 40px 40px;
     }
 
     .top {
-        grid-template-columns: 1fr 100px 2fr 40px 40px 40px;
+        grid-template-columns: 1fr 1fr 2fr 40px 40px 40px;
     }
 }
 
@@ -139,9 +139,9 @@
     }
 
     .top {
-        grid-template-columns: 1fr 100px 30px 30px 30px;
+        grid-template-columns: 1fr 1fr 30px 30px 30px;
     }
     .table-row {
-        grid-template-columns: 1fr 100px 30px 30px 30px;
+        grid-template-columns: 1fr 1fr 30px 30px 30px;
     }
 }

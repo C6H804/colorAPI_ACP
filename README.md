@@ -401,7 +401,7 @@ npm test -- tests/frontend/
 
 ## Licence et Propriété
 
-Ce projet a été développé dans le cadre d'un stage dans l'entreprise ACPortail.
+Ce projet a été développé dans le cadre d'un stage dans l'entreprise ACPORTAIL.
 
 **Développeur** : Stagiaire développeur junior  
 **Contexte** : Projet de stage - Système de gestion des stocks de couleurs  
@@ -416,4 +416,4 @@ Ce projet a été développé dans le cadre d'un stage dans l'entreprise ACPorta
 
 ---
 
-**Développé avec ♥ au sein de l'entreprise ACPortail à Bégaar**
+**Développé avec ♥ au sein de l'entreprise ACPORTAIL à Bégaar**

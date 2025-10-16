@@ -1,5 +1,5 @@
 import { createElement } from "../components/_CreateElement.js";
-import { calculateTimePassed } from "./__calculateTimePassed.js";
+import { calculateTimePassed } from "../components/__calculateTimePassed.js";
 
 export const loadLogs = (logs, lang) => {
     const logsContainer = document.getElementById("logs-container");

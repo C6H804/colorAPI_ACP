@@ -12,7 +12,7 @@ const verifyUserSchema = async (data) => {
     try {
         const userSchema = joi.object({
             username: joi.string().regex(/^[a-z_]+$/).min(3).max(255).required(),
-            password: joi.string().min(10).max(50).pattern(new RegExp("^[a-zA-Z0-9]{10,50}$")).required(),
+            password: joi.string().min(8).max(50).pattern(new RegExp("^[a-zA-Z0-9]{8,50}$")).required(),
             description: joi.string().max(16777215).optional()
         });
         const result = await userSchema.validateAsync({ username, password, description }, { abortEarly: false });

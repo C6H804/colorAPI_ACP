@@ -10,15 +10,18 @@ const app = express();
 
 app.use(cors({
     origin: [
-        "127.0.0.1"
+        "http://127.0.0.1",
+        "http://localhost",
+        "http://193.252.183.142",
+        "http://192.168.1.63",
+        "https://acportail.fr",
+        "null" // Pour les fichiers ouverts localement (file://)
         // insérer ici les adresses pour l'accés à l'API
     ],
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
-
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));
@@ -40,6 +43,13 @@ const register = require("./routes/register.route");
 const colors = require("./routes/colors.route");
 const users = require("./routes/users.route");
 const auth = require("./routes/auth.route");
+
+
+
+
+app.get("/apitest", (req, res) => {
+    res.status(200).json({ message: "Test route is working", status: 200 });
+});
 
 app.use("/api/colors", colors);
 app.use("/api", users);

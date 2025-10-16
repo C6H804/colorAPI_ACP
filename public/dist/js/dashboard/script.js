@@ -14,10 +14,11 @@ const init = async () => {
     if (!isAuth.valid) window.location.href = "../index.html";
     let colors = await fetchColors("");
 
+    
     const lang = navigator.language.slice(0, 2);
     let filter = document.getElementById("filterSelect").value;
     let search = document.getElementById("searchInput").value;
-
+    
     permissions = await getPermissions(isAuth.value.permissions);
 
     updateColorTable(filter, lang, search, permissions);

@@ -30,7 +30,8 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
             createElement("div", { class: "color-info" }, [
                 createElement("div", { class: "label-color-container" }, [
                     createElement("label", { class: "label-color-ral" }, [type === "RAL" ? "RAL" + value : value]),
-                    createElement("label", { class: "label-color-rgb" }, [`rgb (${rgb[0]}, ${rgb[1]}, ${rgb[2]})`])
+                    createElement("label", { class: "label-color-rgb" }, [`rgb (${rgb[0]}, ${rgb[1]}, ${rgb[2]})`]),
+                    createElement("label", { class: "label-color-hex" }, [color !== "#" ? color : "N/A"])
                 ]),
                 createElement("span", {
                     class: "color-btn", style: `background-color: ${color};`, onclick: () => {

@@ -106,14 +106,17 @@
 }
 
 
-.modal {
+.modal, .modal-color {
     animation: spawnModal 0.4s ease-out;
 }
 
 @keyframes spawnModal {
     0% {
-        transform: translate(0, -100vh);
+        transform: translate(0, -50vh);
         opacity: 0;
+    }
+    30% {
+        opacity: 0.1;
     }
     100% {
         transform: translate(0, 0);

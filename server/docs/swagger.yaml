@@ -197,7 +197,7 @@ paths:
                       example: "RAL3000"
                     color:
                       type: string
-                      example: "#FF0000"
+                      example: "FF0000"
                     shiny_stock:
                       type: integer
                       enum: [0, 1]

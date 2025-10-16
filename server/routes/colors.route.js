@@ -9,6 +9,7 @@ const verifyPermissions = require("../utils/_VerifyPermissions");
 const modifyColorStock = require("../controllers/modifyColorStock.controller");
 const addColor = require("../controllers/addColor.controller");
 const deleteColor = require("../dao/deleteColor.dao");
+const getLastModification = require("../controllers/getLastModification.controller");
 
 router.use(auth);
 
@@ -23,9 +24,23 @@ router.post("/list", async (req, res) => {
     if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
     // console.log("Filter received:", req.body.filter); // Debugging line
 
+
     const result = await getColorsController(req.body.filter);
     res.status(result.status).json(result);
 });
+
+router.get("/lastUpdate", async (req, res) => {
+    // renvoie la date de la dernière modification de la table colors
+    // demande un token JWT en header Authorization Bearer <token>
+    // nécessite les permissions admin, visitor ou modify_colors
+
+    const verify = await verifyPermissions(req.user, ["admin", "visitor", "modify_colors"]);
+    if (!verify.valid) return res.status(verify.status).json({ message: verify.message });
+
+    const result = await getLastModification();
+    return res.status(result.status).json({ message: result.message, valid: result.valid, value: result.value });
+
+    }); 
 
 router.post("/modifyStock/:id", async (req, res) => {
     // modifie le stock d'une couleur à partir de son id et du nouveau stock

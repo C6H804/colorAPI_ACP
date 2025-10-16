@@ -13,9 +13,9 @@ export const calculateTimePassed = (date, lang) => {
             "hours": "heures",
             "minute": "minute",
             "minutes": "minutes",
-            "agoStart": "il y a ",
+            "agoStart": "Il y a ",
             "agoEnd": "",
-            "now": "à l'instant"
+            "now": "À l'instant"
         },
         "en": {
             "year": "year",
@@ -32,7 +32,7 @@ export const calculateTimePassed = (date, lang) => {
             "minutes": "minutes",
             "agoStart": "",
             "agoEnd": " ago",
-            "now": "just now"
+            "now": "Just now"
         },
         "pt": {
             "year": "ano",
@@ -47,9 +47,9 @@ export const calculateTimePassed = (date, lang) => {
             "hours": "horas",
             "minute": "minuto",
             "minutes": "minutos",
-            "agoStart": "há ",
+            "agoStart": "Há ",
             "agoEnd": "",
-            "now": "agora mesmo"
+            "now": "Agora mesmo"
         }
     };
 
