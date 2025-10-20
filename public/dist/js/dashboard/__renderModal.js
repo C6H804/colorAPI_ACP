@@ -42,7 +42,7 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
         createElement("div", { class: "modal-body" }, [
             createElement("div", { class: "stock-chk-container", id: "modalForm" }, [
                 createElement("div", { class: "matteStock" }, [
-                    createElement("label", { for: "matteStock" }, ["Mat"]),
+                    createElement("label", { for: "matteStock" }, ["Mât"]),
                     createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "matteStock", ...(matte === 1 ? { checked: "checked", } : {}) })
                 ]),
                 createElement("div", { class: "shinyStock" }, [

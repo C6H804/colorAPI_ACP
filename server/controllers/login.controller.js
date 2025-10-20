@@ -5,6 +5,7 @@ const CompareHash = require("../utils/_CompareHash");
 const CreateToken = require("../utils/_CreateToken");
 const UserExist = require("../utils/_UserExist").usernameExist;
 const updateLastConnexion = require("../dao/updateLastConnexion.dao");
+const verifyPermissions = require("../utils/_VerifyPermissions");
 const { valid } = require("joi");
 
 
@@ -26,7 +27,10 @@ const loginController = async(req) => {
 
     const payload = { id: user.value.id, username: user.value.username };
 
-    const token = await CreateToken(payload);
+    const isPermanent = await verifyPermissions(user, ["permanent"])
+
+
+    const token = await CreateToken(payload, isPermanent.valid);
     if (!token.valid) return { message: "server error", status: 500, valid: false };
 
     // update last_connection

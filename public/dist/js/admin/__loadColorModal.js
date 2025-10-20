@@ -49,7 +49,7 @@ export const loadColorModal = async () => {
                 ]),
                 createElement("div", { class: "stock-chk-container" }, [
                     createElement("div", { class: "matteStock" }, [
-                        createElement("label", { for: "matteStock" }, ["Mat"]),
+                        createElement("label", { for: "matteStock" }, ["Mât"]),
                         createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "matteStock" })
                     ]),
                     createElement("div", { class: "shinyStock" }, [

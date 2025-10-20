@@ -24,10 +24,10 @@ export const saveEditData = async (user) => {
         });
         const data = await response.json();
         // console.log(data); // TEMP
-        if (!data.valid) return alert("Error: " + data.message);
+        if (!data.valid) return alert("Erreur : " + data.message);
     } catch (error) {
         console.error("Error updating user:", error);
-        alert("Failed to update user. Please try again later.");
+        alert("Échec de la mise à jour de l'utilisateur. Veuillez réessayer plus tard.");
     }
     loadUserList(await getUserList());
 

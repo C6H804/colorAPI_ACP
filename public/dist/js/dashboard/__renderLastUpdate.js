@@ -25,7 +25,7 @@ const dictionary = {
 export const renderLastUpdate = async (lang = "fr") => {
     let text = dictionary[lang].loading;
     let header = dictionary[lang].color;
-    let color = "#3e3e3e";
+    let color = "";
     let title = dictionary[lang].loading;
     let date = new Date().toLocaleString();
     try {
@@ -36,7 +36,7 @@ export const renderLastUpdate = async (lang = "fr") => {
             text = "";
             const oldValues = [lastUpdateData.value.change_description[41], lastUpdateData.value.change_description[50], lastUpdateData.value.change_description[61]];
             const newValues = [lastUpdateData.value.change_description[91], lastUpdateData.value.change_description[100], lastUpdateData.value.change_description[111]];
-            if (oldValues[0] !== newValues[0]) text += "Mat : " + oldValues[0] + " → " + newValues[0] + " | ";
+            if (oldValues[0] !== newValues[0]) text += "Mât : " + oldValues[0] + " → " + newValues[0] + " | ";
             if (oldValues[1] !== newValues[1]) text += "Brillant : " + oldValues[1] + " → " + newValues[1] + " | ";
             if (oldValues[2] !== newValues[2]) text += "Sablée : " + oldValues[2] + " → " + newValues[2] + " | ";
             text = text.replace(/undefined/g, "0");
@@ -62,8 +62,24 @@ export const renderLastUpdate = async (lang = "fr") => {
     } catch (error) {
         text = "Erreur lors de la récupération des données de la dernière mise à jour";
     }
-    document.getElementById("lastUpdateName").innerText = header;
-    document.getElementById("lastUpdateText").innerText = text;
-    document.getElementById("colorUpdated-value").style.backgroundColor = color;
+    const lastUpdateName = document.getElementById("lastUpdateName");
+    const lastUpdateText = document.getElementById("lastUpdateText");
+    const colorUpdatedValue = document.getElementById("colorUpdated-value");
+
+    lastUpdateName.innerText = header;
+    lastUpdateName.classList.add("colorName-spawn");
+
+    lastUpdateText.innerText = text;
+    lastUpdateText.classList.add("colorText-spawn");
+
+    colorUpdatedValue.style.backgroundColor = color;
+    colorUpdatedValue.classList.add("colorValue-spawn");
+
+    // lastUpdateName.addEventListener("animationend", () => {
+    //     lastUpdateName.classList.remove("colorName-spawn");
+    //     lastUpdateText.classList.remove("colorText-spawn");
+    //     colorUpdatedValue.classList.remove("colorValue-spawn");
+    // }, { once: true });
+
     document.querySelector(".lastUpdate-container").title = title;
 };

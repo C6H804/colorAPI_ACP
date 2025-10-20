@@ -61,14 +61,16 @@ export const loadModalAddUser = async () => {
             });
             const data = await newUser.json();
             if (!data.valid) {
-                alert("Erreur : " + data.message);
+                alert("échec de l'ajout de l'utilisateur : mot de passe ou nom d'utilisateur invalide.");
+            } else {
+                alert("Utilisateur créé avec succès.");
+                closeModal();
+                loadUserList(await getUserList());
             }
         } catch (error) {
             console.error("Error adding user:", error);
             alert("échec de l'ajout de l'utilisateur.");
         }
-        loadUserList(await getUserList());
-        closeModal();
     });
     modalContainer.addEventListener("click", (event) => {
         if (event.target === modalContainer) {

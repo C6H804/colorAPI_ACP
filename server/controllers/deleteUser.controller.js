@@ -12,7 +12,7 @@ const deleteUser = async (req, userId) => {
     // verify if user is not admin (cannot delete admin)
     const isAdmin = await isUserAdmin(userId);
     if (!isAdmin.valid) return { valid: false, message: isAdmin.message, status: isAdmin.status };
-    if (isAdmin.value) return { valid: false, message: "Cannot delete an admin user", status: 403 };
+    if (isAdmin.value) return { valid: false, message: "impossible de supprimer utilisateur admin", status: 403 };
 
     // delete user from user_permissions
     const deletePermissionsResult = await deletePermissions(userId);

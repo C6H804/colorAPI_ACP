@@ -124,7 +124,7 @@ h1 {
     color: white;
     display: flex;
     flex-direction: column;
-    background-color: #3E3E3E;
+    background-color: #5e5e5e;
     padding: 0.25em 2em;
     border-radius: 1em;
     align-self: stretch;
@@ -144,3 +144,39 @@ h1 {
     width: 100%;
     display: inline-block;
 }
+
+
+
+.colorName-spawn {
+    animation: textSpawn 0.3s ease-in-out;
+    width: fit-content;
+}
+
+@keyframes textSpawn {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1; 
+    }
+}
+
+.colorValue-spawn {
+    animation: valueSpawn 0.5s ease-in-out;
+    justify-self: center;
+}
+
+@keyframes valueSpawn {
+    0%{
+        width: 0;
+    }
+    100%{
+        width: 100%;
+    }
+}
+
+.colorText-spawn {
+    animation: textSpawn 0.3s ease-in-out;
+    width: fit-content;
+}
+

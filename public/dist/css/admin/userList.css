@@ -19,6 +19,11 @@
     text-overflow: ellipsis;
 }
 
+.user:first-child {
+    background-color: #2e2e2e;
+    border: dotted 2px #3e3e3e;
+}
+
 .user .username {
     font-size: 1.5em;
     font-weight: bold;
@@ -32,12 +37,11 @@
 .user .username::after {
     content: "";
     display: inline-block;
-    background-color: #6e6e6e;
+    background-color: #575757;
     width: 100%;
     height: 4px;
     border-radius: 5px;
 }
-
 
 .user .description {
     font-size: 1.2em;
