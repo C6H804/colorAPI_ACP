@@ -8,7 +8,7 @@ describe('Joi Schema Validation', () => {
     test('should validate correct user data', async () => {
       const validUserData = {
         username: 'testuser',
-        password: 'testpassword123',
+        password: 'TestPassword123',
         description: 'Test user description'
       };
 
@@ -19,7 +19,7 @@ describe('Joi Schema Validation', () => {
       expect(result.message).toBe('validation successful');
       expect(result.value).toMatchObject({
         username: 'testuser',
-        password: 'testpassword123',
+        password: 'TestPassword123',
         description: 'Test user description'
       });
     });
@@ -27,7 +27,7 @@ describe('Joi Schema Validation', () => {
     test('should validate user without description', async () => {
       const userData = {
         username: 'testuser',
-        password: 'testpassword123'
+        password: 'TestPassword123'
       };
 
       const result = await verifyUser(userData);
@@ -39,7 +39,7 @@ describe('Joi Schema Validation', () => {
     test('should reject invalid username (too short)', async () => {
       const userData = {
         username: 'ab',
-        password: 'testpassword123'
+        password: 'TestPassword123'
       };
 
       const result = await verifyUser(userData);
@@ -52,7 +52,7 @@ describe('Joi Schema Validation', () => {
     test('should reject invalid username (uppercase)', async () => {
       const userData = {
         username: 'TestUser',
-        password: 'testpassword123'
+        password: 'TestPassword123'
       };
 
       const result = await verifyUser(userData);
@@ -70,24 +70,25 @@ describe('Joi Schema Validation', () => {
       const result = await verifyUser(userData);
       
       expect(result.valid).toBe(false);
-      expect(result.message).toContain('length must be at least 10');
+      expect(result.message).toContain('length must be at least 8');
     });
 
-    test('should reject invalid password (special characters)', async () => {
+    test('should accept password with special characters', async () => {
       const userData = {
         username: 'testuser',
-        password: 'password@123!'
+        password: 'Password@123!'
       };
 
       const result = await verifyUser(userData);
       
-      expect(result.valid).toBe(false);
-      expect(result.message).toContain('pattern');
+      expect(result.valid).toBe(true);
+      expect(result.status).toBe(200);
+      expect(result.message).toBe('validation successful');
     });
 
     test('should reject missing username', async () => {
       const userData = {
-        password: 'testpassword123'
+        password: 'TestPassword123'
       };
 
       const result = await verifyUser(userData);
@@ -105,6 +106,58 @@ describe('Joi Schema Validation', () => {
       
       expect(result.valid).toBe(false);
       expect(result.message).toBe('missing username or password');
+    });
+
+    test('should reject password without uppercase letter', async () => {
+      const userData = {
+        username: 'testuser',
+        password: 'password123'
+      };
+
+      const result = await verifyUser(userData);
+      
+      expect(result.valid).toBe(false);
+      expect(result.status).toBe(422);
+      expect(result.message).toContain('pattern');
+    });
+
+    test('should reject password without lowercase letter', async () => {
+      const userData = {
+        username: 'testuser',
+        password: 'PASSWORD123'
+      };
+
+      const result = await verifyUser(userData);
+      
+      expect(result.valid).toBe(false);
+      expect(result.status).toBe(422);
+      expect(result.message).toContain('pattern');
+    });
+
+    test('should reject password without number', async () => {
+      const userData = {
+        username: 'testuser',
+        password: 'Password'
+      };
+
+      const result = await verifyUser(userData);
+      
+      expect(result.valid).toBe(false);
+      expect(result.status).toBe(422);
+      expect(result.message).toContain('pattern');
+    });
+
+    test('should accept password with mixed case, numbers and special chars', async () => {
+      const userData = {
+        username: 'testuser',
+        password: 'MyP@ssw0rd!'
+      };
+
+      const result = await verifyUser(userData);
+      
+      expect(result.valid).toBe(true);
+      expect(result.status).toBe(200);
+      expect(result.message).toBe('validation successful');
     });
 
     test('should reject empty data', async () => {

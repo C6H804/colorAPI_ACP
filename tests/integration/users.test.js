@@ -282,7 +282,7 @@ describe('Users Routes', () => {
         .set('Authorization', `Bearer ${mockTokens.visitor}`)
         .send({
           username: 'testuser',
-          password: 'testpassword123'
+          password: 'TestPassword123'
         })
         .expect(403);
 
@@ -294,7 +294,7 @@ describe('Users Routes', () => {
         .post('/api/addUser')
         .set('Authorization', `Bearer ${mockTokens.admin}`)
         .send({
-          password: 'testpassword123'
+          password: 'TestPassword123'
         })
         .expect(400);
 
@@ -319,7 +319,7 @@ describe('Users Routes', () => {
         .set('Authorization', `Bearer ${mockTokens.admin}`)
         .send({
           username: 'AB',
-          password: 'testpassword123'
+          password: 'TestPassword123'
         })
         .expect(400);
 
@@ -345,7 +345,7 @@ describe('Users Routes', () => {
         .set('Authorization', `Bearer ${mockTokens.admin}`)
         .send({
           username: 'admin',
-          password: 'testpassword123'
+          password: 'TestPassword123'
         })
         .expect(400);
 

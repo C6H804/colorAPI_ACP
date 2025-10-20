@@ -15,27 +15,27 @@ echo.
 
 REM Check if .env file already exists
 if exist .env (
-    echo WARNING: .env file already exists!
+    echo attention le fichier .env existe déjà !
     echo.
-    set /p "overwrite=Do you want to overwrite it? (y/N): "
-    if /i not "!overwrite!"=="y" (
-        echo Setup cancelled. Existing .env file preserved.
+    set /p "overwrite=voulez-vous le remplacer ? (O/N): "
+    if /i not "!overwrite!"=="O" (
+        echo initialisation annulée par l'utilisateur.
         pause
         exit /b 0
     )
     echo.
-    echo Backing up existing .env to .env.backup...
+    echo sauvegarde de l'ancien fichier .env...
     copy .env .env.backup >nul 2>&1
     if errorlevel 1 (
-        echo ERROR: Failed to backup existing .env file!
+        echo ERREUR : échec de la création de la sauvegarde du fichier .env !
         pause
         exit /b 1
     )
-    echo Backup created successfully.
+    echo sauvegarde créée avec succès.
     echo.
 )
 
-echo Creating .env file with default configuration...
+echo création du fichier .env avec les valeurs par défaut...
 echo.
 
 REM Create the .env file with default values
@@ -46,8 +46,8 @@ echo # =========================================================================
 echo # Generated on %date% at %time%
 echo.
 echo # MySQL Database Configuration
-echo DB_HOST=ca664385-001.eu.clouddb.ovh.net
-echo DB_USERNAME=Alan
+echo DB_HOST=
+echo DB_USERNAME=
 echo DB_PORT=
 echo DB_DATABASE=
 echo DB_PASSWORD=
@@ -87,8 +87,8 @@ echo ===============================================
 echo.
 
 REM Ask if user wants to customize the configuration
-set /p "customize=Do you want to customize any settings? (y/N): "
-if /i "!customize!"=="y" (
+set /p "customize=voulez-vous personnaliser les paramètres ? (O/N): "
+if /i "!customize!"=="O" (
     echo.
     echo Opening .env file for editing...
     if exist "C:\Program Files\Notepad++\notepad++.exe" (
@@ -96,22 +96,22 @@ if /i "!customize!"=="y" (
     ) else if exist "C:\Windows\System32\notepad.exe" (
         start notepad .env
     ) else (
-        echo Please edit the .env file manually with your preferred text editor.
+        echo veuillez ouvrir le fichier .env avec votre éditeur de texte préféré.
     )
     echo.
-    echo IMPORTANT SECURITY NOTES:
-    echo - Change the JWT_SECRET to a secure random string in production
-    echo - Update database credentials if using a different database
-    echo - Never commit the .env file to version control
-    echo - Add .env to your .gitignore file
+    echo NOTES DE SÉCURITÉ IMPORTANTES :
+    echo - changez le JWT_SECRET pour une chaîne aléatoire sécurisée en production
+    echo - mettez à jour les identifiants de base de données si vous utilisez une base différente
+    echo - ne commitez jamais le fichier .env dans le contrôle de version
+    echo - ajoutez .env à votre fichier .gitignore
     echo.
 )
 
-echo Setup completed successfully!
+echo configuration terminée avec succès !
 echo.
-echo Next steps:
-echo 1. Review and update the .env file if needed
-echo 2. Install dependencies: npm install
-echo 3. Start the server: npm start
+echo prochaines étapes :
+echo 1. examinez et mettez à jour le fichier .env si nécessaire
+echo 2. installez les dépendances : npm install
+echo 3. démarrez le serveur : run.bat
 echo.
 pause

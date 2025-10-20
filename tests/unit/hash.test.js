@@ -4,7 +4,7 @@ const Hash = require('../../server/utils/_Hash');
 describe('Hash Utilities', () => {
   describe('Hash function', () => {
     test('should hash a password successfully', async () => {
-      const password = 'testpassword123';
+      const password = 'TestPassword123';
       const result = await Hash(password);
       
       expect(result.valid).toBe(true);
@@ -25,7 +25,7 @@ describe('Hash Utilities', () => {
 
   describe('CompareHash function', () => {
     test('should compare hash correctly when passwords match', async () => {
-      const password = 'testpassword123';
+      const password = 'TestPassword123';
       const hashResult = await Hash(password);
       const hash = hashResult.value;
       
@@ -38,8 +38,8 @@ describe('Hash Utilities', () => {
     });
 
     test('should compare hash correctly when passwords do not match', async () => {
-      const password = 'testpassword123';
-      const wrongPassword = 'wrongpassword456';
+      const password = 'TestPassword123';
+      const wrongPassword = 'WrongPassword456';
       const hashResult = await Hash(password);
       const hash = hashResult.value;
       
@@ -52,7 +52,7 @@ describe('Hash Utilities', () => {
     });
 
     test('should handle invalid hash format', async () => {
-      const password = 'testpassword123';
+      const password = 'TestPassword123';
       const invalidHash = 'invalid-hash';
       
       const compareResult = await CompareHash(password, invalidHash);

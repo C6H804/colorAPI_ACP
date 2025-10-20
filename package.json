@@ -7,7 +7,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "dev": "nodemon server/app.js"
+    "dev": "nodemon server/app.js",
+    "postinstall": "setup-env.bat"
   },
   "jest": {
     "projects": [

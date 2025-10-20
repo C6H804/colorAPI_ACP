@@ -38,7 +38,7 @@ describe('API Integration Tests', () => {
       }
 
       // Mock response pour un utilisateur valide
-      if (username === 'testuser' && password === 'testpassword123') {
+      if (username === 'testuser' && password === 'TestPassword123') {
         return res.status(200).json({
           token: 'mock-jwt-token',
           valid: true,
@@ -73,7 +73,7 @@ describe('API Integration Tests', () => {
         .post('/api/login')
         .send({
           username: 'testuser',
-          password: 'testpassword123'
+          password: 'TestPassword123'
         })
         .expect(200);
 

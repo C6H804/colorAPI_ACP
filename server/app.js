@@ -14,6 +14,7 @@ app.use(cors({
         "http://localhost",
         "http://193.252.183.142",
         "http://192.168.1.63",
+        "http://188.165.53.185", // server ovh
         "https://acportail.fr",
         "null" // Pour les fichiers ouverts localement (file://)
         // insérer ici les adresses pour l'accés à l'API
