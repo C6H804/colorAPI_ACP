@@ -13,6 +13,7 @@ const init = async () => {
     const isAuth = await Auth();
     if (!isAuth.valid) window.location.href = "../index.html";
     let colors = await fetchColors("");
+    console.log(colors);
 
 
     const lang = navigator.language.slice(0, 2);
@@ -58,4 +59,9 @@ document.addEventListener("scroll", () => {
 
 upPageBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+document.getElementById("resetSearchBtn").addEventListener("click", () => {
+    document.getElementById("searchInput").value = '';
+    updateColorTable(document.getElementById("filterSelect").value, navigator.language.slice(0,2), '', permissions);
 });

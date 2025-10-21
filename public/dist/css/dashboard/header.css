@@ -53,16 +53,43 @@ h1 {
     height: fit-content;
 }
 
-.searchArea input {
+.searchArea .searchBar {
     width: 50%;
     padding: 8px;
     font-size: 1.2em;
-    overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
     background-color: #3E3E3E;
     border: solid 2px black;
     border-radius: 5px;
     color: rgba(255, 255, 255, 0.8);
+    display: grid;
+    grid-template-columns: 1fr auto;
 }
+
+.searchBarInput {
+    font-size: 1.2em;
+    overflow: hidden;
+    border: none;
+    background-color: #00000000;
+    text-overflow: ellipsis;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.searchBarInput:focus {
+    outline: none;
+}
+
+.resetSearch {
+    font-size: 1.2em;
+    background-color: #3E3E3E;
+    border: none;
+    border-radius: 5px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    padding: 0 10px;
+}
+
 
 .filter-area {
     color: white;

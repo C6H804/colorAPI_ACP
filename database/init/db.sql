@@ -33,21 +33,51 @@ CREATE TABLE users_permissions (
 );
 
 
+-- old colors table structure --
+-- DROP TABLE IF EXISTS colors;
+-- CREATE TABLE colors (
+--     id INT PRIMARY KEY AUTO_INCREMENT,
+--     type ENUM("RAL", "OTHER") DEFAULT "RAL",
+--     value VARCHAR(255),
+--     color VARCHAR(255) NOT NULL,
+--     name_en VARCHAR(255) NOT NULL,
+--     name_fr VARCHAR(255) NOT NULL,
+--     name_pt VARCHAR(255) NOT NULL,
+--     deleted BOOLEAN DEFAULT 0,
+--     shiny_stock BOOLEAN DEFAULT 0,
+--     matte_stock BOOLEAN DEFAULT 0,
+--     sanded_stock BOOLEAN DEFAULT 0
+-- );
 
+-- new colors table structure --
 DROP TABLE IF EXISTS colors;
 CREATE TABLE colors (
     id INT PRIMARY KEY AUTO_INCREMENT,
     type ENUM("RAL", "OTHER") DEFAULT "RAL",
-    value VARCHAR(255),
-    color VARCHAR(255) NOT NULL,
-    name_en VARCHAR(255) NOT NULL,
-    name_fr VARCHAR(255) NOT NULL,
-    name_pt VARCHAR(255) NOT NULL,
+    value VARCHAR(255) DEFAULT "UNDEFINED",
+    color VARCHAR(255) DEFAULT "000000",
+    name_en VARCHAR(255) DEFAULT "Undefined",
+    name_fr VARCHAR(255) DEFAULT "Indéfini",
+    name_pt VARCHAR(255) DEFAULT "Indefinido",
     deleted BOOLEAN DEFAULT 0,
-    shiny_stock BOOLEAN DEFAULT 0,
-    matte_stock BOOLEAN DEFAULT 0,
-    sanded_stock BOOLEAN DEFAULT 0
+    shiny_stock TINYINT	 DEFAULT 0,
+    matte_stock TINYINT	 DEFAULT 0,
+    sanded_stock TINYINT DEFAULT 0
 );
+
+-- -- changes colors table structure --
+-- ALTER TABLE colors CHANGE shiny_stock shiny_stock TINYINT DEFAULT 0;
+-- ALTER TABLE colors CHANGE matte_stock matte_stock TINYINT DEFAULT 0;
+-- ALTER TABLE colors CHANGE sanded_stock sanded_stock TINYINT DEFAULT 0;
+-- ALTER TABLE colors CHANGE name_en name_en VARCHAR(255) DEFAULT "Undefined";
+-- ALTER TABLE colors CHANGE name_fr name_fr VARCHAR(255) DEFAULT "Indéfini";
+-- ALTER TABLE colors CHANGE name_pt name_pt VARCHAR(255) DEFAULT "Indefinido";
+-- ALTER TABLE colors CHANGE color color VARCHAR(255) DEFAULT "000000";
+-- ALTER TABLE colors CHANGE value value VARCHAR(255) DEFAULT "UNDEFINED";
+
+UPDATE colors SET shiny_stock = 1 WHERE shiny_stock = 2;
+UPDATE colors SET matte_stock = 1 WHERE matte_stock = 2;
+UPDATE colors SET sanded_stock = 1 WHERE sanded_stock = 2;
 
 DROP TABLE IF EXISTS colors_changes_types;
 CREATE TABLE colors_changes_types (

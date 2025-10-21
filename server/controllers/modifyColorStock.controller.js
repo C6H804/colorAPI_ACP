@@ -20,6 +20,10 @@ const modifyColorStock = async (req) => {
     const logMessage = `Stock modifié. Ancien stock - ${oldStockMessage}. Nouveau stock - ${newStockMessage}.`;
 
 
+    if (verifyStock.value.shiny_stock < 0 || verifyStock.value.shiny_stock > 2 || 
+        verifyStock.value.matte_stock < 0 || verifyStock.value.matte_stock > 2 ||
+        verifyStock.value.sanded_stock < 0 || verifyStock.value.sanded_stock > 2) return { status: 400, valid: false, message: "Stock values must be between 0 and 2" };
+
     const newStock = {
         shiny_stock: verifyStock.value.shiny_stock,
         matte_stock: verifyStock.value.matte_stock,

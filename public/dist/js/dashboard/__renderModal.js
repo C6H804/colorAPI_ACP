@@ -64,7 +64,9 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
 
     modalContainer.appendChild(modalDiv);
     document.body.appendChild(modalContainer);
+
     if (permissions !== "admin" && permissions !== "color manager" && permissions !== "moderator") document.querySelectorAll(".modify-disable").forEach(e => e.setAttribute("disabled", "disabled"));
+    
     document.querySelector(".btn.cancel").addEventListener("click", closeModal);
     document.querySelector(".btn.save").addEventListener("click", async () => modifyStock(id, permissions));
 

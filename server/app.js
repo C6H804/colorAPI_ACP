@@ -35,9 +35,9 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
     customSiteTitle: "Color API Documentation"
 }));
 
-app.get("/", (req, res) => {
-    res.status(200).json({ message: "API is running", status: 200 });
-});
+// app.get("/", (req, res) => {
+//     res.status(200).json({ message: "API is running", status: 200 });
+// });
 
 const login = require("./routes/login.route");
 const register = require("./routes/register.route");

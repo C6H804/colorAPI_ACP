@@ -15,6 +15,7 @@ export const loadColorsTable = (colors, lang = "en", permissions = false) => {
         tableBody.appendChild(createElement("div", { class: "no-colors empty" }, [message[lang]]));
     } else {
         colors.forEach(e => {
+            if (e.value === "RAL0000") return; // Ignorer les entrées RAL0000
             const color = '#' + e.color;
             const names = {
                 fr: e.name_fr,
