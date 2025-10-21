@@ -7,18 +7,21 @@ const dictionary = {
         loading: "Chargement...",
         outOfStock: "hors stock",
         available: "disponible",
+        waiting: "en attente",
     },
     en: {
         color: "Color : ...",
         loading: "Loading...",
         outOfStock: "out of stock",
         available: "available",
+        waiting: "waiting",
     },
     pt: {
         color: "Cor : ...",
         loading: "Carregando...",
         outOfStock: "fora de estoque",
         available: "disponível",
+        waiting: "aguardando",
     }
 }
 
@@ -42,6 +45,7 @@ export const renderLastUpdate = async (lang = "fr") => {
             text = text.replace(/undefined/g, "0");
             text = text.replace(/0/g, dictionary[lang].outOfStock);
             text = text.replace(/1/g, dictionary[lang].available);
+            text = text.replace(/2/g, dictionary[lang].waiting);
             text = text.slice(0, -3);
 
             header = lastUpdateData.value.value + " - ";

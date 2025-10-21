@@ -1,11 +1,17 @@
 import { closeModal } from "./__closeModal.js";
 import { updateColorTable } from "./__updateColorTable.js";
 
-export const modifyStock = async (id, permissions) => {
+export const modifyStock = async (id, permissions, stock) => {
     if (!permissions) return;
-    const shiny = document.getElementById("shinyStock").checked ? 1 : 0;
-    const matte = document.getElementById("matteStock").checked ? 1 : 0;
-    const sanded = document.getElementById("sandedStock").checked ? 1 : 0;
+    // const shiny = document.getElementById("shinyStock").checked ? 1 : 0;
+    // const matte = document.getElementById("matteStock").checked ? 1 : 0;
+    // const sanded = document.getElementById("sandedStock").checked ? 1 : 0;
+    
+    const shiny = stock.shiny;
+    const matte = stock.matte;
+    const sanded = stock.sanded;
+    console.log({shiny, matte, sanded});
+
     try {
         const response = await fetch("/api/colors/modifyStock/" + id, {
             method: "POST",

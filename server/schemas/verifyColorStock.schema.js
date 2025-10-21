@@ -1,9 +1,9 @@
 const joi = require("joi");
 
 const colorStockSchema = joi.object({
-    shiny_stock: joi.number().integer().min(0).max(1).optional(),
-    matte_stock: joi.number().integer().min(0).max(1).optional(),
-    sanded_stock: joi.number().integer().min(0).max(1).optional()
+    shiny_stock: joi.number().integer().min(0).max(2).optional(),
+    matte_stock: joi.number().integer().min(0).max(2).optional(),
+    sanded_stock: joi.number().integer().min(0).max(2).optional()
 });
 
 

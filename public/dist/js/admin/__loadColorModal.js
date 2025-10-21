@@ -20,6 +20,13 @@ const getRandomColor = () => {
 };
 
 export const loadColorModal = async () => {
+
+    let stock = {
+        shiny: 0,
+        matte: 0,
+        sanded: 0
+    };
+    const icons = ["../dist/img/Cross.svg", "../dist/img/Check.svg", "../dist/img/Timer.svg"];
     const existingModal = document.querySelector(".modal-container");
     if (existingModal) existingModal.remove();
     const modalContainer = createElement("div", { class: "modal-container" }, [
@@ -50,15 +57,20 @@ export const loadColorModal = async () => {
                 createElement("div", { class: "stock-chk-container" }, [
                     createElement("div", { class: "matteStock" }, [
                         createElement("label", { for: "matteStock" }, ["Mât"]),
-                        createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "matteStock" })
+                        // createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "matteStock" })
+                        createElement("img", { src: icons[stock.matte], class: "status-icon-modal", id: "icon-matte" })
                     ]),
                     createElement("div", { class: "shinyStock" }, [
                         createElement("label", { for: "shinyStock" }, ["Brillant"]),
-                        createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "shinyStock" })
+                        // createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "shinyStock" })
+                        createElement("img", { src: icons[stock.shiny], class: "status-icon-modal", id: "icon-shiny" })
+
                     ]),
                     createElement("div", { class: "sandedStock" }, [
                         createElement("label", { for: "sandedStock" }, ["Sablé"]),
-                        createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "sandedStock" })
+                        // createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "sandedStock" })
+                        createElement("img", { src: icons[stock.sanded], class: "status-icon-modal", id: "icon-sanded" })
+                        
                     ])
                 ])
             ]),
@@ -69,6 +81,14 @@ export const loadColorModal = async () => {
         ])
     ]);
     document.body.appendChild(modalContainer);
+
+            document.querySelectorAll(".status-icon-modal").forEach(icon => {
+            icon.addEventListener("click", (e) => {
+                stock[e.target.id.replace("icon-", "")] = (stock[e.target.id.replace("icon-", "")] + 1) % 3;
+                e.target.src = icons[stock[e.target.id.replace("icon-", "")]];
+            });
+        });
+
     
     modalContainer.addEventListener("click", (event) => {
         if (event.target === modalContainer) closeModal();
@@ -82,9 +102,7 @@ export const loadColorModal = async () => {
         let colorNamePt =document.getElementById("color-name-pt").value.trim();
         let colorRal = document.getElementById("color-ral").value.trim().toUpperCase().replace(" ", "");
         const colorHex = document.getElementById("color-hex-selector").value;
-        const shiny_stock = document.getElementById("shinyStock").checked ? 1 : 0;
-        const matte_stock = document.getElementById("matteStock").checked ? 1 : 0;
-        const sanded_stock = document.getElementById("sandedStock").checked ? 1 : 0;
+
 
         if (colorNameFr.length < 3 && colorNameEn.length < 3 && colorNamePt.length < 3) return alert("Le nom de la couleur ne peut pas être vide dans toutes les langues.");
         
@@ -101,7 +119,7 @@ export const loadColorModal = async () => {
             else if (colorNameEn.length >= 3) colorNameFr = colorNameEn;
         }
 
-        console.log({ fr: colorNameFr, en: colorNameEn, pt: colorNamePt, ral: colorRal, hex: colorHex, stock: { shiny_stock, matte_stock, sanded_stock } });
+        // console.log({ fr: colorNameFr, en: colorNameEn, pt: colorNamePt, ral: colorRal, hex: colorHex, stock: { shiny_stock, matte_stock, sanded_stock } });
 
         try {
             const response = await fetch("/api/colors/addColor", {
@@ -116,7 +134,7 @@ export const loadColorModal = async () => {
                     namePt: colorNamePt,
                     ral: colorRal,
                     hex: colorHex,
-                    stock: { shiny_stock, matte_stock, sanded_stock }
+                    stock: { shiny_stock: stock.shiny, matte_stock: stock.matte, sanded_stock: stock.sanded }
                 })
             });
             const data = await response.json();

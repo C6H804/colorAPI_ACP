@@ -19,7 +19,7 @@ const init = async () => {
     const lang = navigator.language.slice(0, 2);
     let filter = document.getElementById("filterSelect").value;
     let search = document.getElementById("searchInput").value;
-    
+
     permissions = await getPermissions(isAuth.value.permissions);
 
     updateColorTable(filter, lang, search, permissions);
@@ -37,8 +37,17 @@ const init = async () => {
             updateColorTable(filter, lang, search, permissions);
         prevSearch = search;
     });
+    document.getElementById("resetSearchBtn").addEventListener("click", () => {
+        document.getElementById("searchInput").value = "";
+        search = "";
+        if (search.length > prevSearch.length || !search.startsWith(prevSearch))
+            updateColorTable(filter, lang, search, permissions);
+        prevSearch = search;
+    });
 }
 init();
+
+
 
 document.getElementById("btn-logout").addEventListener("click", () => {
     window.localStorage.removeItem("token");
@@ -59,9 +68,4 @@ document.addEventListener("scroll", () => {
 
 upPageBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-document.getElementById("resetSearchBtn").addEventListener("click", () => {
-    document.getElementById("searchInput").value = '';
-    updateColorTable(document.getElementById("filterSelect").value, navigator.language.slice(0,2), '', permissions);
 });

@@ -32,7 +32,7 @@ export const loadColorsTable = (colors, lang = "en", permissions = false) => {
             let value = e.value;
             if (type === "RAL") value = e.value.replace("RAL", "");
 
-            const available = ["cross.svg", "check.svg"];
+            const available = ["cross.svg", "check.svg", "timer.svg"];
 
             const row = createElement("div", { class: `table-row ${type}`, title: title }, [
                 createElement("div", { class: "row-item color", style: `background-color: ${color};` }),

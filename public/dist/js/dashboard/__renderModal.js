@@ -19,6 +19,14 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
 
     const rgb = type === "RAL" ? color.match(/\w\w/g).map(x => parseInt(x, 16)) : [0, 0, 0];
 
+    let stock = {
+        shiny: shiny,
+        matte: matte,
+        sanded: sanded
+    };
+    console.log(stock);
+
+    const icons = ["../dist/img/Cross.svg", "../dist/img/Check.svg", "../dist/img/Timer.svg"];
 
     const disabled = permissions === "admin" || permissions === "color manager" ? "" : "disabled";
 
@@ -41,17 +49,20 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
         ]),
         createElement("div", { class: "modal-body" }, [
             createElement("div", { class: "stock-chk-container", id: "modalForm" }, [
-                createElement("div", { class: "matteStock" }, [
+                createElement("div", { class: "matteStock", id:"matteStockDiv" }, [
                     createElement("label", { for: "matteStock" }, ["Mât"]),
-                    createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "matteStock", ...(matte === 1 ? { checked: "checked", } : {}) })
+                    // createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "matteStock", ...(matte === 1 ? { checked: "checked", } : {}) })
+                    createElement("img", { src: icons[stock.matte], class: "status-icon-modal", id: "icon-matte" })
                 ]),
-                createElement("div", { class: "shinyStock" }, [
+                createElement("div", { class: "shinyStock", id: "shinyStockDiv" }, [
                     createElement("label", { for: "shinyStock" }, ["Brillant"]),
-                    createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "shinyStock", ...(shiny === 1 ? { checked: "checked" } : {}) })
+                    // createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "shinyStock", ...(shiny === 1 ? { checked: "checked" } : {}) })
+                    createElement("img", { src: icons[stock.shiny], class: "status-icon-modal", id: "icon-shiny" })
                 ]),
-                createElement("div", { class: "sandedStock" }, [
+                createElement("div", { class: "sandedStock", id: "sandedStockDiv" }, [
                     createElement("label", { for: "sandedStock" }, ["Sablé"]),
-                    createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "sandedStock", ...(sanded === 1 ? { checked: "checked" } : {}) })
+                    // createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "sandedStock", ...(sanded === 1 ? { checked: "checked" } : {}) })
+                    createElement("img", { src: icons[stock.sanded], class: "status-icon-modal", id: "icon-sanded" })
                 ])
             ]),
             createElement("div", { class: "modal-actions" }, [
@@ -61,14 +72,23 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
             ])
         ])
     ]);
+    
+    
 
     modalContainer.appendChild(modalDiv);
     document.body.appendChild(modalContainer);
 
+        document.querySelectorAll(".status-icon-modal").forEach(icon => {
+            icon.addEventListener("click", (e) => {
+                stock[e.target.id.replace("icon-", "")] = (stock[e.target.id.replace("icon-", "")] + 1) % 3;
+                e.target.src = icons[stock[e.target.id.replace("icon-", "")]];
+            });
+        });
+
     if (permissions !== "admin" && permissions !== "color manager" && permissions !== "moderator") document.querySelectorAll(".modify-disable").forEach(e => e.setAttribute("disabled", "disabled"));
-    
+
     document.querySelector(".btn.cancel").addEventListener("click", closeModal);
-    document.querySelector(".btn.save").addEventListener("click", async () => modifyStock(id, permissions));
+    document.querySelector(".btn.save").addEventListener("click", async () => modifyStock(id, permissions, stock));
 
     if (deleteButton) {
         document.getElementById("delete-color").addEventListener("click", async () => {

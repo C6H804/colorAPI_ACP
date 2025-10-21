@@ -186,7 +186,6 @@
     display: grid;
     place-items: center;
     font-size: 1.5em;
-    cursor: pointer;
 }
 
 .stock-chk-container input {
@@ -194,7 +193,7 @@
     height: 5em;
     cursor: pointer;
 }
-
+/*  checkbox --------------------------------------------------------------------------------------------------- */
 
 .stock-chk-container input[type="checkbox"] {
     appearance: none;
@@ -249,12 +248,22 @@
     opacity: 0.6;
 }
 
-.stock-chk-container div {
+.shinyStock, .matteStock, .sandedStock {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 }
+
+/*  new checkbox styles  ----------------------------------------------------------------------------------------------------- */
+.status-icon-modal {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+}
+
+
 
 .modal-actions {
     display: flex;
@@ -314,7 +323,7 @@
         align-items: center;
         place-content: center;
         gap: 10px;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 100px 80px;
     }
     .modal-actions {
         flex-direction: column;
