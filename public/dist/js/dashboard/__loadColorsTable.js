@@ -14,6 +14,40 @@ export const loadColorsTable = (colors, lang = "en", permissions = false) => {
 
         tableBody.appendChild(createElement("div", { class: "no-colors empty" }, [message[lang]]));
     } else {
+
+        const stockStatus = ["outOfStock", "inStock", "waitingStock"];
+
+        const dictionary = {
+            fr: {
+                shiny: "Brillant",
+                matte: "Mat",
+                sanded: "Sablé",
+                outOfStock: "Hors stock",
+                inStock: "En stock",
+                waitingStock: "Hors stock avec délai",
+                message: "Aucune couleur trouvée."
+            },
+            en: {
+                shiny: "Shiny",
+                matte: "Matte",
+                sanded: "Sanded",
+                outOfStock: "Out of stock",
+                inStock: "In stock",
+                waitingStock: "Out of stock with delay",
+                message: "No colors found."
+            },
+            pt: {
+                shiny: "Brilhante",
+                matte: "Fosca",
+                sanded: "Sable",
+                outOfStock: "Fora de estoque",
+                inStock: "Em estoque",
+                waitingStock: "Fora de estoque com atraso",
+                message: "Nenhuma cor encontrada."
+            }
+        };
+
+
         colors.forEach(e => {
             if (e.value === "RAL0000") return; // Ignorer les entrées RAL0000
             const color = '#' + e.color;
@@ -39,18 +73,18 @@ export const loadColorsTable = (colors, lang = "en", permissions = false) => {
                 createElement("div", { class: "row-item value" }, [value]),
                 createElement("div", { class: "row-item name mobile" }, [name]),
                 createElement("div", { class: "row-item stock matte available" + m }, [
-                    createElement("img", { src: "/dist/img/" + available[m], alt: m ? "En stock" : "Hors stock", title: m ? "En stock" : "Hors stock", height: "32", width: "32" })
+                    createElement("img", { src: "/dist/img/" + available[m], alt: dictionary[lang][stockStatus[m]], title: dictionary[lang][stockStatus[m]], height: "32", width: "32" })
                 ]),
                 createElement("div", { class: "row-item stock shiny available" + b }, [
-                    createElement("img", { src: "/dist/img/" + available[b], alt: b ? "En stock" : "Hors stock", title: b ? "En stock" : "Hors stock", height: "32", width: "32" })
+                    createElement("img", { src: "/dist/img/" + available[b], alt: dictionary[lang][stockStatus[b]], title: dictionary[lang][stockStatus[b]], height: "32", width: "32" })
                 ]),
                 createElement("div", { class: "row-item stock sanded available" + s }, [
-                    createElement("img", { src: "/dist/img/" + available[s], alt: s ? "En stock" : "Hors stock", title: s ? "En stock" : "Hors stock", height: "32", width: "32" })
+                    createElement("img", { src: "/dist/img/" + available[s], alt: dictionary[lang][stockStatus[s]], title: dictionary[lang][stockStatus[s]], height: "32", width: "32" })
                 ])
             ]);
 
             row.addEventListener("click", () => {
-                renderModal(e.id, value, color, name, type, b, m, s, permissions);
+                renderModal(e.id, value, color, name, type, b, m, s, permissions, lang);
             });
 
             tableBody.appendChild(row);

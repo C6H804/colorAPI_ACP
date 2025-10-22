@@ -3,7 +3,7 @@ import { closeModal } from "./__closeModal.js";
 import { modifyStock } from "./__modifyStock.js";
 import { updateColorTable } from "./__updateColorTable.js";
 
-export const renderModal = (id, value, color, name, type, shiny, matte, sanded, permissions) => {
+export const renderModal = (id, value, color, name, type, shiny, matte, sanded, permissions, lang = "fr") => {
     if (window.modal) return;
     window.modal = true;
     console.log(id, color, name, type, shiny, matte, sanded);
@@ -24,7 +24,38 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
         matte: matte,
         sanded: sanded
     };
-    console.log(stock);
+
+
+    const dictionary = {
+        fr: {
+            shiny: "Brillant",
+            matte: "Mat",
+            sanded: "Sablé",
+            outOfStock: "Hors stock",
+            inStock: "En stock",
+            waitingStock: "Hors stock avec délai",
+            message: "Aucune couleur trouvée."
+        },
+        en: {
+            shiny: "Shiny",
+            matte: "Matte",
+            sanded: "Sanded",
+            outOfStock: "Out of stock",
+            inStock: "In stock",
+            waitingStock: "Out of stock with delay",
+            message: "No colors found."
+        },
+        pt: {
+            shiny: "Brilhante",
+            matte: "Fosca",
+            sanded: "Sable",
+            outOfStock: "Fora de estoque",
+            inStock: "Em estoque",
+            waitingStock: "Fora de estoque com atraso",
+            message: "Nenhuma cor encontrada."
+        }
+    }
+
 
     const icons = ["../dist/img/Cross.svg", "../dist/img/Check.svg", "../dist/img/Timer.svg"];
 
@@ -49,18 +80,18 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
         ]),
         createElement("div", { class: "modal-body" }, [
             createElement("div", { class: "stock-chk-container", id: "modalForm" }, [
-                createElement("div", { class: "matteStock", id:"matteStockDiv" }, [
-                    createElement("label", { for: "matteStock" }, ["Mât"]),
+                createElement("div", { class: "matteStock", id: "matteStockDiv" }, [
+                    createElement("label", { for: "matteStock" }, [dictionary[lang].matte]),
                     // createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "matteStock", ...(matte === 1 ? { checked: "checked", } : {}) })
                     createElement("img", { src: icons[stock.matte], class: "status-icon-modal", id: "icon-matte" })
                 ]),
                 createElement("div", { class: "shinyStock", id: "shinyStockDiv" }, [
-                    createElement("label", { for: "shinyStock" }, ["Brillant"]),
+                    createElement("label", { for: "shinyStock" }, [dictionary[lang].shiny]),
                     // createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "shinyStock", ...(shiny === 1 ? { checked: "checked" } : {}) })
                     createElement("img", { src: icons[stock.shiny], class: "status-icon-modal", id: "icon-shiny" })
                 ]),
                 createElement("div", { class: "sandedStock", id: "sandedStockDiv" }, [
-                    createElement("label", { for: "sandedStock" }, ["Sablé"]),
+                    createElement("label", { for: "sandedStock" }, [dictionary[lang].sanded]),
                     // createElement("input", { class: "checkbox modify-disable", type: "checkbox", id: "sandedStock", ...(sanded === 1 ? { checked: "checked" } : {}) })
                     createElement("img", { src: icons[stock.sanded], class: "status-icon-modal", id: "icon-sanded" })
                 ])
@@ -72,18 +103,18 @@ export const renderModal = (id, value, color, name, type, shiny, matte, sanded, 
             ])
         ])
     ]);
-    
-    
+
+
 
     modalContainer.appendChild(modalDiv);
     document.body.appendChild(modalContainer);
 
-        document.querySelectorAll(".status-icon-modal").forEach(icon => {
-            icon.addEventListener("click", (e) => {
-                stock[e.target.id.replace("icon-", "")] = (stock[e.target.id.replace("icon-", "")] + 1) % 3;
-                e.target.src = icons[stock[e.target.id.replace("icon-", "")]];
-            });
+    document.querySelectorAll(".status-icon-modal").forEach(icon => {
+        icon.addEventListener("click", (e) => {
+            stock[e.target.id.replace("icon-", "")] = (stock[e.target.id.replace("icon-", "")] + 1) % 3;
+            e.target.src = icons[stock[e.target.id.replace("icon-", "")]];
         });
+    });
 
     if (permissions !== "admin" && permissions !== "color manager" && permissions !== "moderator") document.querySelectorAll(".modify-disable").forEach(e => e.setAttribute("disabled", "disabled"));
 

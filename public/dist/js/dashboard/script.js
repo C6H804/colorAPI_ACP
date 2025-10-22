@@ -3,6 +3,7 @@ import { getPermissions } from "./__getPermissions.js";
 import { updateColorTable } from "./__updateColorTable.js";
 import { fetchColors } from "./__fetchColors.js";
 import { closeModal } from "./__closeModal.js";
+import { translate } from "./__translate.js";
 
 let permissions = false;
 window.modal = false;
@@ -15,8 +16,8 @@ const init = async () => {
     let colors = await fetchColors("");
     console.log(colors);
 
-
     const lang = navigator.language.slice(0, 2);
+    console.log("Langue détectée :", lang);
     let filter = document.getElementById("filterSelect").value;
     let search = document.getElementById("searchInput").value;
 
@@ -24,7 +25,6 @@ const init = async () => {
 
     updateColorTable(filter, lang, search, permissions);
     if (permissions === "admin" || permissions === "moderator") document.querySelector(".admin-button").classList.remove("hide");
-
 
     document.getElementById("filterSelect").addEventListener("change", async (e) => {
         filter = e.target.value;
@@ -37,6 +37,7 @@ const init = async () => {
             updateColorTable(filter, lang, search, permissions);
         prevSearch = search;
     });
+
     document.getElementById("resetSearchBtn").addEventListener("click", () => {
         document.getElementById("searchInput").value = "";
         search = "";
@@ -44,10 +45,9 @@ const init = async () => {
             updateColorTable(filter, lang, search, permissions);
         prevSearch = search;
     });
+    translate(lang);
 }
 init();
-
-
 
 document.getElementById("btn-logout").addEventListener("click", () => {
     window.localStorage.removeItem("token");
@@ -69,3 +69,4 @@ document.addEventListener("scroll", () => {
 upPageBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
+

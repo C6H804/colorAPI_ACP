@@ -4,7 +4,7 @@ const db = require("../config/db.connection.root");
 
 const getColorListFiltered = async (filter) => {
     // Utilisation de l'utilisateur colorReader (SELECT sur colors uniquement)
-    const stmt = `SELECT * FROM colors WHERE ${filter} > 0 AND deleted = 0 ORDER BY type, value LIMIT 1000`;
+    const stmt = `SELECT * FROM colors WHERE ${filter} = 1 AND deleted = 0 ORDER BY type, value LIMIT 1000`;
 
     try {
         const [results] = await db.execute(stmt);
@@ -17,7 +17,7 @@ const getColorListFiltered = async (filter) => {
 
 const getColorListAvailable = async () => {
     // Utilisation de l'utilisateur colorReader (SELECT sur colors uniquement)
-    const stmt = "SELECT * FROM colors WHERE (shiny_stock > 0 OR matte_stock > 0 OR sanded_stock > 0) AND deleted = 0 ORDER BY type, value LIMIT 1000";
+    const stmt = "SELECT * FROM colors WHERE (shiny_stock = 1 OR matte_stock = 1 OR sanded_stock = 1) AND deleted = 0 ORDER BY type, value LIMIT 1000";
     try {
         const [results] = await db.execute(stmt);
         return { valid: true, value: results, status: 200 };
