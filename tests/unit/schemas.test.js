@@ -256,16 +256,28 @@ describe('Joi Schema Validation', () => {
       expect(result.value).toEqual(stockData);
     });
 
-    test('should reject invalid stock values (greater than 1)', () => {
-      const invalidData = {
+    test('should accept stock value 2 (en attente)', () => {
+      const validData = {
         shiny_stock: 2,
+        matte_stock: 0
+      };
+
+      const result = verifyColorStock(validData);
+      
+      expect(result.valid).toBe(true);
+      expect(result.value).toEqual(validData);
+    });
+
+    test('should reject invalid stock values (greater than 2)', () => {
+      const invalidData = {
+        shiny_stock: 3,
         matte_stock: 0
       };
 
       const result = verifyColorStock(invalidData);
       
       expect(result.valid).toBe(false);
-      expect(result.message).toContain('must be less than or equal to 1');
+      expect(result.message).toContain('must be less than or equal to 2');
     });
 
     test('should reject invalid stock values (negative)', () => {
@@ -303,6 +315,47 @@ describe('Joi Schema Validation', () => {
       expect(result.valid).toBe(true);
       expect(result.value.shiny_stock).toBe(1);
       expect(typeof result.value.shiny_stock).toBe('number');
+    });
+
+    test('should validate all three stock states', () => {
+      // Test des trois états : 0 = hors stock, 1 = en stock, 2 = en attente
+      const stockStates = [
+        {
+          description: 'hors stock',
+          data: { shiny_stock: 0, matte_stock: 0, sanded_stock: 0 }
+        },
+        {
+          description: 'en stock',
+          data: { shiny_stock: 1, matte_stock: 1, sanded_stock: 1 }
+        },
+        {
+          description: 'en attente',
+          data: { shiny_stock: 2, matte_stock: 2, sanded_stock: 2 }
+        },
+        {
+          description: 'mélangé',
+          data: { shiny_stock: 0, matte_stock: 1, sanded_stock: 2 }
+        }
+      ];
+
+      stockStates.forEach(({ description, data }) => {
+        const result = verifyColorStock(data);
+        expect(result.valid).toBe(true);
+        expect(result.value).toEqual(data);
+      });
+    });
+
+    test('should accept maximum value 2 for each stock type', () => {
+      const maxStockData = {
+        shiny_stock: 2,
+        matte_stock: 2,
+        sanded_stock: 2
+      };
+
+      const result = verifyColorStock(maxStockData);
+      
+      expect(result.valid).toBe(true);
+      expect(result.value).toEqual(maxStockData);
     });
   });
 

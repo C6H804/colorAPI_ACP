@@ -45,6 +45,18 @@ const testColors = [
     shiny_stock: 0,
     matte_stock: 1,
     sanded_stock: 0
+  },
+  {
+    id: 3,
+    type: 'RAL',
+    name_fr: 'Vert Forêt',
+    name_en: 'Forest Green',
+    name_pt: 'Verde Floresta',
+    value: 'RAL6028',
+    color: '#2D5016',
+    shiny_stock: 2,
+    matte_stock: 2,
+    sanded_stock: 1
   }
 ];
 

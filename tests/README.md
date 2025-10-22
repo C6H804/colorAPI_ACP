@@ -46,7 +46,39 @@ npm run test:watch
 npm run test:coverage
 ```
 
+## 🎨 Système de Stock des Couleurs (Mise à Jour)
 
+### Nouveaux États de Stock
+
+Le système de stock supporte maintenant **3 états** pour chaque type de finition :
+
+| Valeur | État | Description |
+|--------|------|-------------|
+| **0** | 🔴 Hors stock | Couleur non disponible |
+| **1** | 🟢 En stock | Couleur disponible |
+| **2** | 🟡 En attente | Couleur en cours de réapprovisionnement |
+
+### Types de Finitions Testés
+
+Chaque couleur peut avoir un état différent pour chaque finition :
+- `shiny_stock` - Stock finition brillante
+- `matte_stock` - Stock finition mate  
+- `sanded_stock` - Stock finition sablée
+
+### Tests de Validation du Stock
+
+```javascript
+// Exemples de données de test valides
+{ shiny_stock: 0, matte_stock: 1, sanded_stock: 2 }  // États mixtes
+{ shiny_stock: 2, matte_stock: 2, sanded_stock: 2 }  // Tout en attente
+{ shiny_stock: 1, matte_stock: 1, sanded_stock: 1 }  // Tout en stock
+```
+
+### API Routes Mises à Jour
+
+- **POST /api/colors/modifyStock/:id** : Accepte les valeurs 0, 1, 2
+- **POST /api/colors/addColor** : Validation des 3 états lors de la création
+- **Messages d'erreur améliorés** : `"Stock values must be 0 (hors stock), 1 (en stock), or 2 (en attente)"`
 
 ### Tests unitaires
 Pour la documentation détaillée des tests frontend, consultez le [README des tests frontend](./frontend/README.md).
@@ -61,7 +93,7 @@ Pour la documentation détaillée des tests frontend, consultez le [README des t
 | **Token roundtrip**           | 2               | Création + lecture de token, préservation des types array/object                              |
 | **verifyUser()**              | 11              | Validation utilisateur, gestion erreurs, champs manquants, formats invalides                  |
 | **verifyFilters()**           | 5               | Validation filtres, rejets de valeurs invalides ou vides                                      |
-| **verifyColorStock()**        | 7               | Validation stock, valeurs limites, coercition, rejets                                         |
+| **verifyColorStock()**        | 9               | Validation stock (0=hors stock, 1=en stock, 2=en attente), valeurs limites, coercition, rejets |
 | **verifyNewPermissions()**    | 8               | Validation permissions, formats array, champs manquants, erreurs                              |
 
 ### Tests d'intégration (Backend API)
@@ -71,8 +103,8 @@ Pour la documentation détaillée des tests frontend, consultez le [README des t
 | **POST /api/login**           | 6               | Connexion, rejets identifiants/formats invalides                               |
 | **GET /api/auth**             | 6               | Vérification tokens, rejets tokens invalides/expirés                           |
 | **POST /api/colors/list**     | 5               | Listing couleurs, filtrage, permissions                                        |
-| **POST /api/colors/modifyStock** | 6            | Modification stock, permissions, validations                                    |
-| **POST /api/colors/addColor** | 3               | Ajout couleur, permissions admin                                               |
+| **POST /api/colors/modifyStock** | 8            | Modification stock (3 états: 0,1,2), permissions, validations                  |
+| **POST /api/colors/addColor** | 5               | Ajout couleur (supports stock 0,1,2), permissions admin                       |
 | **POST /api/colors/deleteColor** | 4            | Suppression couleur, permissions admin                                         |
 | **GET /api/users**            | 3               | Listing utilisateurs, permissions admin                                        |
 | **POST /api/addUser**         | 8               | Création utilisateur, validations, permissions                                 |
@@ -94,7 +126,44 @@ Pour la documentation détaillée des tests frontend, consultez le [README des t
 | **closeModal()**              | 1               | Fermeture modal, nettoyage DOM                                                  |
 | **loadColorsTable()**         | 2               | Génération tableau HTML, gestion cas vide                                      |
 
-## 🔐 Tests de Sécurité MySQL
+## � Changements Base de Données - Stock des Couleurs
+
+### Mise à Jour Récente (v2.0)
+
+Le schéma de la table `colors` a été modifié pour supporter **3 états de stock** au lieu de 2 :
+
+```sql
+-- Colonnes concernées (toutes acceptent maintenant 0, 1, 2)
+shiny_stock TINYINT(1) CHECK (shiny_stock IN (0, 1, 2))
+matte_stock TINYINT(1) CHECK (matte_stock IN (0, 1, 2))
+sanded_stock TINYINT(1) CHECK (sanded_stock IN (0, 1, 2))
+```
+
+### Impact sur les Tests
+
+| Type de Test | Changements Apportés |
+|--------------|---------------------|
+| **Tests Unitaires** | +2 nouveaux tests pour valider les 3 états |
+| **Tests d'Intégration** | +9 nouveaux tests pour les APIs modifiées |
+| **Tests de Validation** | Messages d'erreur mis à jour |
+| **Données de Test** | Nouvelle couleur avec état "en attente" (2) |
+
+### Nouveaux Tests Ajoutés
+
+#### Système de Stock (11 nouveaux tests)
+- ✅ Validation des 3 états de stock (0, 1, 2)
+- ✅ Rejet des valeurs > 2
+- ✅ Tests API modifyStock avec état "en attente"
+- ✅ Tests API addColor avec les 3 états
+- ✅ Tests de combinaisons mixtes d'états
+
+#### Système de Mots de Passe Renforcé
+- ✅ **Nouveaux critères** : Au moins 1 majuscule + 1 minuscule + 1 chiffre
+- ✅ **Caractères spéciaux autorisés** : @, !, ?, etc.
+- ✅ **Longueur** : 8-50 caractères
+- ✅ **4 nouveaux tests** pour valider les critères renforcés
+
+## �🔐 Tests de Sécurité MySQL
 
 ### Considérations Importantes
 
@@ -149,15 +218,14 @@ JWT_SECRET=test_secret_key
 
 ## Résumé Total des Tests
 
-### Backend : **124 tests**
-- Tests unitaires : **41 tests** (indépendants de MySQL)
-- Tests d'intégration : **83 tests** (nécessitent MySQL + utilisateurs sécurisés)
-- Tests d'intégration : **83 tests**
+### Backend : **135 tests**
+- Tests unitaires : **43 tests** (indépendants de MySQL, +2 pour stock à 3 états)
+- Tests d'intégration : **92 tests** (nécessitent MySQL + utilisateurs sécurisés, +9 pour nouvelles validations stock)
 
 ### Frontend : **18 tests**
 - Tests fonctions dashboard : **18 tests**
 
-### **TOTAL : 142 tests** ☑️
+### **TOTAL : 153 tests** ☑️
 
 ## Couverture Fonctionnelle
 
@@ -227,20 +295,23 @@ JWT_SECRET=test_secret_key
 ## Résumé Total
 
 - **Nombre total de fonctions testées** : 11 principales
-- **Nombre total de tests** : 124
+- **Nombre total de tests** : 135 (Backend)
 - **Répartition** :
-  - Tests Unitaires : **41** (33%)
-  - Tests d'Intégration : **83** (67%)
+  - Tests Unitaires : **43** (32%)
+  - Tests d'Intégration : **92** (68%)
 
 | Catégorie                | Nombre de tests |
 |--------------------------|-----------------|
 | Utilitaires Hash         | 5               |
 | Utilitaires JWT          | 12              |
-| Schémas Joi              | 31              |
+| Schémas Joi              | 33              |
 | Routes Auth              | 12              |
-| Routes Colors            | 18              |
+| Routes Colors            | 25              |
 | Routes Users             | 23              |
 | Routes Permissions/Logs  | 20              |
 | Routes API générales     | 4               |
+| **TOTAL Backend**        | **135**         |
+| **Tests Frontend**       | **18**          |
+| **GRAND TOTAL**          | **153**         |
 
 > Tous ces tests passent avec succès et couvrent l'ensemble de l'API ColorAPI, incluant les fonctionnalités, cas d'erreur et validations de sécurité.

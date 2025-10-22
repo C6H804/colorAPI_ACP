@@ -67,8 +67,8 @@ describe('Colors Routes', () => {
         return res.status(400).json({ message: 'id must be a positive integer', valid: false });
       }
 
-      if (![0, 1].includes(shiny_stock) || ![0, 1].includes(matte_stock) || ![0, 1].includes(sanded_stock)) {
-        return res.status(400).json({ message: 'Stock values must be 0 or 1', valid: false });
+      if (![0, 1, 2].includes(shiny_stock) || ![0, 1, 2].includes(matte_stock) || ![0, 1, 2].includes(sanded_stock)) {
+        return res.status(400).json({ message: 'Stock values must be 0 (hors stock), 1 (en stock), or 2 (en attente)', valid: false });
       }
 
       // Vérifier si la couleur existe
@@ -107,8 +107,8 @@ describe('Colors Routes', () => {
       }
 
       // Validation des stocks
-      if (![0, 1].includes(shiny_stock) || ![0, 1].includes(matte_stock) || ![0, 1].includes(sanded_stock)) {
-        return res.status(400).json({ message: 'Stock values must be 0 or 1', valid: false });
+      if (![0, 1, 2].includes(shiny_stock) || ![0, 1, 2].includes(matte_stock) || ![0, 1, 2].includes(sanded_stock)) {
+        return res.status(400).json({ message: 'Stock values must be 0 (hors stock), 1 (en stock), or 2 (en attente)', valid: false });
       }
 
       return res.status(201).json({
@@ -264,18 +264,48 @@ describe('Colors Routes', () => {
       expect(response.body.message).toBe('id must be a positive integer');
     });
 
-    test('should reject invalid stock values', async () => {
+    test('should accept stock value 2 (en attente)', async () => {
       const response = await request(app)
         .post('/api/colors/modifyStock/1')
         .set('Authorization', `Bearer ${mockTokens.admin}`)
         .send({
           shiny_stock: 2,
+          matte_stock: 1,
+          sanded_stock: 0
+        })
+        .expect(200);
+
+      expect(response.body.message).toBe('Color stock updated successfully');
+      expect(response.body.valid).toBe(true);
+    });
+
+    test('should reject invalid stock values (greater than 2)', async () => {
+      const response = await request(app)
+        .post('/api/colors/modifyStock/1')
+        .set('Authorization', `Bearer ${mockTokens.admin}`)
+        .send({
+          shiny_stock: 3,
           matte_stock: 0,
           sanded_stock: 1
         })
         .expect(400);
 
-      expect(response.body.message).toBe('Stock values must be 0 or 1');
+      expect(response.body.message).toBe('Stock values must be 0 (hors stock), 1 (en stock), or 2 (en attente)');
+    });
+
+    test('should accept all three stock states', async () => {
+      const response = await request(app)
+        .post('/api/colors/modifyStock/1')
+        .set('Authorization', `Bearer ${mockTokens.admin}`)
+        .send({
+          shiny_stock: 0,  // hors stock
+          matte_stock: 1,  // en stock  
+          sanded_stock: 2  // en attente
+        })
+        .expect(200);
+
+      expect(response.body.message).toBe('Color stock updated successfully');
+      expect(response.body.valid).toBe(true);
     });
 
     test('should return 404 for non-existent color', async () => {
@@ -350,6 +380,53 @@ describe('Colors Routes', () => {
 
       expect(response.body.valid).toBe(false);
       expect(response.body.message).toContain('Missing required fields');
+    });
+
+    test('should add color with stock value 2 (en attente)', async () => {
+      const newColor = {
+        nameFr: 'Jaune Citron',
+        nameEn: 'Lemon Yellow',
+        namePt: 'Amarelo Limão',
+        type: 'RAL',
+        value: 'RAL1018',
+        color: '#FFFF00',
+        shiny_stock: 2,
+        matte_stock: 2,
+        sanded_stock: 1
+      };
+
+      const response = await request(app)
+        .post('/api/colors/addColor')
+        .set('Authorization', `Bearer ${mockTokens.admin}`)
+        .send(newColor)
+        .expect(201);
+
+      expect(response.body.valid).toBe(true);
+      expect(response.body.message).toBe('Color added successfully');
+      expect(response.body.value).toMatchObject(newColor);
+    });
+
+    test('should reject invalid stock values in addColor (greater than 2)', async () => {
+      const newColor = {
+        nameFr: 'Couleur Test',
+        nameEn: 'Test Color',
+        namePt: 'Cor de Teste',
+        type: 'RAL',
+        value: 'RAL9999',
+        color: '#123456',
+        shiny_stock: 3, // Valeur invalide
+        matte_stock: 1,
+        sanded_stock: 0
+      };
+
+      const response = await request(app)
+        .post('/api/colors/addColor')
+        .set('Authorization', `Bearer ${mockTokens.admin}`)
+        .send(newColor)
+        .expect(400);
+
+      expect(response.body.valid).toBe(false);
+      expect(response.body.message).toBe('Stock values must be 0 (hors stock), 1 (en stock), or 2 (en attente)');
     });
   });
 
